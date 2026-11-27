@@ -11,7 +11,7 @@ const dateien = {
   "/assets/somonto-stil.css": ["somonto-stil.css", "text/css"],
   "/assets/somonto-golos-text-variable.woff2": ["somonto-golos-text-variable.woff2", "font/woff2"],
 };
-const ANKER = "#name=Anna+Muster&email=anna%40example.invalid&company=Tischlerei+Muster+GmbH&phone=%2B43+664+1234567";
+const ANKER = "#name=Anna+Muster&email=anna%40tischlerei-muster.at&company=Tischlerei+Muster+GmbH&phone=%2B43+664+1234567";
 
 async function lauf(browser, breite, { anker = "" } = {}) {
   const page = await browser.newPage({ viewport: { width: breite, height: breite < 768 ? 800 : 900 }, deviceScaleFactor: 2, locale: "de-AT", timezoneId: "Europe/Vienna" });
@@ -30,15 +30,16 @@ async function lauf(browser, breite, { anker = "" } = {}) {
   try {
   await page.goto(`${BASIS}?theme=1&locale=de${anker}`, { waitUntil: "networkidle" });
   await page.addStyleTag({ url: "/assets/somonto-stil.css" });
-  await page.waitForSelector("[data-fact='date']:not([disabled])", { timeout: 30000 });
+  const tag = page.locator("[data-fact='date']:not([disabled])").filter({ visible: true });
+  await tag.first().waitFor({ timeout: 30000 });
   await bild("1-kalender");
   mehrzeilig.push(...(await messen()));
-  await page.locator("[data-fact='date']:not([disabled])").first().click();
-  const zeit = page.locator("[data-fact='time']:not([disabled]), [data-fact='slot']:not([disabled])").first();
+  await tag.nth(1).click();
+  const zeit = page.locator("[data-fact='time']:not([disabled]), [data-fact='slot']:not([disabled])").filter({ visible: true }).first();
   await zeit.waitFor({ timeout: 15000 });
   await zeit.click();
   await bild("2-uhrzeit");
-  await page.locator("[data-testid='next-step']").first().click();
+  await page.locator("[data-testid='next-step']").filter({ visible: true }).first().click();
   for (const seite of ["1", "2"]) {
     await page.waitForSelector(`[data-details-page='${seite}']`, { timeout: 15000 });
     await bild(`${2 + Number(seite)}-angaben-seite-${seite}`);
@@ -48,11 +49,11 @@ async function lauf(browser, breite, { anker = "" } = {}) {
         if ((await feld.inputValue()) !== "") continue;
         const typ = (await feld.getAttribute("type")) || "text";
         const n = (await feld.getAttribute("name")) || "";
-        const wert = typ === "email" ? "anna@example.invalid" : typ === "tel" ? "+43 664 1234567" : n === "booking[name]" ? "Anna Muster" : "Tischlerei Muster GmbH";
+        const wert = typ === "email" ? "anna@tischlerei-muster.at" : typ === "tel" ? "+43 664 1234567" : n === "booking[name]" ? "Anna Muster" : "Tischlerei Muster GmbH";
         await feld.fill(wert);
       }
     }
-    await page.locator("[data-testid='details-next']").first().click();
+    await page.locator("[data-testid='details-next']").filter({ visible: true }).first().click();
   }
   await page.waitForSelector("[data-details-page='3']", { timeout: 15000 });
   await bild("5-uebersicht");
