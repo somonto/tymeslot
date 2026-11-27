@@ -26,6 +26,8 @@ async function lauf(browser, breite, { anker = "" } = {}) {
     return { text: e.innerText.trim().slice(0, 60), zeilen: Math.round(e.getBoundingClientRect().height / lh) };
   }).filter((z) => z.text && z.zeilen > 1));
   const mehrzeilig = [];
+  page.on("pageerror", (e) => console.error("pageerror", e.message));
+  try {
   await page.goto(`${BASIS}?theme=1&locale=de${anker}`, { waitUntil: "networkidle" });
   await page.addStyleTag({ url: "/assets/somonto-stil.css" });
   await page.waitForSelector("[data-fact='date']:not([disabled])", { timeout: 30000 });
@@ -55,13 +57,22 @@ async function lauf(browser, breite, { anker = "" } = {}) {
   await page.waitForSelector("[data-details-page='3']", { timeout: 15000 });
   await bild("5-uebersicht");
   mehrzeilig.push(...(await messen()));
+  } catch (e) {
+    await page.screenshot({ path: name("fehler"), fullPage: true }).catch(() => {});
+    console.error("TEXT", breite, (await page.innerText("body").catch(() => "")).slice(0, 1500));
+    await page.close();
+    throw e;
+  }
   await page.close();
   return { breite, anker: Boolean(anker), mehrzeilig };
 }
 
 const browser = await chromium.launch();
 const bericht = [];
-for (const b of [320, 375, 768, 1440]) bericht.push(await lauf(browser, b));
-bericht.push(await lauf(browser, 375, { anker: ANKER }));
+let fehler = 0;
+for (const [b, o] of [[320], [375], [768], [1440], [375, { anker: ANKER }]]) {
+  try { bericht.push(await lauf(browser, b, o)); } catch (e) { fehler++; bericht.push({ breite: b, fehler: String(e.message).split("\n")[0] }); }
+}
 await browser.close();
 console.log(JSON.stringify(bericht, null, 1));
+process.exitCode = fehler ? 1 : 0;

@@ -56,6 +56,7 @@ jobs:
           docker exec -u app app /app/bin/tymeslot rpc 'Code.eval_file("/tmp/seed.exs")'
       - name: Screenshots
         run: |
+          set -o pipefail
           mkdir -p somonto/sicht/sicht-ausgabe
           docker run --rm --network host --ipc=host -v "$PWD/somonto/sicht:/sicht" -w /sicht \
             mcr.microsoft.com/playwright:v1.57.0-noble \
