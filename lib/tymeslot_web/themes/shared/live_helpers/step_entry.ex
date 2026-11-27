@@ -365,10 +365,13 @@ defmodule TymeslotWeb.Themes.Shared.LiveHelpers.StepEntry do
     %{engine | answers: Map.merge(seeds, engine.answers)}
   end
 
-  defp seed_fragment_answers(engine, _socket), do: engine
-
   defp question_label(%{"label" => label}) when is_binary(label),
-    do: label |> String.normalize(:nfc) |> String.trim() |> String.downcase() |> String.replace(~r/[\s*:]+$/u, "")
+    do:
+      label
+      |> String.normalize(:nfc)
+      |> String.trim()
+      |> String.downcase()
+      |> String.replace(~r/[\s*:]+$/u, "")
 
   defp question_label(_definition), do: ""
 
@@ -544,6 +547,7 @@ defmodule TymeslotWeb.Themes.Shared.LiveHelpers.StepEntry do
   end
 
   defp fragment_prefill(%{assigns: %{reschedule_meeting_uid: uid}}) when is_binary(uid), do: %{}
+
   defp fragment_prefill(socket),
     do: Map.take(socket.assigns[:attendee_prefill] || %{}, ["name", "email"])
 

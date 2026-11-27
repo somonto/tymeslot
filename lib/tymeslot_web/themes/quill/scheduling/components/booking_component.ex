@@ -84,7 +84,11 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
 
   # Enter in the name or email field submits the booking form: before the
   # summary that moves on as Next does, with the values just typed.
-  def handle_event("submit", %{"booking" => booking_params}, %{assigns: %{details_page: page}} = socket)
+  def handle_event(
+        "submit",
+        %{"booking" => booking_params},
+        %{assigns: %{details_page: page}} = socket
+      )
       when page < 3 do
     send(self(), {:step_event, StepEvents.moment(socket.assigns), :validate, booking_params})
     {:noreply, next_page(socket, booking_params)}
@@ -530,8 +534,9 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
 
   defp phone_question?(_definition), do: false
 
-  defp form_values(%Phoenix.HTML.Form{params: params}) when is_map(params) and map_size(params) > 0,
-    do: params
+  defp form_values(%Phoenix.HTML.Form{params: params})
+       when is_map(params) and map_size(params) > 0,
+       do: params
 
   defp form_values(%Phoenix.HTML.Form{source: %{} = source}), do: source
   defp form_values(_form), do: %{}

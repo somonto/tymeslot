@@ -209,32 +209,32 @@ defmodule TymeslotWeb.Themes.Shared.Components.BookingForm do
     <div class="booking-field booking-field--name" hidden={:name in @hidden_fields}>
       <.input
         field={@f[:name]}
-      label={@labels.name}
-      placeholder={@labels.name_placeholder}
-      errors={FormValidationHelpers.field_errors(@validation_errors, :name)}
-      required
-      phx-debounce="blur"
-      phx-blur="field_blur"
-      phx-value-field="name"
-      phx-target={@target}
-      autocomplete="name"
-    />
+        label={@labels.name}
+        placeholder={@labels.name_placeholder}
+        errors={FormValidationHelpers.field_errors(@validation_errors, :name)}
+        required
+        phx-debounce="blur"
+        phx-blur="field_blur"
+        phx-value-field="name"
+        phx-target={@target}
+        autocomplete="name"
+      />
     </div>
 
     <div class="booking-field booking-field--email" hidden={:email in @hidden_fields}>
       <.input
         field={@f[:email]}
-      label={@labels.email}
-      type="email"
-      placeholder={@labels.email_placeholder}
-      errors={FormValidationHelpers.field_errors(@validation_errors, :email)}
-      required
-      phx-debounce="blur"
-      phx-blur="field_blur"
-      phx-value-field="email"
-      phx-target={@target}
-      autocomplete="email"
-    />
+        label={@labels.email}
+        type="email"
+        placeholder={@labels.email_placeholder}
+        errors={FormValidationHelpers.field_errors(@validation_errors, :email)}
+        required
+        phx-debounce="blur"
+        phx-blur="field_blur"
+        phx-value-field="email"
+        phx-target={@target}
+        autocomplete="email"
+      />
     </div>
     """
   end

@@ -83,7 +83,11 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
   defp back(view), do: view |> element("[data-testid='back-step']") |> render_click()
 
   defp page(view) do
-    view |> render() |> Floki.parse_document!() |> Floki.attribute("[data-details-page]", "data-details-page") |> List.first()
+    view
+    |> render()
+    |> Floki.parse_document!()
+    |> Floki.attribute("[data-details-page]", "data-details-page")
+    |> List.first()
   end
 
   defp input_value(view, selector) do
@@ -95,7 +99,11 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
   end
 
   defp hidden?(view, selector) do
-    view |> render() |> Floki.parse_document!() |> Floki.find(selector) |> Floki.attribute("hidden") != []
+    view
+    |> render()
+    |> Floki.parse_document!()
+    |> Floki.find(selector)
+    |> Floki.attribute("hidden") != []
   end
 
   defp step_labels(view) do
@@ -108,6 +116,7 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
 
   defp step_attr(view) do
     doc = view |> render() |> Floki.parse_document!()
+
     {List.first(Floki.attribute(doc, "[data-somonto-step]", "data-somonto-step")),
      List.first(Floki.attribute(doc, "[data-somonto-step]", "data-somonto-step-index"))}
   end
