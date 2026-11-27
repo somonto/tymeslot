@@ -31,11 +31,13 @@ async function lauf(browser, breite, { anker = "" } = {}) {
   await page.goto(`${BASIS}?theme=1&locale=de${anker}`, { waitUntil: "networkidle" });
   await page.addStyleTag({ url: "/assets/somonto-stil.css" });
   const tag = page.locator("[data-fact='date']:not([disabled])").filter({ visible: true });
-  await tag.first().waitFor({ timeout: 30000 });
+  const zeiten = page.locator("[data-fact='time']:not([disabled]), [data-fact='slot']:not([disabled])").filter({ visible: true });
+  await tag.or(zeiten).first().waitFor({ timeout: 30000 });
   await bild("1-kalender");
   mehrzeilig.push(...(await messen()));
-  await tag.nth(1).click();
-  const zeit = page.locator("[data-fact='time']:not([disabled]), [data-fact='slot']:not([disabled])").filter({ visible: true }).first();
+  // Handy: die Wochenleiste wählt den ersten freien Tag selbst, die Zeiten stehen schon da.
+  if (!(await zeiten.count())) await tag.nth(1).click();
+  const zeit = zeiten.first();
   await zeit.waitFor({ timeout: 15000 });
   await zeit.click();
   await bild("2-uhrzeit");
