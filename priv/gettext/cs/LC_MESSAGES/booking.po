@@ -1087,3 +1087,43 @@ msgstr "Tento typ schůzky teď nemá žádné volné termíny k rezervaci."
 #, elixir-autogen, elixir-format
 msgid "%{page} with %{name}"
 msgstr "%{page} s %{name}"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Book the call"
+msgstr "Rezervovat hovor"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Contact"
+msgstr "Kontakt"
+
+#: lib/tymeslot_web/themes/shared/components/legal_links.ex
+#, elixir-autogen, elixir-format
+msgid "Source code (AGPL)"
+msgstr "Zdrojový kód (AGPL)"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Summary"
+msgstr "Shrnutí"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "The confirmation goes to %{email}."
+msgstr "Potvrzení odejde na %{email}."
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "Kdy"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "With"
+msgstr "S kým"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Your details"
+msgstr "Vaše údaje"

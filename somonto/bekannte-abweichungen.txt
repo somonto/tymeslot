@@ -1,0 +1,288 @@
+# Somonto fork: upstream tests that fail here by design (old Quill flow: message field, "Duration" step
+# for a single meeting type, footer without source link; shared helpers that walk that flow).
+# Checked by somonto/suite_abgleich.py in "Somonto prüfen". One line per test: <module> :: <test name>.
+# A new failure not listed here turns the run red. Remove lines the run reports as GREEN.
+# Baseline: run 46021226675 (27.11.2026, v1.41.0-somonto.1), 285 failures, minus the two gettext tests (fixed).
+Tymeslot.BookingTestHelpersTest :: Quill: walk_to_booking_form/2 reaches the form with tomorrow's first time
+TymeslotWeb.BookingDriverTest :: Quill book/2 answers the questions it is given, of every kind
+TymeslotWeb.BookingDriverTest :: Quill book/2 books the first free time and returns the outcome
+TymeslotWeb.BookingDriverTest :: Quill fill_attendee/2 writes into the form that submit/2 then sends
+TymeslotWeb.BookingDriverTest :: Quill pick_first_slot/2 finds the first free time more than a week out
+TymeslotWeb.BookingDriverTest :: Quill pick_first_slot/2 with on: picks that day's first free time
+TymeslotWeb.BookingDriverTest :: Quill pick_slot/3 books exactly the day and time asked for, bringing the day into view
+TymeslotWeb.BookingDriverTest :: Quill, step by step choose_meeting_type/2 names the types offered when asked for another
+TymeslotWeb.BookingDriverTest :: Quill, step by step continue/1 after the choice leaves the meeting types, back/1 returns to them
+TymeslotWeb.BookingDriverTest :: Quill, step by step pick_first_slot/2 names the facts a page without a picker lacks
+TymeslotWeb.BookingDriverTest :: Quill, step by step restart/1 starts a fresh booking at the meeting types
+TymeslotWeb.BookingHoneypotTest :: honeypot submission with filled website field is dropped
+TymeslotWeb.BookingHoneypotTest :: honeypot submission with whitespace-only value is dropped
+TymeslotWeb.BookingHoneypotTest :: normal booking with empty honeypot field succeeds
+TymeslotWeb.BookingPageAttributionJourneyTest :: the host sees which page a booking came through and filters the list by page
+TymeslotWeb.BookingPageAttributionJourneyTest :: the host's confirmation names the page; the invitee's does not
+TymeslotWeb.BookingPageBookingTest :: a booking made under the username records no page
+TymeslotWeb.BookingPageBookingTest :: a visitor books from a type's link under the page
+TymeslotWeb.BookingPageBookingTest :: a visitor books from the page's start page, and the booking records the page
+TymeslotWeb.BookingPageBookingTest :: cancelling a page's booking emails a link back to the page
+TymeslotWeb.BookingPagePublicTest :: a former page address leads to the page's current address, with everything under it
+TymeslotWeb.BookingPagePublicTest :: a page shows its own texts and meeting types under the username
+TymeslotWeb.BookingPagePublicTest :: a page's start page keeps its address on every patch
+TymeslotWeb.BookingPagePublicTest :: a type the address does not offer, named by duration is not taken from a crafted select_duration on a page
+TymeslotWeb.Dashboard.Availability.BufferBookingJourneyTest :: the buffers set on the availability page decide which times a visitor can book
+TymeslotWeb.Live.MultilingualBookingTest :: multilingual booking flow completeness completes full booking flow in every supported locale
+TymeslotWeb.Live.MultilingualBookingTest :: multilingual booking flow completeness language persists throughout booking flow steps
+TymeslotWeb.Live.Scheduling.ApprovalBookingJourneyTest :: a request at a length not the type's own keeps it through approval
+TymeslotWeb.Live.Scheduling.ApprovalBookingJourneyTest :: a request the host approves reaches the attendee as a confirmed booking with its room
+TymeslotWeb.Live.Scheduling.ApprovalBookingJourneyTest :: approving a request with no video room confirms the calendar event and emails the attendee
+TymeslotWeb.Live.Scheduling.AvailabilityAsyncFetchTest :: a calendar that errors leaves the page on the error state, not a spinner
+TymeslotWeb.Live.Scheduling.AvailabilityAsyncFetchTest :: a result for a superseded fetch is discarded
+TymeslotWeb.Live.Scheduling.AvailabilityAsyncFetchTest :: an arrival asking another question restarts the fetch in flight
+TymeslotWeb.Live.Scheduling.AvailabilityAsyncFetchTest :: the arrival at the schedule keeps the fetch the meeting type's choice started
+TymeslotWeb.Live.Scheduling.AvailabilityAsyncFetchTest :: the fetch runs off the LiveView process and still lands on a bookable day
+TymeslotWeb.Live.Scheduling.BookingAccessibilityTest :: timezone selector quill: the timezone search box has an accessible name
+TymeslotWeb.Live.Scheduling.BookingAccessibilityTest :: timezone selector quill: the trigger announces the dialog it opens
+TymeslotWeb.Live.Scheduling.BookingAccessibilityTest :: timezone selector quill: the trigger's accessible name contains its visible text
+TymeslotWeb.Live.Scheduling.BookingDeepLinkTest :: a link to the booking step shows a meeting type's optional questions first
+TymeslotWeb.Live.Scheduling.BookingDeepLinkTest :: query parameters of an unexpected shape a list-shaped duration leaves the overview page rendering its durations
+TymeslotWeb.Live.Scheduling.BookingPrefillFlowTest :: a value the form would refuse is left blank rather than shown
+TymeslotWeb.Live.Scheduling.BookingPrefillFlowTest :: the booking is made for the attendee the link named
+TymeslotWeb.Live.Scheduling.BookingPrefillFlowTest :: without a prefill the form starts blank
+TymeslotWeb.Live.Scheduling.BookingSubmissionFlashTest :: blocks a booking when the attendee mailbox is rate-limited from another IP
+TymeslotWeb.Live.Scheduling.BookingSubmissionFlashTest :: forwards rate-limit error flash from booking component to parent LiveView
+TymeslotWeb.Live.Scheduling.BookingSubmissionFlashTest :: retrying in the same session after a gate rejected the submission after a failed reCAPTCHA check
+TymeslotWeb.Live.Scheduling.BookingSubmissionFlashTest :: retrying in the same session after a gate rejected the submission after the per-IP rate limit blocked it
+TymeslotWeb.Live.Scheduling.BookingSubmissionFlashTest :: retrying in the same session after a gate rejected the submission after the per-recipient rate limit blocked it
+TymeslotWeb.Live.Scheduling.BookingSubmissionFlashTest :: retrying in the same session after a gate rejected the submission after the reCAPTCHA script was blocked
+TymeslotWeb.Live.Scheduling.BookingSubmitCompositionTest :: a calendar adapter that raises on submit → try-later flash, booker stays on the form
+TymeslotWeb.Live.Scheduling.BookingSubmitCompositionTest :: host's booking limit reached between render and submit → limit flash, back to schedule
+TymeslotWeb.Live.Scheduling.BookingSubmitCompositionTest :: meeting type deactivated between step transition and submit → 'refresh the page' flash
+TymeslotWeb.Live.Scheduling.BookingSubmitCompositionTest :: slot becomes unavailable between render and submit → flash, no crash, back to schedule
+TymeslotWeb.Live.Scheduling.BookingUtmFlowTest :: UTM and tracking params from the landing URL persist on the created meeting
+TymeslotWeb.Live.Scheduling.BookingUtmFlowTest :: an ad click identifier on the landing URL is stored as its network, never itself
+TymeslotWeb.Live.Scheduling.BookingUtmFlowTest :: no UTM or tracking params are persisted when booking analytics is disabled
+TymeslotWeb.Live.Scheduling.CalendarPubSubTest :: calendar event PubSub ignores calendar events for other users
+TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: an answer sent once the questions are off screen are asked again, blank, after Schedule another
+TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: an answer sent once the questions are off screen is dropped, and the booking keeps the answer given on the questions step
+TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: booking flow with custom fields a required question left empty is refused in the guest's language
+TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: booking flow with custom fields questions step renders, validation blocks advance, booking persists snapshot and answers
+TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: booking flow without custom fields (regression) no questions step is rendered when meeting type has no custom fields
+TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: questions step – back-navigation preserves answers navigating :booking → :questions keeps previously entered answers
+TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: questions step – back-navigation preserves answers pressing back on the first question returns to the schedule step
+TymeslotWeb.Live.Scheduling.DemoThemeSwitcherTest :: on a demo page a locale switch on the organiser's own theme adds none
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: an embedded booking on each theme Quill: a free booking confirms inside the iframe
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: an embedded booking on each theme Quill: a paid booking waits in the iframe, then confirms once paid
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: embed iframe — paid booking PubSub :expired sends the iframe back to the booking step with a flash
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: embed iframe — paid booking PubSub :paid flips the iframe to :confirmation
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: embed iframe — paid booking Schedule another after a paid booking forgets the old meeting's payment
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: embed iframe — paid booking a URL patch cannot leave the payment wait
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: embed iframe — paid booking an :expired broadcast after the payment wait has ended changes nothing
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: embed iframe — paid booking pushes payment_redirect_open_tab and transitions to :awaiting_payment instead of redirecting
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: embed iframe — paid booking the step indicator cannot leave the payment wait
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: non-embed (control) top-level booker still redirects directly to Stripe Checkout
+TymeslotWeb.Live.Scheduling.EmbedPaidBookingTest :: the organiser above the wait quill's wait stays without the organiser's portrait or name
+TymeslotWeb.Live.Scheduling.EmbedQuestionAutofocusTest :: Quill: the same question on the page opened on its own keeps its autofocus
+TymeslotWeb.Live.Scheduling.ExtraAvailabilityBookingJourneyTest :: Quill: a visitor books a time from an extra time on a closed weekday
+TymeslotWeb.Live.Scheduling.FixedDatesBookingPageTest :: Quill books a guest onto a planned session chosen from the list
+TymeslotWeb.Live.Scheduling.GroupBookingsPausedPageTest :: once the host has lost access to group bookings the listing leaves the group type out
+TymeslotWeb.Live.Scheduling.GroupSeatCalendarDownloadTest :: joining an occupied slot downloads the new seat's own event
+TymeslotWeb.Live.Scheduling.GroupSeatConfirmationTest :: Quill: Add to calendar downloads the booker's own seat, not the shared slot
+TymeslotWeb.Live.Scheduling.GroupSeatUpdatesTest :: a burst of seat_update broadcasts coalesces into a single trailing refresh
+TymeslotWeb.Live.Scheduling.GroupSeatUpdatesTest :: a passive refresh that fails to fetch leaves the slot list and the page quiet
+TymeslotWeb.Live.Scheduling.GroupSeatUpdatesTest :: seat_update for a different meeting type is a no-op
+TymeslotWeb.Live.Scheduling.GroupSeatUpdatesTest :: seat_update refreshes counts and preserves the selection
+TymeslotWeb.Live.Scheduling.GroupSeatUpdatesTest :: seat_update that removes the selected slot bounces to the schedule step
+TymeslotWeb.Live.Scheduling.GroupSlotDisplayTest :: the schedule step's slots a full group slot is absent for the next visitor
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: false guest toggle is absent when allow_guests is false
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true adding a valid guest email adds a chip
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true adding the booker's own email shows self-email error
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true adding two guests renders two chips
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true cap error shown when max_guests is reached
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true close button clears guests and collapses the field
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true duplicate email shows 'already added' error
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true guests are persisted on the created meeting
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true invalid email format shows format error
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true removing a guest chip removes it from the list
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true schedule_another resets the guest list
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — allow_guests: true toggle shows the guest input area
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — group meeting type seat cap cap is reduced to the seats left beyond the booker's own
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — group meeting type seat cap guest field is hidden when only the last seat remains
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — group meeting type with the count hidden the header shows guests added without the cap, which is still enforced
+TymeslotWeb.Live.Scheduling.GuestBookingFlowTest :: Quill: guest field — the meeting type's guest limit a booking brings no more guests than the meeting type allows
+TymeslotWeb.Live.Scheduling.LegacyCurrencyPaidBookingTest :: a two-decimal legacy currency is charged the stored price in that currency
+TymeslotWeb.Live.Scheduling.LegacyCurrencyPaidBookingTest :: a zero-decimal legacy currency is refused before any meeting is made
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a group meeting type shows no picker, and states the one location every seat is held at
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a meeting type offering a single location asks nothing, and still records where the meeting is
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a meeting type offering several locations an id that is not on offer is ignored rather than stored
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a meeting type offering several locations choosing an option moves the selection
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a meeting type offering several locations renders one option per location, with the host's first preselected
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a meeting type offering several locations shows the detail of the chosen option only
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a meeting type offering several locations submitting without the number a phone location asked for is refused
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a meeting type offering several locations the chosen location and the booker's number reach the meeting
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a meeting type offering several locations the host's first location is what an untouched picker books
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a video location offering several providers asks which provider, offering only the active ones, with the first preselected
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a video location offering several providers books the room on the provider the booker picked
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: a video location whose integration the host has disconnected still books it, without a provider to pick or a room to create
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: rescheduling a meeting a single location asks nothing and keeps the meeting where it was booked
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: rescheduling a meeting at a saved venue a venue no longer offered stays put when the booker only changes the time
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: rescheduling a meeting at a saved venue a venue the booker picks moves the meeting there
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: rescheduling a meeting at a saved venue the picker opens on the meeting's venue, and a time-only move keeps it
+TymeslotWeb.Live.Scheduling.LocationChoiceFlowTest :: Quill: rescheduling a meeting choosing another location moves the existing meeting there
+TymeslotWeb.Live.Scheduling.LongSingleSelectFlowTest :: quill: a single-choice question with many options keeps the chosen option through to the meeting
+TymeslotWeb.Live.Scheduling.NextAvailableTest :: landing on the first available day a fully blacked-out month advances the window to a month that has availability
+TymeslotWeb.Live.Scheduling.NextAvailableTest :: landing on the first available day pressing next month moves the calendar forward and leaves it there
+TymeslotWeb.Live.Scheduling.NextAvailableTest :: landing on the first available day the schedule step opens with a day selected and its times already listed
+TymeslotWeb.Live.Scheduling.NextMonthLandingTest :: Quill: landing on next month's first free day makes the whole of next month bookable
+TymeslotWeb.Live.Scheduling.OfferedTimesBookingJourneyTest :: Quill: a visitor books an offered time, which is then gone
+TymeslotWeb.Live.Scheduling.OwnerPreviewBookingTest :: a preview carrying a valid owner token does not spend the public per-IP booking allowance
+TymeslotWeb.Live.Scheduling.OwnerPreviewBookingTest :: a preview carrying a valid owner token simulates an embedded preview too, whatever mode opened it
+TymeslotWeb.Live.Scheduling.OwnerPreviewBookingTest :: a preview carrying a valid owner token simulates the booking rather than refusing it
+TymeslotWeb.Live.Scheduling.OwnerPreviewBookingTest :: a preview claim with no valid token is refused, and is still charged to the rate limit
+TymeslotWeb.Live.Scheduling.OwnerPreviewBookingTest :: the confirmation's calendar download is not offered after a simulated booking
+TymeslotWeb.Live.Scheduling.OwnerPreviewBookingTest :: the confirmation's calendar download is offered after a real booking, for the stored meeting
+TymeslotWeb.Live.Scheduling.OwnerPreviewBookingTest :: the preview notice is not shown on an ordinary booking page
+TymeslotWeb.Live.Scheduling.OwnerPreviewBookingTest :: the preview notice is shown whenever a valid owner-preview token is verified
+TymeslotWeb.Live.Scheduling.PaidTypeUnsellablePageTest :: a host whose Stripe account cannot take charges quill's overview leaves the paid type out
+TymeslotWeb.Live.Scheduling.PaidTypeUnsellablePageTest :: a host with no Stripe account at all leaves the paid type out
+TymeslotWeb.Live.Scheduling.RefusedCalendarTest :: Quill a guest is told the page cannot show times, not to retry, when the calendar is refused
+TymeslotWeb.Live.Scheduling.RefusedCalendarTest :: Quill a guest is told to try again when the calendar is merely unreachable
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: "Schedule Another Meeting" after a reschedule books a new meeting instead of moving the one just rescheduled
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: a URL that no longer names the reschedule drops the meeting's type from the selection when the overview no longer offers it
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: a booking cancelled while its reschedule page is open the submit is refused with the reason, and the meeting is not moved
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: a booking whose meeting type has since been deleted is offered the organiser's types, and moves
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: a reschedule interrupted by a reconnect the remounted page still moves the meeting
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: a reschedule on a day at the host's booking limit offers the rest of the meeting's own day, and moving to it succeeds
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: completing a reschedule from the public scheduling page clears reminder tracking so reminders re-pin to the new time
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: completing a reschedule from the public scheduling page moves the existing meeting instead of creating a second one
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: completing a reschedule from the public scheduling page renders the confirmation screen rather than the theme error boundary
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: completing a reschedule from the public scheduling page schedules the organiser's calendar event to move with it
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: completing a reschedule on each theme Quill: moves the existing meeting instead of creating a second one
+TymeslotWeb.Live.Scheduling.RescheduleCompletionTest :: without the reschedule context the same walk books a new meeting and leaves the original alone
+TymeslotWeb.Live.Scheduling.RescheduleCustomAnswersTest :: a fresh booking is not given anyone's answers
+TymeslotWeb.Live.Scheduling.ScheduleInteractionTest :: schedule step — LiveView interaction a calendar the host's provider cannot serve tells the booker to try again later
+TymeslotWeb.Live.Scheduling.ScheduleInteractionTest :: schedule step — LiveView interaction advertises the booking window from the organiser's default schedule
+TymeslotWeb.Live.Scheduling.ScheduleInteractionTest :: schedule step — LiveView interaction calendar days carry full date labels and a live region announces slot loading
+TymeslotWeb.Live.Scheduling.ScheduleInteractionTest :: schedule step — LiveView interaction re-selecting the date clears the picked time and disables next-step
+TymeslotWeb.Live.Scheduling.SeatRescheduleJourneyTest :: a participant moving their seat from the email link Quill: moves the seat, and "Schedule another meeting" then books afresh
+TymeslotWeb.Live.Scheduling.SeatRescheduleJourneyTest :: a participant moving their seat from the email link a reconnect on the details still moves the seat
+TymeslotWeb.Live.Scheduling.SeatRescheduleJourneyTest :: a seat link already used picking the spot's own time says it is the current time
+TymeslotWeb.Live.Scheduling.SlotHourToggleTest :: a same-date refetch (timezone change, lost-slot retry) a deliberate :none survives it
+TymeslotWeb.Live.Scheduling.SlotHourToggleTest :: a same-date refetch (timezone change, lost-slot retry) a stored integer hour survives it
+TymeslotWeb.Live.Scheduling.SlotHourToggleTest :: toggle_hour a non-binary hour leaves the state untouched and the view alive
+TymeslotWeb.Live.Scheduling.SlotHourToggleTest :: toggle_hour a non-binary navigate_to_step leaves the flow untouched and the view alive
+TymeslotWeb.Live.Scheduling.SlotHourToggleTest :: toggle_hour a non-numeric hour leaves the state untouched and the view alive
+TymeslotWeb.Live.Scheduling.SlotHourToggleTest :: toggle_hour collapses to :none when the currently effective hour is toggled
+TymeslotWeb.Live.Scheduling.SlotHourToggleTest :: toggle_hour expands the requested hour
+TymeslotWeb.Live.Scheduling.SlotHourToggleTest :: toggle_hour reloading the slots collapses any expanded hour
+TymeslotWeb.Live.Scheduling.SlotTimeLocaleTest :: Quill, visitor reading English the confirmation keeps the 12-hour clock
+TymeslotWeb.Live.Scheduling.SlotTimeLocaleTest :: Quill, visitor reading German the confirmation shows the booked time on a 24-hour clock
+TymeslotWeb.Live.Scheduling.StepIndicatorNavigationTest :: Quill through the overview, step 1 is offered and moves back to it
+TymeslotWeb.Live.Scheduling.StripeConnectOnboardingJourneyTest :: a host who finishes Connect onboarding can sell their paid meeting type
+TymeslotWeb.Live.Scheduling.TimezoneChangeAvailabilityTest :: Folio: the bookable days follow the new timezone
+TymeslotWeb.Live.Scheduling.TimezoneChangeAvailabilityTest :: Paper: the bookable days follow the new timezone
+TymeslotWeb.Live.Scheduling.TimezoneChangeAvailabilityTest :: Quill: the bookable days follow the new timezone
+TymeslotWeb.Live.Scheduling.VenueChoiceFlowTest :: Quill: an in-person location offering two saved locations asks which location, each with its address, the first preselected
+TymeslotWeb.Live.Scheduling.VenueChoiceFlowTest :: Quill: an in-person location offering two saved locations books the location the booker picked and confirms it
+TymeslotWeb.Live.Scheduling.VenueChoiceFlowTest :: Quill: an in-person location offering two saved locations confirms where the meeting was booked when the pick is deleted meanwhile
+TymeslotWeb.Live.Scheduling.VenueChoiceFlowTest :: Quill: an in-person location with one saved location states the location and its address without asking, and books it
+TymeslotWeb.Live.Scheduling.VenueChoiceFlowTest :: Quill: an in-person location without an address says the address will be arranged, on the booking step and after booking
+TymeslotWeb.Live.Themes.BookingChoicesUrlTest :: quill, a paged journey a booking made leaves no choice in the URL
+TymeslotWeb.Live.Themes.BookingChoicesUrlTest :: quill, a paged journey a remount lands on the details with the type, length, day and time chosen
+TymeslotWeb.Live.Themes.ChosenMeetingTypeShownTest :: Quill: the chosen type is named from the calendar to the confirmation
+TymeslotWeb.Live.Themes.DetailsCarriedTest :: Quill: Back then Next keeps the details typed, with a fresh token
+TymeslotWeb.Live.Themes.IgnoredStepEventTest :: Quill: a theme event no hook clause takes is logged once
+TymeslotWeb.Live.Themes.IgnoredStepEventTest :: Quill: a whole booking logs no ignored step event
+TymeslotWeb.Live.Themes.IgnoredStepEventTest :: Quill: an unknown event sent to a step component is logged once
+TymeslotWeb.Live.Themes.JourneyUrlTest :: the classic journey keeps the route it arrived on, through the confirmation
+TymeslotWeb.Live.Themes.LegalLinksDefaultsTest :: a payment page's dead render has no footer; the connected one has the organiser's links
+TymeslotWeb.Live.Themes.LegalLinksFooterTest :: folio folio shows no footer when nothing is set
+TymeslotWeb.Live.Themes.LegalLinksFooterTest :: paper paper shows no footer when nothing is set
+TymeslotWeb.Live.Themes.LegalLinksFooterTest :: quill quill booking step shows the privacy notice
+TymeslotWeb.Live.Themes.LegalLinksFooterTest :: quill quill schedule shows the footer
+TymeslotWeb.Live.Themes.LegalLinksFooterTest :: quill quill shows no footer when nothing is set
+TymeslotWeb.Live.Themes.LegalLinksFooterTest :: quill quill thank-you shows the footer
+TymeslotWeb.Live.Themes.LegalLinksFooterTest :: rhythm rhythm shows no footer when nothing is set
+TymeslotWeb.Live.Themes.MeetingPriceTest :: quill an embedded paid booking's confirmation says what was paid
+TymeslotWeb.Live.Themes.MeetingPriceTest :: quill the paid line is worded around the amount in the guest's language
+TymeslotWeb.Live.Themes.MeetingPriceTest :: quill the schedule and details steps of a paid type show its price
+TymeslotWeb.Live.Themes.MultipleLengthsFlowTest :: quill a reschedule entering at the booking form keeps the booked length
+TymeslotWeb.Live.Themes.MultipleLengthsFlowTest :: quill a type with one length never shows the step
+TymeslotWeb.Live.Themes.MultipleLengthsFlowTest :: quill asks for the length after the meeting type and books the one chosen
+TymeslotWeb.Live.Themes.MultipleLengthsFlowTest :: quill changing the length after picking a time offers and books the new length
+TymeslotWeb.Live.Themes.MultipleLengthsFlowTest :: quill the booking step notes the next-day end of the length chosen
+TymeslotWeb.Live.Themes.MultipleLengthsFlowTest :: quill the shared booking walk books the length asked for
+TymeslotWeb.Live.Themes.MultipleLengthsPaidBookingTest :: quill a paid booking at a length not the type's own keeps it through checkout and confirmation
+TymeslotWeb.Live.Themes.PagedFocusTest :: Quill Back moves the focus to the moment it returns to
+TymeslotWeb.Live.Themes.PagedFocusTest :: Quill choosing a meeting type, then a time, moves the focus on
+TymeslotWeb.Live.Themes.PagedFocusTest :: Quill the length step takes the focus, and hands it on
+TymeslotWeb.Live.Themes.PagedFocusTest :: Quill the page a visit lands on takes no focus
+TymeslotWeb.Live.Themes.PagedFocusTest :: Quill the step indicator moves the focus to the step it returns to
+TymeslotWeb.Live.Themes.PaidBookingReturnTest :: quill the cancel URL lands on the theme's cancelled page with the way back
+TymeslotWeb.Live.Themes.PaidBookingReturnTest :: quill the success URL lands on the theme's processing page and its confirmation
+TymeslotWeb.Live.Themes.ThemeApprovalDisclosureTest :: quill: a gated meeting type does not tell the visitor they are all set
+TymeslotWeb.Live.Themes.ThemeApprovalDisclosureTest :: quill: a gated meeting type is marked as needing approval before anything is picked
+TymeslotWeb.Live.Themes.ThemeApprovalDisclosureTest :: quill: a gated meeting type says so on the form, and does not call the button "Book"
+TymeslotWeb.Live.Themes.ThemeApprovalDisclosureTest :: quill: an ordinary meeting type is unchanged and still says the booking is confirmed
+TymeslotWeb.Live.Themes.ThemeBookingFlowTest :: booking edge cases blocks booking on a past date via URL manipulation
+TymeslotWeb.Live.Themes.ThemeBookingFlowTest :: preview booking is simulated, not persisted an owner preview (valid token) shows confirmation but creates no meeting or side effects
+TymeslotWeb.Live.Themes.ThemeBookingFlowTest :: preview booking is simulated, not persisted bare ?preview=true with no token is blocked — no real booking, explicit error
+TymeslotWeb.Live.Themes.ThemeBookingFlowTest :: preview booking is simulated, not persisted cross-user token (valid token for user A on user B's page) is blocked
+TymeslotWeb.Live.Themes.ThemeBookingFlowTest :: theme booking flow (feature-level) visitor can book end-to-end with quill theme
+TymeslotWeb.Live.Themes.ThemeBookingFlowTest :: theme booking flow (feature-level) visitor can book with quill theme when the first bookable day is a week out
+TymeslotWeb.Live.Themes.ThemeBookingRaceTest :: quill: two visitors on one slot prevents double booking the same slot (race condition simulation)
+TymeslotWeb.Live.Themes.ThemeBookingStepParityTest :: theme quill: choosing a meeting type goes straight to its schedule
+TymeslotWeb.Live.Themes.ThemeBookingStepParityTest :: theme quill: the booking form carries the anti-spam fields
+TymeslotWeb.Live.Themes.ThemeBookingStepParityTest :: theme quill: the booking form requires a name and an email
+TymeslotWeb.Live.Themes.ThemeConfirmationActionsTest :: theme quill: Add to calendar leads, booking again is a quiet link
+TymeslotWeb.Live.Themes.ThemeLocaleSwitchBookingTest :: booking survives a language switch a stray ?theme= on a public page does not block the booking
+TymeslotWeb.Live.Themes.ThemeLocaleSwitchBookingTest :: booking survives a language switch a visitor can still book after using the language switcher
+TymeslotWeb.Live.Themes.ThemeLocaleSwitchBookingTest :: booking survives a language switch an owner preview still simulates after a language switch
+TymeslotWeb.Live.Themes.ThemePaidDisclosureTest :: theme quill: a free type shows no price and no payment
+TymeslotWeb.Live.Themes.ThemePaidDisclosureTest :: theme quill: a paid type names its price and the payment before the submit
+TymeslotWeb.Live.Themes.ThemePaidDisclosureTest :: theme quill: a paid type that needs approval shows the price on a request
+TymeslotWeb.Live.Themes.ThemePaidDisclosureTest :: theme quill: rescheduling a paid booking shows no price
+TymeslotWeb.Live.Themes.ThemeProductionChecklistTest :: production readiness checklist theme 1 handles edge cases
+TymeslotWeb.Live.Themes.ThemeProductionChecklistTest :: production readiness checklist theme 1 is mobile ready
+TymeslotWeb.Live.Themes.TimezonePlaceNamesTest :: a German booking page names and searches places in German
+TymeslotWeb.PrivateBookingTest :: back-to-overview shows when browsing in, hidden on direct slug entry
+TymeslotWeb.PrivateBookingTest :: scheduling another from a private link stays on that meeting type
+TymeslotWeb.PrivateBookingTest :: visitor books a private meeting type through its direct link
+TymeslotWeb.PublicBookingHappyPathTest :: booking respects meeting type duration (regression: issue #17)
+TymeslotWeb.PublicBookingHappyPathTest :: visitor can book a meeting end-to-end (public link)
+TymeslotWeb.ReadOnlyCalDAVCalendarJourneyTest :: a busy event in the read-only calendar hides its slot on the booking page
+TymeslotWeb.ReadOnlyCalDAVCalendarJourneyTest :: a calendar the server will not read offers no slots
+TymeslotWeb.ReadOnlyCalDAVCalendarJourneyTest :: submitting a slot the read-only calendar has since filled is refused
+TymeslotWeb.SavedLocationsJourneyTest :: Quill: journey 1, from the Locations page to the booker's calendar a location added on the dashboard reaches the meeting, the email and the calendar
+TymeslotWeb.SavedLocationsJourneyTest :: Quill: journey 3, an in-person location without an address the booker is told the address will be arranged, before and after booking and by email
+TymeslotWeb.SavedLocationsJourneyTest :: Quill: journey 4, a time-only reschedule keeps the meeting where it is a meeting at a venue edited since keeps the address it was booked at
+TymeslotWeb.SavedLocationsJourneyTest :: Quill: journey 4, a time-only reschedule keeps the meeting where it is a meeting booked without an address stays to be arranged after its location gains one
+TymeslotWeb.SavedLocationsJourneyTest :: Quill: journey 4, a time-only reschedule keeps the meeting where it is a meeting whose venue the location dropped opens with no venue chosen
+TymeslotWeb.SavedLocationsJourneyTest :: Quill: journey 4, a time-only reschedule keeps the meeting where it is a meeting whose venue was deleted keeps its address, as the page says
+TymeslotWeb.SavedLocationsJourneyTest :: journey 2: a meeting type offering in person and video a booker who chooses video gets a video room and no venue
+TymeslotWeb.SavedLocationsJourneyTest :: journey 4: a reschedule moves the meeting to another venue the picker opens on the meeting's venue, and choosing another moves the meeting
+TymeslotWeb.SavedLocationsJourneyTest :: journey 5: deleting a location a meeting is booked at the booked meeting keeps its address, and the next booker is told it will be arranged
+TymeslotWeb.Scheduling.BookingUnverifiableTest :: is refused with a try-again message and no error logged
+TymeslotWeb.Themes.MarkupContractTest :: Quill: a type offering several lengths marks each length
+TymeslotWeb.Themes.MarkupContractTest :: Quill: every moment marks the facts it collects
+TymeslotWeb.Themes.NextDayEndComponentTest :: Quill's booking step names the end when the meeting runs past midnight
+TymeslotWeb.Themes.NextDayEndTest :: Quill names the end of a meeting that runs past midnight
+TymeslotWeb.Themes.NextDayEndTest :: Quill says nothing for a meeting that ends the day it starts
+TymeslotWeb.Themes.Quill.MarkupContractTest :: choosing a meeting type moves on, and back on the overview it shows chosen
+TymeslotWeb.Themes.Quill.MarkupContractTest :: the booking step marks the form, its submit and the way back
+TymeslotWeb.Themes.Quill.MarkupContractTest :: the confirmation marks its fresh start
+TymeslotWeb.Themes.Quill.MarkupContractTest :: the overview marks each meeting type, which is the way on
+TymeslotWeb.Themes.Quill.MarkupContractTest :: the questions step marks the question and the ways back and on
+TymeslotWeb.Themes.Quill.MarkupContractTest :: the schedule marks the month grid's days and arrows, never the week strip's
+TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a grid finer than the meeting keeps the selection visible on its hour once that hour collapses
+TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a grid finer than the meeting offers hours rather than every minute of the day
+TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a grid finer than the meeting opening a later hour reveals its minutes
+TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a grid finer than the meeting opens the earliest hour so real times are visible without a click
+TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a grid finer than the meeting points aria-controls only at a panel that is actually in the DOM
+TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a grid finer than the meeting selecting a minute records the choice
+TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a meeting type with no interval of its own keeps the flat grid
+TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a meeting type with no interval of its own keeps the shared heading and status
+TymeslotWeb.Themes.ScheduleHeaderWrapTest :: Quill renders the heading and the time zone trigger as separate items of the header row
+TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: labels the links in German
+TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: renders both links in order with new-tab attributes
+TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: renders nothing for nil links
+TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: renders nothing when both are nil
+TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: renders only the link that is set
+TymeslotWeb.ZeroLengthFeedEventJourneyTest :: the slot running across the entry is offered and can be booked

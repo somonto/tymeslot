@@ -1080,3 +1080,43 @@ msgstr "Al momento questo tipo di riunione non ha orari disponibili da prenotare
 #, elixir-autogen, elixir-format
 msgid "%{page} with %{name}"
 msgstr "%{page} con %{name}"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Book the call"
+msgstr "Prenota la chiamata"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Contact"
+msgstr "Contatto"
+
+#: lib/tymeslot_web/themes/shared/components/legal_links.ex
+#, elixir-autogen, elixir-format
+msgid "Source code (AGPL)"
+msgstr "Codice sorgente (AGPL)"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Summary"
+msgstr "Riepilogo"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "The confirmation goes to %{email}."
+msgstr "La conferma verrà inviata a %{email}."
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "Quando"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "With"
+msgstr "Con"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Your details"
+msgstr "I suoi dati"

@@ -264,3 +264,8 @@ msgstr[1] "%{count} minuti"
 #, elixir-autogen, elixir-format
 msgid "%{city} time (%{offset})"
 msgstr "Ora: %{city} (%{offset})"
+
+#: lib/tymeslot_web/themes/shared/localization_helpers.ex
+#, elixir-autogen, elixir-format
+msgid "%{weekday}, %{day} %{month} %{year} at %{time}"
+msgstr "%{weekday} %{day} %{month} %{year} alle %{time}"

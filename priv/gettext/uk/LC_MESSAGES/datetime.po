@@ -266,3 +266,8 @@ msgstr[2] "%{count} хв"
 #, elixir-autogen, elixir-format
 msgid "%{city} time (%{offset})"
 msgstr "Час: %{city} (%{offset})"
+
+#: lib/tymeslot_web/themes/shared/localization_helpers.ex
+#, elixir-autogen, elixir-format
+msgid "%{weekday}, %{day} %{month} %{year} at %{time}"
+msgstr "%{weekday}, %{day} %{month} %{year} о %{time}"

@@ -1,9 +1,9 @@
 name: Somonto prüfen
 
 # Somonto fork: compiles and tests the `somonto` branch on GitHub (the Mac
-# building it has 8 GB and no Elixir). The fork's own tests must pass; the
-# full suite runs for information (upstream tests of the old Quill flow are
-# expected to differ, see SOMONTO.md).
+# building it has 8 GB and no Elixir). The fork's own tests must pass; in the
+# full suite only the upstream tests of the old Quill flow listed in
+# somonto/bekannte-abweichungen.txt may fail (see SOMONTO.md).
 
 on:
   push:
@@ -64,9 +64,13 @@ jobs:
       - name: JS tests
         working-directory: assets
         run: npx vitest run js/__tests__/attendee_prefill.test.js js/__tests__/iframe_embed.test.js
-      - name: Full suite (information)
-        continue-on-error: true
-        run: mix test 2>&1 | tee suite.log; grep -E "tests?, [0-9]+ failures?" suite.log || true
+      # The full upstream suite; failures must be on somonto/bekannte-abweichungen.txt
+      # (tests of the old Quill flow). A new failure turns the run red.
+      - name: Full suite against the known differences
+        run: |
+          mix test > suite.log 2>&1 || true
+          tail -3 suite.log
+          python3 somonto/suite_abgleich.py suite.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:

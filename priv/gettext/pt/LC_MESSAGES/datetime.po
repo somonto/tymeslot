@@ -264,3 +264,8 @@ msgstr[1] "%{count} minutos"
 #, elixir-autogen, elixir-format
 msgid "%{city} time (%{offset})"
 msgstr "Horário: %{city} (%{offset})"
+
+#: lib/tymeslot_web/themes/shared/localization_helpers.ex
+#, elixir-autogen, elixir-format
+msgid "%{weekday}, %{day} %{month} %{year} at %{time}"
+msgstr "%{weekday}, %{day} de %{month} de %{year} às %{time}"

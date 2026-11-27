@@ -26,4 +26,8 @@ Tymeslot-Version.
   `lib/tymeslot_web/themes/shared/live_helpers/step_entry.ex`
 - Fußzeile jeder Buchungsseite mit Link auf diesen Quelltext (AGPL-3.0 § 13). `…/shared/components/legal_links.ex`
 - Tests: `test/tymeslot_web/live/themes/somonto_quill_details_test.exs`, JS-Tests in `assets/js/__tests__/`.
-  Tests von Tymeslot, die den alten Quill-Ablauf (Fragen je Seite, Nachrichtenfeld) prüfen, gelten hier nicht.
+  Tests von Tymeslot, die den alten Quill-Ablauf (Fragen je Seite, Nachrichtenfeld, Schritt „Dauer“, Fuß ohne
+  Quelltext-Link) prüfen, stehen in `somonto/bekannte-abweichungen.txt` (283 am 27.11.2026). „Somonto prüfen“ lässt
+  die volle Suite laufen und wird rot, sobald ein Test scheitert, der dort nicht steht (`somonto/suite_abgleich.py`);
+  wieder grüne Tests meldet der Lauf als `GREEN`, die Zeile fliegt dann raus. Beim monatlichen Nachziehen: neue
+  `NEW`-Zeilen ansehen, echte Brüche beheben, nur Prüfungen des alten Ablaufs in die Liste.
