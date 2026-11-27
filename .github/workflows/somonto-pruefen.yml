@@ -1,0 +1,75 @@
+name: Somonto prüfen
+
+# Somonto fork: compiles and tests the `somonto` branch on GitHub (the Mac
+# building it has 8 GB and no Elixir). The fork's own tests must pass; the
+# full suite runs for information (upstream tests of the old Quill flow are
+# expected to differ, see SOMONTO.md).
+
+on:
+  push:
+    branches: [somonto]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pruefen:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 10s
+          --health-timeout 5s --health-retries 5
+    env:
+      MIX_ENV: test
+      TEST_DB_POOL_SIZE: "10"
+      ELIXIR_VERSION: "1.20.4"
+      OTP_VERSION: "28.5.0.7"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+          otp-version: ${{ env.OTP_VERSION }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: assets/package-lock.json
+      - uses: actions/cache@v5
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-somonto-${{ env.ELIXIR_VERSION }}-${{ env.OTP_VERSION }}-${{ hashFiles('mix.lock') }}
+      - run: mix deps.get
+      - name: Format (diff as artifact)
+        run: |
+          mix format
+          git diff > format.diff
+          git diff --stat
+      - uses: actions/upload-artifact@v4
+        with:
+          name: format-diff
+          path: format.diff
+      - run: mix compile --warnings-as-errors
+      - name: Somonto tests
+        run: mix test test/tymeslot_web/live/themes/somonto_quill_details_test.exs --include integration
+      - run: npm ci --prefix assets
+      - name: JS tests
+        working-directory: assets
+        run: npx vitest run js/__tests__/attendee_prefill.test.js js/__tests__/iframe_embed.test.js
+      - name: Full suite (information)
+        continue-on-error: true
+        run: mix test 2>&1 | tee suite.log; grep -E "tests?, [0-9]+ failures?" suite.log || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: suite-log
+          path: suite.log
+          if-no-files-found: ignore
