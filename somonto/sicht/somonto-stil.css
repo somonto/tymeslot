@@ -1,0 +1,812 @@
+/*
+ * Somonto-Look für Tymeslot (D-196, Niklas 31.10.2026): Design Quill hell, wie die Website und der Entwurf Termin.dc.html.
+ * Lädt nach der Original-Datei scheduling-theme-quill.css (siehe bauen.sh). Quill ist intern ein dunkles Glas-Design; die Schicht dreht
+ * die Variablen auf hell. `html.quill-theme` schlägt die `:root`-Farben aus dem Tymeslot-Konto ohne !important.
+ * Werte aus der Website (src/app/globals.css): Akzent #ff6a1f, Tinte #0a0a0b, Linien #e5e5ea, Haupt-Knopf schwarz und rund.
+ * Im Browser an der echten Seite geprüft (31.10.2026): Datum und Zeit, Details-Fragen, Dauer. Bestätigung, Absage, Umbuchung nach den Vorlagen
+ * von Tymeslot 1.22.0 als Nachbau im Browser geprüft (Tymeslot verschickt keine eigenen Mails, EMAIL_ADAPTER=test). Handy an der echten Seite geprüft
+ * am 02.11.2026 (Block am Ende).
+ *
+ * Tymeslot 1.41.0 (06.11.2026): Kontofarben kommen als `:root:root`, Zeiten heißen `.slot-list__…`, die Zeitzone `.tz-picker__…`, hinter der Karte
+ * liegt ein Schleier `.booker-page::after`. Die Schicht deckt alte und neue Namen ab; an der echten Seite geprüft (Dauer, Zeiten, Details, Handy).
+ *
+ * Angleichung an den Website-Stand vom 01.11.2026 (Claude Design): Knöpfe eckiger (6 px) wie auf somonto.com, Hauptknopf schwarz mit hellem
+ * Innenrand, Nebenknopf weiß mit Linie #d4d4da; Felder 10 px auf #f7f7f8; Karte 16 px; Auswahl (Tag, Zeit, Dauer) orange mit Tinte statt Weiß
+ * (Kontrast 7:1 statt 2,9:1); Monatspfeile als eckige Knöpfe; Zeiten mindestens 44 px hoch (am Handy 48 px). Schritte, Felder und Aufbau unverändert.
+ */
+
+@font-face {
+  font-family: "Golos Text";
+  src: url("/assets/somonto-golos-text-variable.woff2") format("woff2");
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+/* Tymeslot 1.41 setzt die Kontofarben als `:root:root` (0,2,0); `:root:root` hier hebt die Schicht darüber (0,3,1). */
+html.quill-theme:root:root {
+  color-scheme: light;
+
+  --somonto-akzent: #ff6a1f;
+  --somonto-akzent-dunkel: #b8410a;
+  --somonto-tinte: #0a0a0b;
+  --somonto-gedaempft: #4c4c56;
+  --somonto-blass: #6b6b75;
+  --somonto-linie: #e5e5ea;
+  --somonto-linie-stark: #c8c8cf;
+  --somonto-flaeche: #f7f7f8;
+  --somonto-schatten: 0 24px 50px -28px rgb(10 10 11 / 24%), 0 2px 6px rgb(10 10 11 / 5%);
+  --somonto-feld: #f7f7f8;
+  --somonto-feldlinie: #dcdce1;
+  --somonto-knopflinie: #d4d4da;
+  --somonto-knopf-schatten: inset 0 1px 0 rgb(255 255 255 / 12%), 0 1px 2px rgb(10 10 11 / 20%);
+  --somonto-auswahl-grund: #fffaf6;
+
+  --theme-font-family: "Golos Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+  --theme-primary: var(--somonto-akzent);
+  --theme-primary-hover: #e85a12;
+  --theme-primary-focus: rgb(255 106 31 / 25%);
+  --theme-primary-solid: var(--somonto-akzent);
+  --theme-primary-solid-hover: #e85a12;
+  --theme-on-primary: #ffffff;
+  --theme-secondary: var(--somonto-akzent);
+  --theme-accent: var(--somonto-akzent);
+  --theme-accent-dark: var(--somonto-akzent-dunkel);
+  --theme-accent-solid: var(--somonto-akzent);
+  --theme-on-accent: #ffffff;
+  --theme-success: #1f9d55;
+  --theme-success-dark: #17803f;
+
+  --theme-background: #ffffff;
+  --theme-background-color: #ffffff;
+  --theme-background-image: none;
+  --background-media-scrim: none;
+  --theme-surface: #ffffff;
+  --theme-canvas: #ffffff;
+  --theme-text: var(--somonto-tinte);
+  --theme-text-secondary: var(--somonto-gedaempft);
+  /* Fehlertexte: Quill nimmt das helle Rot für dunklen Grund; auf Weiß das Fehlerrot der Website (form-kit.css). */
+  --theme-error-light: #9b2c2c;
+  --theme-text-muted: var(--somonto-blass);
+
+  --surface-transparent: rgb(10 10 11 / 2%);
+  --surface-subtle: rgb(10 10 11 / 3%);
+  --surface-very-light: rgb(10 10 11 / 4%);
+  --surface-light: rgb(10 10 11 / 5%);
+  --surface-medium-light: rgb(10 10 11 / 6%);
+  --surface-medium: rgb(10 10 11 / 8%);
+  --surface-strong: rgb(10 10 11 / 10%);
+  --surface-intense: rgb(10 10 11 / 12%);
+
+  --border-subtle: var(--somonto-linie);
+  --border-light: var(--somonto-linie);
+  --border-medium: var(--somonto-linie-stark);
+  --border-strong: var(--somonto-linie-stark);
+  --border-intense: #a5a5ae;
+
+  --glass-blur: 0px;
+  --glass-blur-sm: 0px;
+  --glass-blur-md: 0px;
+  --glass-blur-lg: 0px;
+  --glass-opacity: 1;
+  --glass-border: var(--somonto-linie);
+  --glass-shadow: var(--somonto-schatten);
+  --card-border-radius: 16px;
+
+  --button-radius: 6px;
+  --button-radius-sm: 6px;
+  --button-hover-transform: none;
+  --input-border-radius: 10px;
+  --input-border-glass: var(--somonto-feldlinie);
+  --input-border-glass-disabled: var(--somonto-linie);
+  --input-bg-glass: var(--somonto-feld);
+  --input-bg-glass-focus: #ffffff;
+  --input-bg-glass-disabled: var(--somonto-flaeche);
+  --input-placeholder-glass: var(--somonto-blass);
+  --input-shadow-base: transparent;
+  --input-shadow-focus: transparent;
+  --input-inset-highlight: transparent;
+  --input-inset-highlight-focus: transparent;
+
+  --option-tile-bg: #ffffff;
+  --option-tile-bg-hover: var(--somonto-flaeche);
+  --option-tile-border: var(--somonto-linie);
+  --option-tile-border-hover: var(--somonto-linie-stark);
+  --option-tile-text: var(--somonto-tinte);
+  --option-tile-selected-glow: rgb(255 106 31 / 25%);
+  --option-indicator-idle: var(--somonto-linie-stark);
+
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgb(10 10 11 / 18%);
+  --scrollbar-thumb-hover: rgb(10 10 11 / 30%);
+
+  background: #ffffff;
+}
+
+html.quill-theme body {
+  background: #ffffff;
+  color: var(--somonto-tinte);
+  font-family: var(--theme-font-family);
+}
+
+/* Hintergrund-Ebenen (Verlauf, Bild, Video) aus, in der Einbettung transparent über der Website. */
+html.quill-theme .video-background-theme,
+html.quill-theme [class*="background-video"],
+html.quill-theme video,
+html.quill-theme .video-background {
+  display: none !important;
+}
+html.quill-theme .booker-page::after { display: none !important; }
+html.quill-theme[data-embed-layout] body,
+html.quill-theme[data-embed-layout] {
+  background: transparent;
+}
+
+/* Karte: weiß, feine Linie, weicher Schatten, kein Glas. */
+html.quill-theme .glass-morphism-card {
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--somonto-linie) !important;
+  box-shadow: var(--somonto-schatten) !important;
+  border-radius: var(--card-border-radius) !important;
+  color: var(--somonto-tinte);
+}
+
+/* Überschriften in der Karte schlicht in Golos; die Serif-Überschrift steht auf der Website über dem Rahmen. */
+html.quill-theme h1,
+html.quill-theme h2,
+html.quill-theme h3 {
+  font-family: var(--theme-font-family) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em;
+  color: var(--somonto-tinte) !important;
+}
+html.quill-theme .schedule-title,
+html.quill-theme .booking-heading { font-size: 1.25rem !important; line-height: 1.3; }
+html.quill-theme .booking-heading { margin-bottom: 0.75rem; }
+html.quill-theme .calendar-month-title,
+html.quill-theme .slots-heading,
+html.quill-theme .slot-list__heading { font-size: 0.95rem !important; }
+
+/* Kalender: Tage als ruhige Zahlen, freier Tag dunkel, gewählter Tag orange. */
+html.quill-theme .calendar-day {
+  border-radius: 6px;
+  background: transparent;
+  border-color: transparent;
+  color: var(--somonto-tinte);
+  box-shadow: none;
+}
+html.quill-theme .calendar-day--unavailable,
+html.quill-theme .calendar-day--past,
+html.quill-theme .calendar-day--other-month {
+  color: var(--somonto-linie-stark);
+  background: transparent;
+}
+html.quill-theme .calendar-weekday,
+html.quill-theme .week-day-name {
+  color: var(--somonto-blass);
+}
+/* Woche immer Montag bis Sonntag (Niklas 31.10. und 07.11.2026: „essenziell“). Tymeslot 1.22 baute den Monat fest ab Sonntag; seit 1.41 richtet es
+   den Wochenbeginn nach der Browsersprache (deutsch: Montag, en-US und andere Sonntag-Regionen: Sonntag; kein Schalter, nur Accept-Language).
+   Die Umstellung greift deshalb nur, wenn der erste Tag im Raster ein Sonntag ist (aria-label in allen neun Sprachen von Tymeslot), sonst stünde
+   die Woche ab Dienstag. Die Tage liegen in Lesereihenfolge: ein Platzhalter über sechs Spalten vor dem ersten Sonntag, „So“ wandert ans Ende. Ist
+   der erste Sonntag aus dem Vormonat, fallen er und der Platzhalter weg, eine letzte Zeile nur aus dem Folgemonat ebenso. Die Handy-Wochenleiste
+   beginnt bei Tymeslot schon am Montag. */
+html.quill-theme .calendar-grid-container:has(> .grid + .grid > :first-child:is([aria-label^="sonntag" i], [aria-label^="sunday" i], [aria-label^="domingo" i], [aria-label^="dimanche" i], [aria-label^="domenica" i], [aria-label^="niedziela" i], [aria-label^="neděle" i], [aria-label^="неділя" i])) > .grid:first-child > .calendar-weekday:first-child { order: 1; }
+html.quill-theme .calendar-grid-container:has(> .grid + .grid > :first-child:is([aria-label^="sonntag" i], [aria-label^="sunday" i], [aria-label^="domingo" i], [aria-label^="dimanche" i], [aria-label^="domenica" i], [aria-label^="niedziela" i], [aria-label^="neděle" i], [aria-label^="неділя" i])) > .grid + .grid::before { content: ''; grid-column: span 6; }
+html.quill-theme .calendar-grid-container:has(> .grid + .grid > :first-child:is([aria-label^="sonntag" i], [aria-label^="sunday" i], [aria-label^="domingo" i], [aria-label^="dimanche" i], [aria-label^="domenica" i], [aria-label^="niedziela" i], [aria-label^="neděle" i], [aria-label^="неділя" i])) > .grid + .grid:has(> .calendar-day--other-month:first-child)::before,
+html.quill-theme .calendar-grid-container:has(> .grid + .grid > :first-child:is([aria-label^="sonntag" i], [aria-label^="sunday" i], [aria-label^="domingo" i], [aria-label^="dimanche" i], [aria-label^="domenica" i], [aria-label^="niedziela" i], [aria-label^="neděle" i], [aria-label^="неділя" i])) > .grid + .grid > .calendar-day--other-month:first-child,
+html.quill-theme .calendar-grid-container:has(> .grid + .grid > :first-child:is([aria-label^="sonntag" i], [aria-label^="sunday" i], [aria-label^="domingo" i], [aria-label^="dimanche" i], [aria-label^="domenica" i], [aria-label^="niedziela" i], [aria-label^="neděle" i], [aria-label^="неділя" i])) > .grid + .grid:has(> .calendar-day--other-month:nth-last-child(6)) > :nth-last-child(-n+6) { display: none; }
+/* Monatskopf (Niklas 31.10.: „Datum wählen“ und Monat in einer Zeile passt nicht): „Datum wählen“ aus, die Überschrift sagt es schon;
+   Monat links, beide Pfeile rechts als runde Knöpfe. */
+html.quill-theme .calendar-month-title { display: none !important; }
+html.quill-theme .calendar-month-header { display: block !important; }
+html.quill-theme .calendar-nav-cluster { display: flex !important; align-items: center; gap: 8px; width: 100%; }
+html.quill-theme .calendar-month-label { order: -1; margin-right: auto; font-size: 1rem; }
+html.quill-theme .calendar-nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0 !important;
+  background: #fff !important;
+  border: 1px solid var(--somonto-knopflinie) !important;
+  border-radius: 6px !important;
+  color: var(--somonto-tinte) !important;
+  box-shadow: none;
+}
+html.quill-theme .calendar-nav-button:hover:not(:disabled) { border-color: #a5a5ae !important; background: #fafafa !important; }
+html.quill-theme .calendar-nav-button:disabled { opacity: 0.35 !important; }
+
+/* „Termine sind 1 Monat im Voraus buchbar“ aus (Niklas 31.10.); das Buchungsfenster selbst bleibt in Tymeslot eingestellt. */
+html.quill-theme .schedule-advance-notice { display: none !important; }
+
+/* Zeitzonen-Auswahl (Niklas 31.10.: „nicht richtig designed“): weiße Liste wie ein Auswahlfeld der Website statt dunklem Verlauf. */
+html.quill-theme .timezone-dropdown,
+html.quill-theme .tz-picker__panel {
+  background: #fff !important;
+  background-image: none !important;
+  border: 1px solid var(--somonto-linie) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--somonto-schatten) !important;
+  backdrop-filter: none !important;
+  overflow: hidden;
+}
+html.quill-theme .timezone-search-wrapper,
+html.quill-theme .tz-picker__search-wrapper { padding: 10px !important; border-bottom: 1px solid var(--somonto-linie) !important; background: #fff !important; }
+html.quill-theme .timezone-search,
+html.quill-theme .tz-picker__search {
+  background: #fff !important;
+  border: 1px solid var(--somonto-linie-stark) !important;
+  border-radius: 8px !important;
+  color: var(--somonto-tinte) !important;
+  box-shadow: none !important;
+}
+html.quill-theme .timezone-search:focus,
+html.quill-theme .tz-picker__search:focus { border-color: var(--somonto-akzent) !important; outline: none; }
+html.quill-theme .timezone-options,
+html.quill-theme .tz-picker__options { padding: 6px !important; }
+html.quill-theme .timezone-option,
+html.quill-theme .tz-picker__option {
+  border: 0 !important;
+  border-radius: 6px !important;
+  padding: 8px 10px !important;
+  background: transparent !important;
+}
+html.quill-theme .timezone-option:hover,
+html.quill-theme .timezone-option:focus-visible,
+html.quill-theme .tz-picker__option:hover,
+html.quill-theme .tz-picker__option:focus-visible { background: var(--somonto-flaeche) !important; }
+html.quill-theme .timezone-option-label,
+html.quill-theme .tz-picker__option-label { color: var(--somonto-tinte) !important; font-weight: 500; font-size: 0.95rem; }
+html.quill-theme .timezone-option-offset,
+html.quill-theme .tz-picker__option-offset { color: var(--somonto-blass) !important; font-size: 0.8rem; }
+
+/* Schrittleiste wie im Entwurf Termin.dc.html: kleine Punkte, Name daneben, kurze Linie dazwischen.
+ * Erledigt schwarz, aktuell orange mit Ring, offen grau. Schritte und Funktionen bleiben die von Tymeslot (Niklas 31.10.2026). */
+html.quill-theme .step-navigation-card {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+html.quill-theme .step-indicator-container { align-items: center; gap: 8px; row-gap: 6px; flex-wrap: wrap; justify-content: center; }
+/* „Schritt X von 4“ in einer eigenen Zeile über den Punkten (Niklas 02.11.2026: sonst bricht „Bestätigung“ allein um); Tymeslot hat vier Schritte,
+ * die Schritte stehen an den Stellen 1, 3, 5, 7 (dazwischen Linien). */
+html.quill-theme .step-indicator-container::before {
+  flex-basis: 100%;
+  text-align: center;
+  color: var(--somonto-gedaempft);
+  font-size: 0.84rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+html.quill-theme .step-indicator-container:has(> .step-item-wrapper:nth-child(1) .step-label.font-bold)::before { content: "Schritt 1 von 4"; }
+html.quill-theme .step-indicator-container:has(> .step-item-wrapper:nth-child(3) .step-label.font-bold)::before { content: "Schritt 2 von 4"; }
+html.quill-theme .step-indicator-container:has(> .step-item-wrapper:nth-child(5) .step-label.font-bold)::before { content: "Schritt 3 von 4"; }
+html.quill-theme .step-indicator-container:has(> .step-item-wrapper:nth-child(7) .step-label.font-bold)::before { content: "Schritt 4 von 4"; }
+html.quill-theme .step-item-wrapper,
+html.quill-theme .step-item-wrapper > button { flex-direction: row !important; align-items: center; gap: 8px; }
+html.quill-theme .step-circle {
+  width: 8px !important;
+  height: 8px !important;
+  min-width: 8px;
+  padding: 0;
+  border: 0 !important;
+  background: var(--somonto-linie-stark) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+  scale: 1 !important;
+  transition: background 200ms, scale 200ms, box-shadow 200ms;
+}
+html.quill-theme .step-circle > * { display: none; }
+html.quill-theme .step-circle--active { background: var(--somonto-tinte) !important; }
+html.quill-theme .step-item-wrapper:has(.step-label.font-bold) .step-circle {
+  background: var(--somonto-akzent) !important;
+  box-shadow: 0 0 0 4px rgb(255 106 31 / 18%) !important;
+  scale: 1.25 !important;
+}
+html.quill-theme .step-label {
+  margin: 0 !important;
+  color: var(--somonto-gedaempft) !important;
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  white-space: nowrap;
+}
+html.quill-theme .step-label.font-bold { color: var(--somonto-tinte) !important; }
+html.quill-theme .step-label.step-label--upcoming { color: var(--somonto-blass) !important; }
+html.quill-theme .step-connector {
+  width: 18px !important;
+  height: 1px !important;
+  border-radius: 0;
+  background: var(--somonto-linie-stark) !important;
+  box-shadow: none !important;
+}
+@media (max-width: 559px) {
+  html.quill-theme .step-label:not(.font-bold) { display: none; }
+}
+
+/* Zeitzone: schlicht. */
+html.quill-theme .timezone-trigger,
+html.quill-theme .tz-picker__trigger {
+  border-radius: 10px !important;
+  background: #ffffff;
+  border: 1px solid var(--somonto-linie);
+  color: var(--somonto-tinte);
+  box-shadow: none;
+}
+html.quill-theme .timezone-label-content,
+html.quill-theme .timezone-time-display { color: var(--somonto-gedaempft); }
+html.quill-theme .timezone-name { color: var(--somonto-tinte); }
+html.quill-theme .timezone-offset-badge {
+  background: var(--somonto-flaeche);
+  border: 1px solid var(--somonto-linie);
+  color: var(--somonto-gedaempft);
+}
+
+/* Quill setzt Text weiß für den dunklen Grund; auf Weiß wird daraus Tinte. */
+html.quill-theme [class*="text-white"],
+html.quill-theme [class*="text-glass-primary"] { color: var(--somonto-tinte); }
+html.quill-theme [class*="text-quill-primary"] { color: var(--somonto-tinte); }
+html.quill-theme [class*="text-glass-secondary"],
+html.quill-theme [class*="text-glass-muted"],
+html.quill-theme [class*="text-quill-secondary"],
+html.quill-theme [class*="text-quill-muted"],
+html.quill-theme .custom-questions-progress { color: var(--somonto-gedaempft); }
+html.quill-theme .drop-shadow-md { filter: none; }
+
+/* Monat und Tage. Kein Innenabstand an .calendar-card: der Container-Query kippt sonst auf eine Spalte. */
+html.quill-theme .calendar-card .schedule-card-header { padding: 14px 16px 0; }
+html.quill-theme .calendar-month-label { color: var(--somonto-tinte); font-weight: 600; }
+html.quill-theme .calendar-day:not(.calendar-day--unavailable):not(.calendar-day--past):not(.calendar-day--other-month) { font-weight: 600; }
+html.quill-theme .calendar-day:not(.calendar-day--unavailable):not(.calendar-day--past):not(.calendar-day--other-month):hover {
+  background: var(--somonto-flaeche);
+}
+html.quill-theme .calendar-day--selected,
+html.quill-theme .calendar-day--selected:hover {
+  background: var(--somonto-akzent) !important;
+  border-color: var(--somonto-akzent) !important;
+  color: var(--somonto-tinte) !important;
+  box-shadow: none !important;
+}
+html.quill-theme .calendar-day--selected,
+html.quill-theme .calendar-day--selected .calendar-day__number { color: var(--somonto-tinte); font-weight: 700; }
+
+/* Zeiten: weiße Kacheln, gewählte Zeit orange. */
+html.quill-theme .time-period-label,
+html.quill-theme .slot-list__period-label {
+  color: var(--somonto-blass);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+html.quill-theme .time-slot-button,
+html.quill-theme .slot-list__slot {
+  background: #ffffff;
+  border: 1px solid var(--somonto-linie);
+  border-radius: 6px;
+  min-height: 44px;
+  color: var(--somonto-tinte);
+  box-shadow: none;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+html.quill-theme .time-slot-button:hover,
+html.quill-theme .slot-list__slot:hover:not(.slot-list__slot--selected) {
+  background: #ffffff;
+  border-color: var(--somonto-akzent);
+  transform: none;
+}
+html.quill-theme .time-slot-button--selected,
+html.quill-theme .time-slot-button--selected:hover,
+html.quill-theme .slot-list__slot--selected,
+html.quill-theme .slot-list__slot--selected:hover {
+  background: var(--somonto-akzent);
+  border-color: var(--somonto-akzent);
+  color: var(--somonto-tinte);
+  font-weight: 700;
+}
+
+/* Knöpfe wie auf der Website (Stand 01.11.2026): Ecken 6 px, Hauptknopf schwarz mit hellem Innenrand, Nebenknopf weiß mit Linie. */
+html.quill-theme .action-button--primary {
+  background: var(--somonto-tinte) !important;
+  background-image: none !important;
+  border-radius: var(--button-radius) !important;
+  color: #ffffff !important;
+  box-shadow: var(--somonto-knopf-schatten) !important;
+  font-weight: 600;
+}
+html.quill-theme .action-button--primary:hover:not(:disabled) { background: #232328 !important; }
+html.quill-theme .action-button--primary:active:not(:disabled) { background: #000000 !important; }
+html.quill-theme .action-button--primary:disabled {
+  background: #b4b4bc !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  opacity: 1;
+  cursor: not-allowed;
+}
+html.quill-theme .action-button:not(.action-button--primary) {
+  background: #ffffff;
+  border: 1px solid var(--somonto-knopflinie);
+  border-radius: var(--button-radius) !important;
+  color: var(--somonto-tinte);
+  box-shadow: none;
+  font-weight: 600;
+}
+html.quill-theme .action-button:not(.action-button--primary):not(.action-button--danger):hover:not(:disabled) { border-color: #a5a5ae; background: #fafafa; }
+
+/* Formular „Details“ wie die Felder der Website. */
+html.quill-theme .booking-card-body { padding: 24px 24px 20px; }
+html.quill-theme .booking-actions { margin-top: 20px !important; gap: 12px; }
+html.quill-theme input.input,
+html.quill-theme .input,
+html.quill-theme textarea,
+html.quill-theme select {
+  background: var(--somonto-feld) !important;
+  border: 1px solid var(--somonto-feldlinie) !important;
+  border-radius: 10px !important;
+  color: var(--somonto-tinte) !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-family: var(--theme-font-family);
+}
+html.quill-theme input.input:focus,
+html.quill-theme .input:focus,
+html.quill-theme textarea:focus,
+html.quill-theme select:focus {
+  background: #ffffff !important;
+  border-color: var(--somonto-akzent) !important;
+  box-shadow: 0 0 0 3px rgb(255 106 31 / 20%) !important;
+}
+html.quill-theme ::placeholder { color: var(--somonto-blass) !important; }
+html.quill-theme label { color: var(--somonto-tinte); }
+html.quill-theme .label,
+html.quill-theme label.label { color: var(--somonto-tinte) !important; font-weight: 600; }
+
+/* Schritt „Dauer“: Foto links neben Überschrift und Gesprächspartner-Zeile, darunter zwei ruhige Zeilen statt Verlaufskachel.
+   Foto, Überschrift und Zeile kommen aus Tymeslot (Profilbild; Dashboard → Design → „Text der Buchungsseite“: Überschrift,
+   Begrüßung „Ihr Gesprächspartner ist“, Hinweis „<Name>.“). Ohne Profilbild zeigt Tymeslot Initialen als SVG: ausgeblendet.
+   Kein Abzeichen am Foto; Begrüßung und Hinweis in einer Zeile. */
+html.quill-theme .overview-success-badge { display: none !important; }
+html.quill-theme .overview-avatar-section:has(img.overview-avatar[src^="data:image/svg"]) { display: none !important; }
+html.quill-theme .overview-avatar-section { float: left; margin: 0 14px 0 0 !important; }
+html.quill-theme .overview-avatar-wrapper { display: block; }
+html.quill-theme img.overview-avatar {
+  width: 56px !important;
+  height: 56px !important;
+  border: 1px solid var(--somonto-linie) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+html.quill-theme .overview-title { margin: 0 !important; padding-top: 4px !important; font-size: 1.25rem !important; line-height: 1.3 !important; }
+html.quill-theme .overview-description {
+  margin: 2px 0 0 !important;
+  color: var(--somonto-gedaempft) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.5 !important;
+}
+html.quill-theme .overview-description br { display: none; }
+html.quill-theme .overview-duration-list { clear: both; gap: 10px; padding-top: 18px; }
+html.quill-theme .duration-card {
+  background: #fff !important;
+  background-image: none !important;
+  border: 1px solid var(--somonto-linie) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  color: var(--somonto-tinte) !important;
+  transform: none !important;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+html.quill-theme .duration-card:hover { border-color: var(--somonto-linie-stark) !important; }
+html.quill-theme .duration-card--selected,
+html.quill-theme .duration-card--selected:hover {
+  background: var(--somonto-auswahl-grund) !important;
+  border-color: var(--somonto-akzent) !important;
+  box-shadow: 0 0 0 1px var(--somonto-akzent) !important;
+}
+html.quill-theme .duration-card * { color: inherit; }
+html.quill-theme .duration-card div:has(> .duration-card-title) { margin-bottom: 0 !important; align-items: center !important; gap: 12px; }
+html.quill-theme .duration-card-title { font-size: 1rem !important; font-weight: 600 !important; color: var(--somonto-tinte) !important; }
+html.quill-theme .duration-card-badge {
+  background: var(--somonto-flaeche) !important;
+  border: 1px solid var(--somonto-linie);
+  border-radius: 999px !important;
+  color: var(--somonto-gedaempft) !important;
+  font-weight: 500 !important;
+}
+html.quill-theme .duration-card-description { color: var(--somonto-gedaempft) !important; }
+html.quill-theme .duration-card-description:empty { display: none; }
+html.quill-theme .duration-card-icon { width: 22px; height: 22px; margin-left: 12px; color: var(--somonto-blass) !important; }
+html.quill-theme .duration-card--selected .duration-card-icon { color: var(--somonto-akzent) !important; }
+
+/* Teil A2 (Niklas 24.11.2026: „der Button ist über Schritt 4 und es ist nicht mobil optimiert“). Eingebettet auf somonto.com keine Sprachwahl:
+   die Website ist deutsch und übergibt locale=de; Tymeslot setzt den Knopf absolut oben rechts, im Rahmen lag er über „Bestätigung“, am Handy
+   (Quill unter 640 px: eigener Block) entstand darunter eine Lücke. Auf der eigenständigen Seite (Links aus Mails) bleibt sie. */
+html.quill-theme[data-embedded] .language-switcher-wrapper { display: none !important; }
+/* Schrittleiste auch am Handy: Quill blendet .step-navigation-card unter 640 px aus; die kompakte Fassung oben („Schritt X von 4“, nur der
+   aktuelle Schritt ab 559 px abwärts) zeigt sie dort. UI UX Pro Max: Fortschritt bei mehrstufigen Abläufen immer sichtbar. */
+@media (max-width: 640px) {
+  html.quill-theme .step-navigation-card { display: block !important; }
+  /* Tailwinds space-x-3 kommt zum gap dazu; bei 375 px brach der letzte Punkt in eine zweite Zeile. Nur der gap zählt. */
+  html.quill-theme .step-indicator-container > * { margin-inline: 0 !important; }
+}
+/* Erledigte Schritte sind Knöpfe (zurück zum Schritt), sichtbar aber nur ein 8-px-Punkt. Unsichtbare Trefferfläche 44 × 44 px
+   (UI UX Pro Max: Touch-Ziel mindestens 44 px), mittig auf dem Knopf; Darstellung unverändert. */
+html.quill-theme .step-item-wrapper > button { position: relative; }
+html.quill-theme .step-item-wrapper > button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 44px);
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+/* Handy: „Zurück“ nur so breit wie nötig, „Nächster Schritt“ nimmt den Rest und bleibt einzeilig (brach bei 375 px um). */
+@media (max-width: 559px) {
+  html.quill-theme .schedule-actions .action-button { white-space: nowrap; padding-inline: 16px !important; }
+  html.quill-theme .schedule-actions .action-button--secondary { flex: 0 0 auto !important; }
+  html.quill-theme .schedule-actions .action-button--primary { flex: 1 1 auto !important; }
+}
+
+/* Sprachwahl oben rechts: weißer Knopf (6 px) statt grauem Glas. */
+html.quill-theme .language-switcher button,
+html.quill-theme .lang-switcher__button {
+  background: #fff !important;
+  border: 1px solid var(--somonto-linie) !important;
+  border-radius: 6px !important;
+  color: var(--somonto-tinte) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+html.quill-theme .language-switcher button:hover,
+html.quill-theme .lang-switcher__button:hover { border-color: var(--somonto-linie-stark) !important; }
+
+/* Bestätigung nach der Buchung: kein Abzeichen mit Haken und Punkt (wie „Dauer“), Zeilen in Tinte, Symbole ruhig. */
+html.quill-theme .confirmation-heading-row > .shrink-0 { display: none !important; }
+html.quill-theme .confirmation-title { font-size: 1.25rem !important; }
+html.quill-theme .confirmation-subtitle { color: var(--somonto-gedaempft) !important; font-size: 0.95rem !important; }
+html.quill-theme .confirmation-border-top { border-color: var(--somonto-linie) !important; }
+html.quill-theme .confirmation-icon-wrapper { background: var(--somonto-flaeche) !important; border: 1px solid var(--somonto-linie); }
+html.quill-theme .confirmation-email-link { color: var(--somonto-tinte) !important; }
+html.quill-theme .confirmation-icon-wrapper .confirmation-email-link { color: var(--somonto-gedaempft) !important; }
+html.quill-theme .confirmation-help-text { color: var(--somonto-blass) !important; }
+
+/* Absage, Absage bestätigt, Umbuchung: Tymeslot färbt Texte, Symbole und Hinweisflächen dort direkt im HTML (style=…), daher !important.
+   Großes Status-Symbol aus (Überschrift genügt), Detailkarte als graue Fläche, Hinweise neutral statt rot bzw. grün. */
+html.quill-theme .glass-morphism-card .mx-auto:has(> svg.w-16),
+html.quill-theme .glass-morphism-card .mx-auto:has(> svg.w-12) { display: none !important; }
+html.quill-theme .glass-morphism-card h1.text-3xl { font-size: 1.5rem !important; line-height: 1.25 !important; text-shadow: none !important; }
+html.quill-theme .glass-morphism-card p.text-lg { font-size: 1rem !important; }
+html.quill-theme [style*="color: white"] { color: var(--somonto-tinte) !important; }
+html.quill-theme [style*="color: rgba(255,255,255"] { color: var(--somonto-gedaempft) !important; }
+html.quill-theme .glass-morphism-card .glass-morphism-card {
+  background: var(--somonto-flaeche) !important;
+  border: 1px solid var(--somonto-linie) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  margin-bottom: 24px !important;
+}
+html.quill-theme .glass-morphism-card .glass-morphism-card h3 { font-size: 1rem !important; }
+html.quill-theme span[style*="background: var(--theme-primary)"] {
+  background: #fff !important;
+  border: 1px solid var(--somonto-linie);
+  color: var(--somonto-gedaempft) !important;
+  font-weight: 500 !important;
+}
+html.quill-theme div[style*="rgba(239, 68, 68"],
+html.quill-theme div[style*="rgba(16, 185, 129"] {
+  background: var(--somonto-flaeche) !important;
+  border: 1px solid var(--somonto-linie) !important;
+}
+html.quill-theme div[style*="rgba(239, 68, 68"] svg,
+html.quill-theme div[style*="rgba(16, 185, 129"] svg { color: var(--somonto-blass) !important; }
+html.quill-theme .meeting-detail-icon-wrapper { background: #fff !important; border: 1px solid var(--somonto-linie); border-radius: 8px !important; }
+html.quill-theme .meeting-detail-icon { color: var(--somonto-gedaempft); }
+html.quill-theme .meeting-detail-value { color: var(--somonto-tinte) !important; font-weight: 600; }
+html.quill-theme .meeting-detail-label { color: var(--somonto-blass) !important; }
+html.quill-theme .meeting-detail-row--organizer { border-top-color: var(--somonto-linie) !important; }
+/* „Ja, Termin absagen“ wie der Hauptknopf der Website (schwarz, 6 px) statt roter Verlauf; „Termin beibehalten“ bleibt der weiße Nebenknopf. */
+html.quill-theme .action-button--danger {
+  background: var(--somonto-tinte) !important;
+  background-image: none !important;
+  border-radius: var(--button-radius) !important;
+  color: #fff !important;
+  box-shadow: var(--somonto-knopf-schatten) !important;
+  font-weight: 600;
+}
+html.quill-theme .action-button--danger:hover:not(:disabled) { background: #232328 !important; }
+html.quill-theme .action-button--danger:active:not(:disabled) { background: #000000 !important; }
+@media (max-width: 480px) {
+  html.quill-theme .glass-morphism-card > .p-8 { padding: 24px 20px !important; }
+  html.quill-theme .glass-morphism-card .flex.gap-4:has(> .action-button) { flex-direction: column; gap: 10px; }
+}
+
+/* Logo oben (Niklas 31.10.: wer den Link aus einer Mail öffnet und uns nicht kennt, soll sehen, von wem die Einladung kommt). Nur auf der Seite selbst;
+   eingebettet auf somonto.com steht das Logo schon in der Kopfzeile (Tymeslot setzt dann data-embedded). Logo D-184 quer aus dem Website-Repo
+   (public/brand/somonto-logo-quer.svg, Zahlen auf eine Stelle gerundet) als data-Adresse, CSP erlaubt img-src data:. */
+html.quill-theme:not([data-embedded]) .content-area > .container::before {
+  content: '';
+  display: block;
+  width: 150px;
+  height: 33px;
+  margin: 0 auto 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='4.00 0 260.7 57.3' role='img' aria-label='Somonto'%3E%3Cg transform='scale(1.333333)'%3E%3Cpath fill='%238c8782' d='M3 43L15 21L23 32L23 43Z'/%3E%3Cpath fill='%2317140f' d='M14 43L25 22.6L28.6 20.8L31.5 23.2L34.2 20.6L37 22.8L46 43Z'/%3E%3Cpath fill='%23ff6a1f' d='M31.5 10.5L37.3 23.6L34.2 21.4L31.5 24L28.6 21.6L24.6 23.4Z'/%3E%3Cpath fill='%23ff6a1f' d='M31.5 0L36 4.5L31.5 9L27 4.5Z'/%3E%3C/g%3E%3Cpath fill='%2317140f' transform='translate(78 49.5) scale(0.046)' d='M279.5 13.2Q214.7 13.2 168.2 -0.4Q121.7 -14 91.7 -37.3Q61.8 -60.5 47 -92.4Q32.2 -124.3 30.5 -159.5H183.5Q190.2 -137.5 209.9 -121.3Q229.7 -105.2 279.5 -105.2Q330.8 -105.2 353.2 -119.1Q375.5 -133 375.5 -156.2Q375.5 -167.7 366 -177.2Q356.5 -186.8 330.8 -195.1Q305.2 -203.3 257.2 -210.7Q213.3 -217.7 174.5 -229Q135.7 -240.3 106.8 -258.8Q78 -277.3 61.7 -306.1Q45.5 -334.8 45.5 -379.5Q45.5 -425.7 73.2 -462.7Q101 -499.7 154 -521.4Q207 -543.2 279.5 -543.2Q363 -543.2 411.7 -517.7Q460.3 -492.2 483.3 -452.6Q506.3 -413 510.2 -370.5H355.5Q349.5 -395.5 329.6 -410.2Q309.7 -424.8 279.5 -424.8Q233.8 -424.8 216.2 -410.9Q198.5 -397 198.5 -377.5Q198.5 -357.2 226.8 -345.6Q255.2 -334 316.2 -326.3Q360.2 -320.3 398.5 -309.1Q436.8 -297.8 466.4 -278.2Q496 -258.5 513.1 -229.2Q530.2 -199.8 530.2 -157.5Q530.2 -108.3 501.4 -69.1Q472.7 -29.8 417.4 -8.3Q362.2 13.2 279.5 13.2ZM835 13.2Q761.3 13.2 699.6 -16.2Q637.8 -45.5 601.7 -106.6Q565.5 -167.7 565.5 -260V-280Q565.5 -366.3 601.7 -424.6Q637.8 -482.8 699.6 -513Q761.3 -543.2 835 -543.2Q910 -543.2 971.1 -513Q1032.2 -482.8 1068.3 -424.6Q1104.5 -366.3 1104.5 -280V-260Q1104.5 -169 1068.3 -108.4Q1032.2 -47.8 971.1 -17.3Q910 13.2 835 13.2ZM835 -115.2Q870.8 -115.2 895.9 -132.6Q921 -150 934.2 -182.9Q947.5 -215.8 947.5 -260V-280Q947.5 -319.8 934.2 -350.2Q921 -380.5 895.9 -397.7Q870.8 -414.8 835 -414.8Q798.7 -414.8 773.8 -397.7Q749 -380.5 735.8 -350.2Q722.5 -319.8 722.5 -280V-260Q722.5 -214.2 735.8 -181.6Q749 -149 773.8 -132.1Q798.7 -115.2 835 -115.2ZM1160 0V-530H1305V-454.3Q1322.5 -489 1360.8 -516.1Q1399 -543.2 1455.2 -543.2Q1517.7 -543.2 1552.3 -519.1Q1587 -495 1602.7 -453.8Q1622.8 -492.2 1664.7 -517.7Q1706.5 -543.2 1764.2 -543.2Q1850 -543.2 1894.8 -494.8Q1939.7 -446.3 1939.7 -349.5V0H1786V-312Q1786 -368.3 1768.3 -391.6Q1750.7 -414.8 1712.2 -414.8Q1689.2 -414.8 1669.6 -402.7Q1650 -390.5 1638.5 -367.2Q1627 -343.8 1627 -312V0H1473V-312Q1473 -368.3 1455.6 -391.6Q1438.2 -414.8 1398.5 -414.8Q1374.5 -414.8 1355.9 -402.7Q1337.3 -390.5 1325.7 -367.2Q1314 -343.8 1314 -312V0ZM2260 13.2Q2186.3 13.2 2124.6 -16.2Q2062.8 -45.5 2026.7 -106.6Q1990.5 -167.7 1990.5 -260V-280Q1990.5 -366.3 2026.7 -424.6Q2062.8 -482.8 2124.6 -513Q2186.3 -543.2 2260 -543.2Q2335 -543.2 2396.1 -513Q2457.2 -482.8 2493.3 -424.6Q2529.5 -366.3 2529.5 -280V-260Q2529.5 -169 2493.3 -108.4Q2457.2 -47.8 2396.1 -17.3Q2335 13.2 2260 13.2ZM2260 -115.2Q2295.8 -115.2 2320.9 -132.6Q2346 -150 2359.2 -182.9Q2372.5 -215.8 2372.5 -260V-280Q2372.5 -319.8 2359.2 -350.2Q2346 -380.5 2320.9 -397.7Q2295.8 -414.8 2260 -414.8Q2223.7 -414.8 2198.8 -397.7Q2174 -380.5 2160.8 -350.2Q2147.5 -319.8 2147.5 -280V-260Q2147.5 -214.2 2160.8 -181.6Q2174 -149 2198.8 -132.1Q2223.7 -115.2 2260 -115.2ZM2585 0V-530H2727V-457.8Q2747.2 -493.5 2789.4 -518.3Q2831.7 -543.2 2903.3 -543.2Q2998.2 -543.2 3046.4 -491.8Q3094.7 -440.5 3094.7 -344.5V0H2941V-310Q2941 -362.3 2918.5 -388.6Q2896 -414.8 2845 -414.8Q2808.2 -414.8 2784.7 -400.3Q2761.3 -385.9 2750.1 -362.3Q2739 -338.8 2739 -310V0ZM3390 5.7Q3324.2 5.7 3282.1 -11.7Q3240 -29 3220 -69.5Q3200 -110 3200 -180V-403.7H3135.5V-530H3200V-650H3354V-530H3474.5V-403.7H3354V-205.2Q3354 -159.8 3368.3 -140.8Q3382.6 -121.7 3424.5 -121.7Q3454.5 -121.7 3484.5 -124.7V0.5Q3465.5 2.7 3444.7 4.2Q3423.8 5.7 3390 5.7ZM3790 13.2Q3716.3 13.2 3654.6 -16.2Q3592.8 -45.5 3556.7 -106.6Q3520.5 -167.7 3520.5 -260V-280Q3520.5 -366.3 3556.7 -424.6Q3592.8 -482.8 3654.6 -513Q3716.3 -543.2 3790 -543.2Q3865 -543.2 3926.1 -513Q3987.2 -482.8 4023.3 -424.6Q4059.5 -366.3 4059.5 -280V-260Q4059.5 -169 4023.3 -108.4Q3987.2 -47.8 3926.1 -17.3Q3865 13.2 3790 13.2ZM3790 -115.2Q3825.8 -115.2 3850.9 -132.6Q3876 -150 3889.2 -182.9Q3902.5 -215.8 3902.5 -260V-280Q3902.5 -319.8 3889.2 -350.2Q3876 -380.5 3850.9 -397.7Q3825.8 -414.8 3790 -414.8Q3753.7 -414.8 3728.8 -397.7Q3704 -380.5 3690.8 -350.2Q3677.5 -319.8 3677.5 -280V-260Q3677.5 -214.2 3690.8 -181.6Q3704 -149 3728.8 -132.1Q3753.7 -115.2 3790 -115.2Z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+/* Im Schritt „Datum & Uhrzeit“ kein Logo (Niklas 31.10.: sonst wird die Karte unten abgeschnitten); Dauer, Details und Bestätigung behalten es. */
+html.quill-theme:not([data-embedded]) .content-area > .container:has(.schedule-content-area)::before { content: none; }
+/* Tymeslot scrollt unter 1024 px nach dem Laden der Zeiten per scrollIntoView zu #slots-container (Hook AutoScrollToSlots). Der große Abstand lässt
+   den Sprung oben enden, bei Überschrift und Wochentagen (Niklas 02.11.2026). */
+html.quill-theme #slots-container { scroll-margin-top: 10000px; }
+/* Fokus sichtbar (Tastatur). Felder zeigen ihn über Rahmen und Ring. */
+html.quill-theme :focus-visible { outline: 2px solid var(--somonto-akzent); outline-offset: 2px; }
+html.quill-theme input:focus-visible,
+html.quill-theme textarea:focus-visible { outline: none; }
+
+/* Handy (Angleichung 01.11.2026): größere Trefferflächen; Zeitenliste ohne eigenen Scrollbereich, der Rahmen wächst mit (mindestens 640 px). */
+@media (max-width: 559px) {
+  html.quill-theme .time-slot-button,
+  html.quill-theme .slot-list__slot { min-height: 48px; }
+  html.quill-theme .action-button { min-height: 50px; }
+  html.quill-theme .calendar-nav-button { width: 44px; height: 44px; }
+  /* Nach der Wahl einer Uhrzeit bleibt „Nächster Schritt“ unten am Bildschirm stehen; Tymeslot scrollt nicht dorthin, die Zeitenliste ist lang
+     (Niklas 02.11.2026). Vor der Wahl gibt es nur „Zurück“, die Leiste bleibt dann an ihrem Platz. */
+  html.quill-theme .schedule-actions:has(.action-button--primary) {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin-inline: -8px;
+    padding: 12px 8px calc(12px + env(safe-area-inset-bottom));
+    background: #fff;
+    box-shadow: 0 -1px 0 var(--somonto-linie);
+  }
+}
+/* An der echten Seite geprüft (02.11.2026, Finaler Lauf 1c.K2): Tymeslot zeigt am Handy statt des Monats die Wochenleiste (.week-day-cell) und
+   scrollt die Zeiten in .calendar-slots-container und .slots-box innerhalb einer Karte mit fester Höhe. Wochentage wie die Tage im Monat (6 px,
+   Auswahl orange mit Tinte). Am Handy richten sich html, body, main und die Kette bis zur Karte nach dem Inhalt: Tymeslot meldet die Höhe von main,
+   der Rahmen auf /beratung wächst mit den Zeiten und wird im Schritt Details wieder kleiner. */
+html.quill-theme .week-day-cell { border-radius: 6px !important; }
+html.quill-theme .week-day-cell.selected,
+html.quill-theme .week-day-cell.selected:hover { background: var(--somonto-akzent) !important; border-color: var(--somonto-akzent) !important; color: var(--somonto-tinte) !important; }
+html.quill-theme .week-day-cell.selected .week-day-name,
+html.quill-theme .week-day-cell.selected .week-day-number { color: var(--somonto-tinte) !important; }
+@media (max-width: 559px) {
+  html.quill-theme,
+  html.quill-theme body,
+  html.quill-theme main,
+  html.quill-theme main :has(.glass-morphism-card),
+  html.quill-theme .glass-morphism-card,
+  html.quill-theme .calendar-slots-container,
+  html.quill-theme .calendar-slots-container .time-slots-panel,
+  html.quill-theme .calendar-slots-container .slots-box { height: auto !important; max-height: none !important; overflow: visible !important; }
+  html.quill-theme .calendar-slots-container .time-slots-panel,
+  html.quill-theme .calendar-slots-container .slots-box { flex: none !important; }
+}
+/* Z.39 (Niklas 03.11.2026, „kann man das auf deutsch umstellen“): Tymeslot 1.22.0 meldet Fehler der Zusatzfragen (Firma, Telefon) fest auf
+   Englisch im Code („Text is required“, „Phone number contains invalid characters“, nicht in der Übersetzung). Die Schicht blendet den Text aus
+   und setzt den deutschen davor (die Meldung steht direkt nach dem Formular der Frage). Freigegeben (Niklas 03.11.2026): Telefon („ja bitte bei tymeslot umändern“, Beispielnummer gestrichen), Textfragen „bitte geben sie ihren firmename an“ (Teil A2 24.11.2026: Wortlaut zur Bezeichnung „Name des Unternehmens“ nachgezogen). Die Textregel gilt für jede Zusatzfrage außer Telefon: heute ist „Firma“ die einzige Textfrage (Erstgespräch und Beratungsgespräch, DB 03.11.2026). Kommt eine andere Textfrage dazu, die Regel auf die Frage-ID (cq-form-<id>) einschränken; Name und E-Mail übersetzt Tymeslot selbst. Erlaubt sind bei Tymeslot im Telefonfeld nur
+   Ziffern, Leerzeichen und + - ( ) . (kein Schrägstrich). An der echten Seite geprüft (03.11.2026, „0664/123“). Umlaute als CSS-Escape (die Datei kommt ohne charset). Rückweg: Block löschen. */
+html.quill-theme :is(.custom-questions-card, .booking-form-card) form[id^="cq-form-"] + .form-field__error { font-size: 0 !important; }
+html.quill-theme :is(.custom-questions-card, .booking-form-card) form[id^="cq-form-"] + .form-field__error::after { content: "Bitte geben Sie den Namen Ihres Unternehmens an."; font-size: 0.896rem; line-height: 1.5; }
+html.quill-theme :is(.custom-questions-card, .booking-form-card) form[id^="cq-form-"]:has(input[type="tel"]) + .form-field__error::after { content: "Bitte geben Sie eine g\00FCltige Telefonnummer ein."; }
+
+/* Teil T/S (Bauplan Buchungsmaske 27.11.2026): eigene Tymeslot-Fassung (ghcr.io/somonto/tymeslot:1.41.0-somonto.1). Angaben in drei Seiten
+   („Ihre Angaben“, „Kontakt“, „Übersicht“), ohne Schritt „Dauer“ bei einem Termintyp (dann Foto und Begrüßung über dem Kalender), Zeitzone als Name.
+   Gilt nur mit der eigenen Fassung; mit dem offiziellen Image greifen die Klassen nicht (Rückweg ohne Schaden). Raster 8 px; Felder nach der
+   Prüfliste Oberfläche: 16 px Schrift, 48 px hoch, eine Spalte. */
+
+/* Schrittleiste mit drei Schritten (ohne „Dauer“): Zählung „von 3“. Die Schritte stehen dann an den Stellen 1, 3, 5. */
+html.quill-theme .step-indicator-container:not(:has(> :nth-child(6))):has(> .step-item-wrapper:nth-child(1) .step-label.font-bold)::before { content: "Schritt 1 von 3"; }
+html.quill-theme .step-indicator-container:not(:has(> :nth-child(6))):has(> .step-item-wrapper:nth-child(3) .step-label.font-bold)::before { content: "Schritt 2 von 3"; }
+html.quill-theme .step-indicator-container:not(:has(> :nth-child(6))):has(> .step-item-wrapper:nth-child(5) .step-label.font-bold)::before { content: "Schritt 3 von 3"; }
+
+/* S1 Berater-Zeile über dem Kalender (ein Termintyp): Foto 48 px, daneben „Ihr Berater ist Niklas Aschauer.“ in einer Zeile.
+   Ohne Profilbild (Initialen als SVG) nur die Zeile. */
+html.quill-theme .schedule-organizer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 0;
+}
+html.quill-theme .schedule-organizer__avatar {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--somonto-linie);
+}
+html.quill-theme .schedule-organizer__avatar[src^="data:image/svg"] { display: none; }
+html.quill-theme .schedule-organizer__greeting {
+  margin: 0;
+  min-width: 0;
+  color: var(--somonto-tinte);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+html.quill-theme .schedule-organizer + .schedule-card-header { padding-top: 8px !important; }
+@media (max-width: 374px) {
+  html.quill-theme .schedule-organizer { gap: 8px; }
+  html.quill-theme .schedule-organizer__avatar { width: 40px; height: 40px; }
+  html.quill-theme .schedule-organizer__greeting { font-size: 0.875rem; }
+}
+/* Schritt „Dauer“ bei zwei Gesprächsarten: unter 400 px steht die Begrüßung unter dem Foto in voller Breite (einzeilig bis 320 px), die
+   Kacheln folgen ohne Leerfläche. */
+@media (max-width: 399px) {
+  html.quill-theme .overview-description { clear: both; padding-top: 8px; white-space: nowrap; font-size: 0.875rem !important; }
+  html.quill-theme .overview-duration-list { padding-top: 16px; }
+  html.quill-theme .overview-card-body,
+  html.quill-theme .overview-content-area { min-height: 0 !important; height: auto !important; }
+}
+
+/* S2 Angaben in drei Seiten. */
+html.quill-theme .booking-heading { margin: 0 0 8px !important; font-size: 1.25rem !important; line-height: 1.3 !important; }
+html.quill-theme .booking-heading:focus { outline: none; }
+html.quill-theme .booking-datetime { margin: 0 0 24px !important; color: var(--somonto-gedaempft) !important; font-size: 0.95rem; line-height: 1.5; }
+html.quill-theme .booking-datetime__zone { display: block; color: var(--somonto-blass); font-size: 0.875rem; }
+html.quill-theme .booking-page[hidden],
+html.quill-theme .booking-field[hidden] { display: none !important; }
+html.quill-theme .booking-form-fields { display: flex; flex-direction: column; gap: 16px; }
+html.quill-theme .booking-page--details,
+html.quill-theme .booking-page--contact { display: flex; flex-direction: column; gap: 16px; }
+html.quill-theme .booking-page--details:not(:empty) { margin-bottom: 16px; }
+html.quill-theme .booking-page--contact { margin-top: 16px; }
+html.quill-theme .booking-question { display: flex; flex-direction: column; gap: 8px; }
+html.quill-theme .booking-question__label,
+html.quill-theme .booking-field label { color: var(--somonto-tinte) !important; font-size: 0.95rem !important; font-weight: 600 !important; line-height: 1.4; }
+html.quill-theme .booking-question__help { margin: 0; color: var(--somonto-gedaempft); font-size: 0.875rem; }
+html.quill-theme .booking-form-card input.input,
+html.quill-theme .booking-form-card .input,
+html.quill-theme .booking-form-card input[type="text"],
+html.quill-theme .booking-form-card input[type="email"],
+html.quill-theme .booking-form-card input[type="tel"] {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px !important;
+  font-size: 16px !important;
+  line-height: 1.5;
+}
+html.quill-theme .booking-form-card .form-field__error { margin: 0; color: #b42318; font-size: 0.896rem; line-height: 1.5; }
+html.quill-theme .booking-form-card .booking-question--invalid input { border-color: #b42318 !important; }
+html.quill-theme .booking-privacy-notice { margin: 16px 0 0; color: var(--somonto-gedaempft); font-size: 0.875rem; line-height: 1.5; }
+html.quill-theme .booking-privacy-notice a { color: var(--somonto-tinte); text-decoration: underline; text-underline-offset: 2px; }
+/* Übersicht: zwei Zeilen (Mit, Wann) als ruhige Liste, darunter die Adresse der Bestätigung. */
+html.quill-theme .booking-summary { margin: 0; padding: 0; border-top: 1px solid var(--somonto-linie); }
+html.quill-theme .booking-summary__row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 8px 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--somonto-linie);
+}
+html.quill-theme .booking-summary dt { color: var(--somonto-blass); font-size: 0.875rem; font-weight: 600; line-height: 1.5; }
+html.quill-theme .booking-summary dd { margin: 0; color: var(--somonto-tinte); font-size: 1rem; font-weight: 600; line-height: 1.5; }
+html.quill-theme .booking-summary__time,
+html.quill-theme .booking-summary__end,
+html.quill-theme .booking-summary__zone { display: block; }
+html.quill-theme .booking-summary__end,
+html.quill-theme .booking-summary__zone { color: var(--somonto-gedaempft); font-size: 0.875rem; font-weight: 500; }
+html.quill-theme .booking-summary__email { margin: 16px 0 0; color: var(--somonto-gedaempft); font-size: 0.95rem; line-height: 1.5; }
+/* Knöpfe der Angaben am Handy wie im Schritt „Datum & Uhrzeit“: „Zurück“ so breit wie nötig, der Hauptknopf nimmt den Rest, einzeilig. */
+@media (max-width: 559px) {
+  html.quill-theme .booking-card-body { padding: 24px 16px 16px; }
+  html.quill-theme .booking-actions .action-button,
+  html.quill-theme .booking-actions .loading-button { white-space: nowrap; padding-inline: 16px !important; }
+  html.quill-theme .booking-actions > :first-child { flex: 0 0 auto !important; }
+  html.quill-theme .booking-actions > :last-child { flex: 1 1 auto !important; }
+}
+
+/* S3 Zeitzone: im Schritt „Datum & Uhrzeit“ immer sichtbar und wählbar, auch eingebettet und am Handy; Trefferfläche mindestens 44 px. */
+html.quill-theme .schedule-timezone-area { display: block !important; visibility: visible !important; }
+html.quill-theme .schedule-timezone-area .timezone-trigger,
+html.quill-theme .schedule-timezone-area .tz-picker__trigger { min-height: 44px; }
+
+/* AGPL-Hinweis (Quelltext-Link) in der Fußzeile wie die übrigen Rechtslinks. */
+html.quill-theme .legal-links__link--source { color: var(--somonto-blass); }

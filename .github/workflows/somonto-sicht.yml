@@ -1,0 +1,73 @@
+# Somonto fork: Sichtprüfung of the booking flow. Starts the built image with a
+# throwaway database, seeds one organiser (somonto/sicht/seed.exs), and takes
+# screenshots at 320/375/768/1440 px with the Somonto style layer
+# (somonto/sicht/). Artifact "sicht". Nothing leaves the runner.
+name: Somonto Sichtprüfung
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Image tag"
+        required: true
+        default: "1.41.0-somonto.1"
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  sicht:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: probe
+          POSTGRES_PASSWORD: probe
+          POSTGRES_DB: tymeslot
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U probe -d tymeslot" --health-interval 5s
+          --health-timeout 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Start Tymeslot
+        env:
+          VERSION: ${{ github.event.inputs.version }}
+        run: |
+          docker run -d --name app --network host \
+            -e DEPLOYMENT_TYPE=docker -e PHX_HOST=localhost -e URL_SCHEME=http -e PORT=4000 -e LISTEN_IP=0.0.0.0 \
+            -e SECRET_KEY_BASE="$(openssl rand -hex 48)" -e DATA_ENCRYPTION_KEY="$(openssl rand -base64 32)" \
+            -e DATABASE_HOST=localhost -e DATABASE_PORT=5432 -e POSTGRES_DB=tymeslot -e POSTGRES_USER=probe -e POSTGRES_PASSWORD=probe \
+            -e EMAIL_ADAPTER=test -e EMAIL_FROM_ADDRESS=probe@example.invalid -e ADMIN_ALERTS_ENABLED=false -e REGISTRATION_ENABLED=false \
+            "ghcr.io/somonto/tymeslot:$VERSION"
+          for i in $(seq 1 60); do curl -fsS -o /dev/null http://localhost:4000/healthcheck && break; sleep 3; done
+          curl -fsS -o /dev/null http://localhost:4000/healthcheck || { docker logs app | tail -80; exit 1; }
+      - name: Seed
+        run: |
+          docker cp somonto/sicht/seed.exs app:/tmp/seed.exs
+          docker exec -u app app /app/bin/tymeslot rpc 'Code.eval_file("/tmp/seed.exs")'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+      - name: Screenshots
+        working-directory: somonto/sicht
+        run: |
+          npm init -y >/dev/null
+          npm install --no-save playwright@1.57.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+          node sicht.mjs | tee sicht-ausgabe/bericht.json
+      - if: failure()
+        run: docker logs app 2>&1 | tail -120
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sicht
+          path: somonto/sicht/sicht-ausgabe
