@@ -559,3 +559,30 @@ describe('parent origin derivation', () => {
     expect(window.parent.postMessage).not.toHaveBeenCalled()
   })
 })
+
+// Somonto fork: `tymeslot-step` on every change of screen.
+describe('step messages (Somonto)', () => {
+  const stepCalls = () =>
+    window.parent.postMessage.mock.calls.filter(([data]) => data && data.type === 'tymeslot-step')
+
+  test('posts the screen on load and on each change, once per screen, to the parent origin', () => {
+    document.body.innerHTML = '<div data-somonto-step="termin" data-somonto-step-index="1"></div>'
+    const { advance } = runScript({ isEmbedded: true, referrer: 'https://somonto.com/beratung' })
+
+    expect(stepCalls()).toEqual([[{ type: 'tymeslot-step', step: 'termin', index: 1 }, 'https://somonto.com']])
+
+    advance()
+    expect(stepCalls()).toHaveLength(1)
+
+    document.body.innerHTML = '<div data-somonto-step="angaben" data-somonto-step-index="2"></div>'
+    advance()
+    expect(stepCalls()[1]).toEqual([{ type: 'tymeslot-step', step: 'angaben', index: 2 }, 'https://somonto.com'])
+  })
+
+  test('posts nothing for a malformed step', () => {
+    document.body.innerHTML = '<div data-somonto-step="bad step!" data-somonto-step-index="x"></div>'
+    runScript({ isEmbedded: true, referrer: 'https://somonto.com/' })
+
+    expect(stepCalls()).toHaveLength(0)
+  })
+})

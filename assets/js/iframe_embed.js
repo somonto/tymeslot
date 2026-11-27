@@ -169,7 +169,33 @@
       return;
     }
     postHeight();
+    postStep();
     setTimeout(loop, POLL_INTERVAL_MS);
+  }
+
+  // --- Somonto fork: step messages ---
+  // Every screen of the booking names itself (`data-somonto-step`, with its
+  // number as the visitor counts them in `data-somonto-step-index`). Each
+  // change, the first screen included, is posted to the same parent origin as
+  // the height, as `{ type: "tymeslot-step", step, index }`, so the embedding
+  // page can bring the frame's top into view. The embedding page ignores the
+  // first message (the page loading) and repeats of the same screen.
+  let lastStepKey = null;
+
+  function postStep() {
+    const el = document.querySelector("[data-somonto-step]");
+    if (!el) return;
+    const step = el.getAttribute("data-somonto-step") || "";
+    const index = parseInt(el.getAttribute("data-somonto-step-index") || "", 10);
+    if (!/^[\w.-]{1,40}$/.test(step) || !Number.isInteger(index) || index < 0 || index > 99) return;
+    const key = step + ":" + index;
+    if (key === lastStepKey) return;
+    lastStepKey = key;
+    try {
+      window.parent.postMessage({ type: "tymeslot-step", step: step, index: index }, targetOrigin);
+    } catch (_) {
+      // Parent unreachable — keep looping.
+    }
   }
 
   document.addEventListener("visibilitychange", function () {
