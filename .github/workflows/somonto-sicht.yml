@@ -45,7 +45,7 @@ jobs:
           docker run -d --name app --network host \
             -e DEPLOYMENT_TYPE=docker -e PHX_HOST=localhost -e URL_SCHEME=http -e PORT=4000 -e LISTEN_IP=0.0.0.0 \
             -e SECRET_KEY_BASE="$(openssl rand -hex 48)" -e DATA_ENCRYPTION_KEY="$(openssl rand -base64 32)" \
-            -e DATABASE_HOST=localhost -e DATABASE_PORT=5432 -e POSTGRES_DB=tymeslot -e POSTGRES_USER=probe -e POSTGRES_PASSWORD=probe \
+            -e DATABASE_HOST="$(hostname -I | awk '{print $1}')" -e DATABASE_PORT=5432 -e POSTGRES_DB=tymeslot -e POSTGRES_USER=probe -e POSTGRES_PASSWORD=probe \
             -e EMAIL_ADAPTER=test -e EMAIL_FROM_ADDRESS=probe@example.invalid -e ADMIN_ALERTS_ENABLED=false -e REGISTRATION_ENABLED=false \
             "ghcr.io/somonto/tymeslot:$VERSION"
           for i in $(seq 1 60); do curl -fsS -o /dev/null http://localhost:4000/healthcheck && break; sleep 3; done
