@@ -27,6 +27,8 @@ defmodule TymeslotWeb.Themes.Shared.Components.LegalLinks do
   new tab; nothing at all when neither is set.
   """
   @spec footer(map()) :: Phoenix.LiveView.Rendered.t()
+  # Somonto fork: the footer always carries the link to this version's
+  # source code (AGPL-3.0 § 13), `config :tymeslot, :source_code_url`.
   def footer(assigns) do
     assigns =
       assign(assigns,
@@ -35,11 +37,7 @@ defmodule TymeslotWeb.Themes.Shared.Components.LegalLinks do
       )
 
     ~H"""
-    <footer
-      :if={@legal_notice_url || @privacy_policy_url}
-      class="legal-links"
-      data-testid="legal-links"
-    >
+    <footer class="legal-links" data-testid="legal-links">
       <a
         :if={@legal_notice_url}
         href={@legal_notice_url}
@@ -58,7 +56,24 @@ defmodule TymeslotWeb.Themes.Shared.Components.LegalLinks do
       >
         {dgettext("booking", "Privacy policy")}
       </a>
+      <%!-- Somonto fork: AGPL-3.0 § 13, the source of this modified version. --%>
+      <a
+        href={source_code_url()}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="legal-links__link legal-links__link--source"
+        data-testid="source-code-link"
+      >
+        {dgettext("booking", "Source code (AGPL)")}
+      </a>
     </footer>
     """
   end
+
+  @default_source_code_url "https://github.com/somonto/tymeslot"
+
+  @doc "The public repository of the version this instance runs (AGPL-3.0 § 13)."
+  @spec source_code_url() :: String.t()
+  def source_code_url,
+    do: Application.get_env(:tymeslot, :source_code_url) || @default_source_code_url
 end
