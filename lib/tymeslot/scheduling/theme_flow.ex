@@ -141,14 +141,41 @@ defmodule Tymeslot.Scheduling.ThemeFlow do
   """
   @spec attendee_prefill(any()) :: %{optional(String.t()) => String.t()}
   def attendee_prefill(%{} = params) do
-    for {field, validator} <- @prefill_validators,
-        value = clean_prefill(params[field]),
-        validator.validate(value) == :ok,
-        into: %{},
-        do: {field, value}
+    attendee =
+      for {field, validator} <- @prefill_validators,
+          value = clean_prefill(params[field]),
+          validator.validate(value) == :ok,
+          into: %{},
+          do: {field, value}
+
+    Map.merge(attendee, answer_prefill(params))
   end
 
   def attendee_prefill(_params), do: %{}
+
+  # Somonto fork: `company` and `phone` seed the answers to the meeting
+  # type's company and phone questions (`StepEntry`), never the booking form.
+  # A value that could not be a company name or a phone number is dropped;
+  # the question's own validation still runs on submit.
+  @company_max 180
+  @phone_pattern ~r/^\+?[0-9][0-9 ()\/.-]{2,38}$/
+
+  defp answer_prefill(params) do
+    company = clean_prefill(params["company"])
+    phone = clean_prefill(params["phone"])
+
+    %{}
+    |> put_if(
+      "company",
+      company,
+      is_binary(company) and company != "" and String.length(company) <= @company_max and
+        not String.match?(company, ~r/[[:cntrl:]<>]/u)
+    )
+    |> put_if("phone", phone, is_binary(phone) and Regex.match?(@phone_pattern, phone))
+  end
+
+  defp put_if(map, key, value, true), do: Map.put(map, key, value)
+  defp put_if(map, _key, _value, _false), do: map
 
   defp clean_prefill(value) when is_binary(value),
     do: value |> String.replace("\x00", "") |> String.trim()

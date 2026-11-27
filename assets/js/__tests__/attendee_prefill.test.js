@@ -121,3 +121,29 @@ describe('takeAttendeePrefill', () => {
     }
   );
 });
+
+// Somonto fork: company and phone, and `+` as a space in name and company.
+describe('takeAttendeePrefill (Somonto)', () => {
+  test('reads company and phone beside name and email', () => {
+    const loc = fakeLocation(
+      '#name=Max%20Muster&email=max%40muster.at&company=Muster%20%26%20S%C3%B6hne%20OG&phone=%2B43%20660%201234567'
+    );
+
+    expect(takeAttendeePrefill(loc, fakeHistory())).toEqual({
+      name: 'Max Muster',
+      email: 'max@muster.at',
+      company: 'Muster & Söhne OG',
+      phone: '+43 660 1234567',
+    });
+  });
+
+  test('reads + as a space in name and company, as URLSearchParams writes them', () => {
+    const loc = fakeLocation('#name=Max+Muster&company=Tischlerei+Muster&email=max%2Btest%40muster.at');
+
+    expect(takeAttendeePrefill(loc, fakeHistory())).toEqual({
+      name: 'Max Muster',
+      company: 'Tischlerei Muster',
+      email: 'max+test@muster.at',
+    });
+  });
+});

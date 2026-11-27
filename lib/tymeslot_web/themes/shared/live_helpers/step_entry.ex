@@ -327,7 +327,62 @@ defmodule TymeslotWeb.Themes.Shared.LiveHelpers.StepEntry do
     definitions
     |> QEngine.init()
     |> QEngine.prefill(carried)
+    |> seed_fragment_answers(socket)
   end
+
+  # Somonto fork: the company and phone a booking link carried in its
+  # fragment (`#company=…&phone=…`, `ThemeFlow.attendee_prefill/1`) answer the
+  # first company question (labelled "Firma…", "Firmen…", "Unternehmen" or
+  # "Name des Unternehmens", as the CRM reads it) and the first phone
+  # question, when the answer validates. Shown, not touched, and never over
+  # an answer already held; a reschedule carries its own answers instead.
+  defp seed_fragment_answers(engine, %{assigns: %{reschedule_meeting_uid: uid}})
+       when is_binary(uid),
+       do: engine
+
+  defp seed_fragment_answers(%QEngine{} = engine, socket) do
+    prefill = socket.assigns[:attendee_prefill] || %{}
+
+    seeds =
+      [{prefill["company"], &company_question?/1}, {prefill["phone"], &phone_question?/1}]
+      |> Enum.flat_map(fn
+        {value, match?} when is_binary(value) ->
+          case Enum.find(engine.definitions, match?) do
+            %{"id" => id} = definition ->
+              if CustomFields.validate_answer(value, definition) |> elem(0) == :ok,
+                do: [{id, value}],
+                else: []
+
+            nil ->
+              []
+          end
+
+        _none ->
+          []
+      end)
+      |> Map.new()
+
+    %{engine | answers: Map.merge(seeds, engine.answers)}
+  end
+
+  defp seed_fragment_answers(engine, _socket), do: engine
+
+  defp question_label(%{"label" => label}) when is_binary(label),
+    do: label |> String.normalize(:nfc) |> String.trim() |> String.downcase() |> String.replace(~r/[\s*:]+$/u, "")
+
+  defp question_label(_definition), do: ""
+
+  defp company_question?(%{"type" => type} = definition) when type in ["short_text"] do
+    label = question_label(definition)
+    Regex.match?(~r/^firm(a|en)/u, label) or Regex.match?(~r/^(name des )?unternehmens?$/u, label)
+  end
+
+  defp company_question?(_definition), do: false
+
+  defp phone_question?(%{"type" => "phone"}), do: true
+
+  defp phone_question?(definition),
+    do: String.starts_with?(question_label(definition), "telefon")
 
   defp do_handle_schedule_entry(socket, params) do
     normalized_duration =
@@ -489,7 +544,8 @@ defmodule TymeslotWeb.Themes.Shared.LiveHelpers.StepEntry do
   end
 
   defp fragment_prefill(%{assigns: %{reschedule_meeting_uid: uid}}) when is_binary(uid), do: %{}
-  defp fragment_prefill(socket), do: socket.assigns[:attendee_prefill] || %{}
+  defp fragment_prefill(socket),
+    do: Map.take(socket.assigns[:attendee_prefill] || %{}, ["name", "email"])
 
   @doc """
   Subscribes the booking page to live seat updates for the resolved meeting

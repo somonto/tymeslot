@@ -17,8 +17,14 @@
 // (NameValidator 100, EmailValidator 254 characters). A longer value would be
 // refused on submit anyway, and carrying it in the connect params makes the
 // websocket URL too long to open, leaving the page without a live connection.
-const PREFILL_LIMITS = { name: 100, email: 254 }
+//
+// Somonto fork: `company` and `phone` too, which seed the answers to the
+// meeting type's company and phone questions (server side, `ThemeFlow`).
+// A `+` in `name` and `company` reads as a space, as a link built with
+// URLSearchParams writes one (an email's or phone's own `+` arrives as %2B).
+const PREFILL_LIMITS = { name: 100, email: 254, company: 180, phone: 40 }
 const PREFILL_KEYS = Object.keys(PREFILL_LIMITS)
+const PLUS_AS_SPACE = new Set(["name", "company"])
 
 // Counted in code points, as the server counts characters.
 const withinLimit = (value, limit) => value.length <= limit || [...value].length <= limit
@@ -61,7 +67,8 @@ export function takeAttendeePrefill(loc = window.location, hist = window.history
     if (seen.has(key)) continue
     seen.add(key)
     const eq = segment.indexOf("=")
-    const value = eq === -1 ? "" : decode(segment.slice(eq + 1))
+    const raw = eq === -1 ? "" : segment.slice(eq + 1)
+    const value = decode(PLUS_AS_SPACE.has(key) ? raw.replace(/\+/g, " ") : raw)
     if (value && withinLimit(value, PREFILL_LIMITS[key])) prefill[key] = value
   }
 
