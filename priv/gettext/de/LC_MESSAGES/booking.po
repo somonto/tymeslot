@@ -1080,3 +1080,28 @@ msgstr "Für diesen Termintyp sind derzeit keine Zeiten buchbar."
 #, elixir-autogen, elixir-format
 msgid "%{page} with %{name}"
 msgstr "%{page} mit %{name}"
+
+# Somonto fork: details step in three pages (Quill), AGPL source link.
+msgid "Your details"
+msgstr "Ihre Angaben"
+
+msgid "Contact"
+msgstr "Kontakt"
+
+msgid "Summary"
+msgstr "Übersicht"
+
+msgid "With"
+msgstr "Mit"
+
+msgid "When"
+msgstr "Wann"
+
+msgid "The confirmation goes to %{email}."
+msgstr "Die Bestätigung geht an %{email}."
+
+msgid "Book the call"
+msgstr "Gespräch buchen"
+
+msgid "Source code (AGPL)"
+msgstr "Quelltext (AGPL)"

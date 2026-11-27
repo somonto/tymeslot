@@ -264,3 +264,7 @@ msgstr[1] "%{count} Minuten"
 #, elixir-autogen, elixir-format
 msgid "%{city} time (%{offset})"
 msgstr "Zeit in %{city} (%{offset})"
+
+# Somonto fork: day and time without the zone abbreviation (the zone is named beside it).
+msgid "%{weekday}, %{day} %{month} %{year} at %{time}"
+msgstr "%{weekday}, %{day}. %{month} %{year} um %{time}"

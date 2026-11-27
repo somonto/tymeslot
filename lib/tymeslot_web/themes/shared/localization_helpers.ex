@@ -84,6 +84,34 @@ defmodule TymeslotWeb.Themes.Shared.LocalizationHelpers do
     do: dgettext("datetime", "Invalid date/time")
 
   @doc """
+  Somonto fork: the chosen day and time without the zone's abbreviation
+  ("Friday, 28 November 2026 at 10:00"), for a line that names the zone
+  beside it (`format_zone_label/3`): an abbreviation such as "+07" is no name.
+  """
+  @spec format_booking_date_time(String.t() | nil, String.t() | nil, String.t() | nil) ::
+          String.t()
+  def format_booking_date_time(date, time, timezone)
+      when is_binary(date) and is_binary(time) and is_binary(timezone) do
+    with {:ok, date_struct} <- parse_date(date),
+         {:ok, time_obj} <- DateTimeUtils.parse_time_string(time),
+         {:ok, naive_dt} <- NaiveDateTime.new(date_struct, time_obj),
+         {:ok, dt} <- DateTime.from_naive(naive_dt, timezone) do
+      dgettext("datetime", "%{weekday}, %{day} %{month} %{year} at %{time}",
+        weekday: weekday_name(Date.day_of_week(DateTime.to_date(dt))),
+        day: dt.day,
+        month: month_in_date(dt.month),
+        year: dt.year,
+        time: format_time_by_locale(dt)
+      )
+    else
+      _error -> dgettext("datetime", "%{date} at %{time}", date: date, time: time)
+    end
+  end
+
+  def format_booking_date_time(_date, _time, _timezone),
+    do: dgettext("datetime", "Invalid date/time")
+
+  @doc """
   The visitor's zone named as a time, "Berlin time (UTC+1)", with the offset in
   force at the slot starting at `time` on `date`; the offset now when no single
   slot is chosen.

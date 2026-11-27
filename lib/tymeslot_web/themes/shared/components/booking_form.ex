@@ -57,6 +57,16 @@ defmodule TymeslotWeb.Themes.Shared.Components.BookingForm do
 
   attr :message_rows, :integer, default: 3
 
+  attr :show_message, :boolean,
+    default: true,
+    doc: "Somonto fork: false leaves the message field out of the form"
+
+  attr :hidden_fields, :list,
+    default: [],
+    doc:
+      "Somonto fork: of `:name` and `:email`, the ones kept in the form but not shown " <>
+        "(a theme asking them on separate pages); they are still submitted"
+
   attr :labels, :map,
     default: nil,
     doc: "labels and placeholders, keyed #{inspect(@label_keys)}; `default_labels/0` when nil"
@@ -98,6 +108,7 @@ defmodule TymeslotWeb.Themes.Shared.Components.BookingForm do
           labels={@labels}
           validation_errors={@validation_errors}
           target={@target}
+          hidden_fields={@hidden_fields}
         />
       </div>
       <.contact_fields
@@ -106,9 +117,11 @@ defmodule TymeslotWeb.Themes.Shared.Components.BookingForm do
         labels={@labels}
         validation_errors={@validation_errors}
         target={@target}
+        hidden_fields={@hidden_fields}
       />
 
       <.input
+        :if={@show_message}
         field={f[:message]}
         type="textarea"
         label={@labels.message}
@@ -189,11 +202,13 @@ defmodule TymeslotWeb.Themes.Shared.Components.BookingForm do
   attr :labels, :map, required: true
   attr :validation_errors, :any, required: true
   attr :target, :any, required: true
+  attr :hidden_fields, :list, default: []
 
   defp contact_fields(assigns) do
     ~H"""
-    <.input
-      field={@f[:name]}
+    <div class="booking-field booking-field--name" hidden={:name in @hidden_fields}>
+      <.input
+        field={@f[:name]}
       label={@labels.name}
       placeholder={@labels.name_placeholder}
       errors={FormValidationHelpers.field_errors(@validation_errors, :name)}
@@ -202,10 +217,13 @@ defmodule TymeslotWeb.Themes.Shared.Components.BookingForm do
       phx-blur="field_blur"
       phx-value-field="name"
       phx-target={@target}
+      autocomplete="name"
     />
+    </div>
 
-    <.input
-      field={@f[:email]}
+    <div class="booking-field booking-field--email" hidden={:email in @hidden_fields}>
+      <.input
+        field={@f[:email]}
       label={@labels.email}
       type="email"
       placeholder={@labels.email_placeholder}
@@ -215,7 +233,9 @@ defmodule TymeslotWeb.Themes.Shared.Components.BookingForm do
       phx-blur="field_blur"
       phx-value-field="email"
       phx-target={@target}
+      autocomplete="email"
     />
+    </div>
     """
   end
 end
