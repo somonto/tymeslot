@@ -38,6 +38,14 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: CalDAV (Radicale, empty calendar)
+        run: |
+          pipx install radicale==3.5.4 >/dev/null 2>&1 || pip install --user radicale==3.5.4
+          mkdir -p /tmp/radicale
+          printf '[server]\nhosts = 0.0.0.0:5232\n[auth]\ntype = none\n[storage]\nfilesystem_folder = /tmp/radicale\n' > /tmp/radicale.conf
+          nohup radicale --config /tmp/radicale.conf > /tmp/radicale.log 2>&1 &
+          for i in $(seq 1 20); do curl -fsS -o /dev/null -u probe:probe http://localhost:5232/ && break; sleep 1; done
+          curl -fsS -u probe:probe -X MKCALENDAR http://localhost:5232/probe/termine/ -o /dev/null -w 'MKCALENDAR %{http_code}\n'
       - name: Start Tymeslot
         env:
           VERSION: ${{ github.event.inputs.version }}
@@ -46,6 +54,7 @@ jobs:
             -e DEPLOYMENT_TYPE=docker -e PHX_HOST=localhost -e URL_SCHEME=http -e PORT=4000 -e LISTEN_IP=0.0.0.0 \
             -e SECRET_KEY_BASE="$(openssl rand -hex 48)" -e DATA_ENCRYPTION_KEY="$(openssl rand -base64 32)" \
             -e DATABASE_HOST="$(hostname -I | awk '{print $1}')" -e DATABASE_PORT=5432 -e POSTGRES_DB=tymeslot -e POSTGRES_USER=probe -e POSTGRES_PASSWORD=probe \
+            -e ALLOW_PRIVATE_IPS_FOR_CALENDAR=true -e SICHT_CALDAV_URL="http://$(hostname -I | awk '{print $1}'):5232/probe/" \
             -e EMAIL_ADAPTER=test -e EMAIL_FROM_ADDRESS=probe@example.invalid -e ADMIN_ALERTS_ENABLED=false -e REGISTRATION_ENABLED=false \
             "ghcr.io/somonto/tymeslot:$VERSION"
           for i in $(seq 1 60); do curl -fsS -o /dev/null http://localhost:4000/healthcheck && break; sleep 3; done
@@ -63,7 +72,9 @@ jobs:
             bash -c 'npm init -y >/dev/null && npm install --no-save playwright@1.57.0 >/dev/null && node sicht.mjs' \
             | tee somonto/sicht/sicht-ausgabe/bericht.json
       - if: failure()
-        run: docker logs app 2>&1 | tail -120
+        run: |
+          docker logs app 2>&1 | tail -120
+          tail -40 /tmp/radicale.log || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
