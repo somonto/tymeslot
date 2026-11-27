@@ -14,7 +14,8 @@ caldav = System.fetch_env!("SICHT_CALDAV_URL")
   Tymeslot.Integrations.Calendar.create_integration_with_validation(user.id,
     %{"provider" => "caldav", "name" => "Probe", "url" => caldav, "username" => "probe", "password" => "probe", "calendar_paths" => "/probe/termine/"}, [])
 IO.inspect(Map.take(kalender, [:id, :provider, :default_booking_calendar_id, :calendar_list]), label: "KALENDER")
-mt = Repo.insert!(%MeetingTypeSchema{calendar_integration_id: kalender.id, user_id: user.id, name: "Erstgespräch", description: "", duration_minutes: 15, icon: "hero-bolt", is_active: true, allow_video: false, sort_order: 0})
+{:ok, _} = Tymeslot.Integrations.Calendar.update_integration(kalender, %{default_booking_calendar_id: "/probe/termine/"})
+mt = Repo.insert!(%MeetingTypeSchema{calendar_integration_id: kalender.id, target_calendar_id: "/probe/termine/", user_id: user.id, name: "Erstgespräch", description: "", duration_minutes: 15, icon: "hero-bolt", is_active: true, allow_video: false, sort_order: 0})
 {:ok, _} = Tymeslot.MeetingTypes.update_meeting_type(mt, %{"custom_fields" => [
   %{"id" => "cf-company", "type" => "short_text", "label" => "Name des Unternehmens", "required" => true, "position" => 0},
   %{"id" => "cf-phone", "type" => "phone", "label" => "Telefonnummer", "required" => true, "position" => 1}]})
