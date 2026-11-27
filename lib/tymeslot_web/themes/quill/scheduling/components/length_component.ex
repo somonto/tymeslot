@@ -13,6 +13,7 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.LengthComponent do
   alias TymeslotWeb.Themes.Shared.Components.MeetingPrice
   alias TymeslotWeb.Themes.Shared.Journey.Components, as: JourneyComponents
   alias TymeslotWeb.Themes.Shared.LocalizationHelpers
+  alias TymeslotWeb.Themes.Shared.SomontoSteps
   alias TymeslotWeb.Themes.Shared.StepEvents
   use TymeslotWeb.Components.CoreComponents
 
@@ -42,6 +43,8 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.LengthComponent do
       id={assigns[:moment] && "#{assigns[:moment]}-step"}
       data-moment={assigns[:moment]}
       data-moment-state={assigns[:moment_state]}
+      data-somonto-step="laenge"
+      data-somonto-step-index={SomontoSteps.index(assigns, :length)}
     >
       <.page_layout
         show_steps={true}

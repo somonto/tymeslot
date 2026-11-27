@@ -19,7 +19,10 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.ScheduleComponent do
   alias TymeslotWeb.Themes.Shared.Components.TimezonePicker
   alias TymeslotWeb.Themes.Shared.Journey.Components, as: JourneyComponents
   alias TymeslotWeb.Themes.Shared.Journey.Runtime
+  alias Tymeslot.Demo
+  alias Tymeslot.Profiles
   alias TymeslotWeb.Themes.Shared.LocalizationHelpers
+  alias TymeslotWeb.Themes.Shared.SomontoSteps
   alias TymeslotWeb.Themes.Shared.StepEvents
   alias TymeslotWeb.Themes.Shared.TimezoneHelpers
 
@@ -85,7 +88,22 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.ScheduleComponent do
     assigns =
       assign(assigns,
         navigable_steps: Runtime.navigable_steps(assigns),
-        step_numbers: Runtime.step_numbers(assigns)
+        step_numbers: Runtime.step_numbers(assigns),
+        hide_duration: SomontoSteps.hide_duration?(assigns),
+        step_index: SomontoSteps.index(assigns, :schedule)
+      )
+
+    # Somonto fork: without the list of meeting types (one type, or a direct
+    # link) the organiser's photo and greeting open the calendar instead.
+    assigns =
+      assign(assigns,
+        greeting:
+          assigns.hide_duration && assigns.organizer_profile &&
+            BookingText.greeting(
+              assigns.organizer_profile,
+              Profiles.display_name(assigns.organizer_profile),
+              :quill
+            )
       )
 
     ~H"""
@@ -95,12 +113,15 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.ScheduleComponent do
       id={assigns[:moment] && "#{assigns[:moment]}-step"}
       data-moment={assigns[:moment]}
       data-moment-state={assigns[:moment_state]}
+      data-somonto-step="termin"
+      data-somonto-step-index={@step_index}
     >
       <.page_layout
         show_steps={true}
         navigable_steps={@navigable_steps}
         step_numbers={@step_numbers}
         current_step={2}
+        hide_duration={@hide_duration}
         slug={@duration}
         username_context={@username_context}
       >
@@ -109,6 +130,20 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.ScheduleComponent do
             <div class="w-full min-h-0">
               <.glass_morphism_card class="booker-card calendar-card" data-testid="booker-card">
                 <div class="schedule-card-body min-h-0">
+                  <%!-- Somonto fork: photo and greeting when the overview was passed over. --%>
+                  <div
+                    :if={@hide_duration && @organizer_profile}
+                    class="schedule-organizer"
+                    data-testid="schedule-organizer"
+                  >
+                    <img
+                      src={Demo.avatar_url(@organizer_profile)}
+                      alt={Demo.avatar_alt_text(@organizer_profile)}
+                      class="schedule-organizer__avatar"
+                    />
+                    <p :if={@greeting} class="schedule-organizer__greeting">{@greeting}</p>
+                  </div>
+
                   <%!-- Header: title + compact timezone trigger --%>
                   <div class="schedule-card-header">
                     <div class="schedule-title-area">

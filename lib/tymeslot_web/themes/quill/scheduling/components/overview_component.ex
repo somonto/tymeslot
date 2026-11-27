@@ -111,6 +111,8 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.OverviewComponent do
       id={assigns[:moment] && "#{assigns[:moment]}-step"}
       data-moment={assigns[:moment]}
       data-moment-state={assigns[:moment_state]}
+      data-somonto-step="dauer"
+      data-somonto-step-index="1"
     >
       <.page_layout
         show_steps={true}

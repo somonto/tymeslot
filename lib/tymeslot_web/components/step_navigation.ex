@@ -31,6 +31,12 @@ defmodule TymeslotWeb.StepNavigation do
     default: %{},
     doc: "the journey's step number of each moment, by moment key"
 
+  attr :hide_duration, :boolean,
+    default: false,
+    doc:
+      "Somonto fork: no \"Duration\" step (one meeting type, or a direct link); " <>
+        "the other steps are numbered from 1 on screen, their targets unchanged"
+
   @spec step_indicator(map()) :: Phoenix.LiveView.Rendered.t()
   def step_indicator(assigns) do
     assigns =
@@ -41,17 +47,20 @@ defmodule TymeslotWeb.StepNavigation do
 
     ~H"""
     <div class={"step-indicator-container flex items-center space-x-3 sm:space-x-4 md:space-x-6 #{@class}"}>
-      <.step_item
-        step={1}
-        current_step={@current_step}
-        label={dgettext("onboarding", "Duration")}
-        clickable={@current_step > 1 and 1 in @navigable_steps}
-      />
+      <%= if !@hide_duration do %>
+        <.step_item
+          step={1}
+          current_step={@current_step}
+          label={dgettext("onboarding", "Duration")}
+          clickable={@current_step > 1 and 1 in @navigable_steps}
+        />
 
-      <div class={"step-connector " <> connector_class(1, @current_step)}></div>
+        <div class={"step-connector " <> connector_class(1, @current_step)}></div>
+      <% end %>
 
       <.step_item
         step={2}
+        shown_number={@hide_duration && 1}
         current_step={@current_step}
         label={dgettext("onboarding", "Date & Time")}
         target={@schedule_target}
@@ -62,6 +71,7 @@ defmodule TymeslotWeb.StepNavigation do
 
       <.step_item
         step={3}
+        shown_number={@hide_duration && 2}
         current_step={@current_step}
         label={dgettext("onboarding", "Details")}
         target={@details_target}
@@ -72,6 +82,7 @@ defmodule TymeslotWeb.StepNavigation do
 
       <.step_item
         step={4}
+        shown_number={@hide_duration && 3}
         current_step={@current_step}
         label={dgettext("onboarding", "Confirmation")}
         clickable={false}
@@ -85,6 +96,7 @@ defmodule TymeslotWeb.StepNavigation do
   attr :label, :string, required: true
   attr :clickable, :boolean, default: false
   attr :target, :integer, default: nil, doc: "the step a click sends; the step itself if nil"
+  attr :shown_number, :any, default: nil, doc: "Somonto fork: the number shown, if not `step`"
 
   @spec step_item(map()) :: Phoenix.LiveView.Rendered.t()
   defp step_item(assigns) do
@@ -101,7 +113,7 @@ defmodule TymeslotWeb.StepNavigation do
           class="flex flex-col items-center group"
         >
           <div class={"step-circle step-circle--clickable " <> step_class(@step, @current_step) <> " cursor-pointer hover:scale-125 transform transition-all"}>
-            <span class="text-sm font-bold">{@step}</span>
+            <span class="text-sm font-bold">{@shown_number || @step}</span>
           </div>
           <span class={"step-label " <> step_label_class(@step, @current_step) <> " mt-1 sm:mt-2 text-xs transition-colors"}>
             {@label}
@@ -109,7 +121,7 @@ defmodule TymeslotWeb.StepNavigation do
         </button>
       <% else %>
         <div class={"step-circle " <> step_class(@step, @current_step)}>
-          <span class="text-sm font-bold">{@step}</span>
+          <span class="text-sm font-bold">{@shown_number || @step}</span>
         </div>
         <span class={"step-label " <> step_label_class(@step, @current_step) <> " mt-1 sm:mt-2 text-xs"}>
           {@label}

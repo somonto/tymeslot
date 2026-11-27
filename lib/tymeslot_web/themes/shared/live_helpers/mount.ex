@@ -190,6 +190,8 @@ defmodule TymeslotWeb.Themes.Shared.LiveHelpers.Mount do
         |> resume_overview_entry(params)
         |> Runtime.transition_to(initial_state, params)
         |> Runtime.resume(params)
+        # Somonto fork: a booking page with one meeting type opens on its calendar.
+        |> TymeslotWeb.Themes.Shared.SomontoSteps.maybe_skip_overview()
 
       if socket.redirected do
         {:noreply, socket}

@@ -27,6 +27,10 @@ defmodule TymeslotWeb.Components.CoreComponents.Layout do
     default: nil,
     doc: "optional username shown in the page header for profile context"
 
+  attr :hide_duration, :boolean,
+    default: false,
+    doc: "Somonto fork: leave the \"Duration\" step out of the step indicator"
+
   @spec page_layout(map()) :: Phoenix.LiveView.Rendered.t()
   def page_layout(assigns) do
     ~H"""
@@ -41,6 +45,7 @@ defmodule TymeslotWeb.Components.CoreComponents.Layout do
                 navigable_steps={@navigable_steps}
                 step_numbers={@step_numbers}
                 username_context={@username_context}
+                hide_duration={@hide_duration}
               />
             </div>
           </div>

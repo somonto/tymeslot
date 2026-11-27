@@ -19,6 +19,7 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.ConfirmationComponent d
   alias TymeslotWeb.Themes.Shared.Journey.Runtime
   alias TymeslotWeb.Themes.Shared.LocalizationHelpers
   alias TymeslotWeb.Themes.Shared.PathHandlers
+  alias TymeslotWeb.Themes.Shared.SomontoSteps
   alias TymeslotWeb.Themes.Shared.StepEvents
 
   use TymeslotWeb.Components.CoreComponents
@@ -38,11 +39,17 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.ConfirmationComponent d
       )
 
     ~H"""
-    <div class="container quill-container flex-1" data-locale={@locale}>
+    <div
+      class="container quill-container flex-1"
+      data-locale={@locale}
+      data-somonto-step="bestaetigung"
+      data-somonto-step-index={SomontoSteps.index(assigns, :booking) + 3}
+    >
       <.page_layout
         show_steps={true}
         navigable_steps={@navigable_steps}
         step_numbers={@step_numbers}
+        hide_duration={SomontoSteps.hide_duration?(assigns)}
         current_step={4}
         slug={@duration}
         username_context={@username_context}
