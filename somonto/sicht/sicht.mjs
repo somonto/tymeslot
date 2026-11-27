@@ -11,7 +11,7 @@ const dateien = {
   "/assets/somonto-stil.css": ["somonto-stil.css", "text/css"],
   "/assets/somonto-golos-text-variable.woff2": ["somonto-golos-text-variable.woff2", "font/woff2"],
 };
-const ANKER = "#name=Anna+Muster&email=anna%40tischlerei-muster.at&company=Tischlerei+Muster+GmbH&phone=%2B43+664+1234567";
+const ANKER = "#name=Anna%20Muster&email=anna%40tischlerei-muster.at&company=Tischlerei%20Muster%20GmbH&phone=%2B43%20664%201234567"; // wie das CRM (encodeURIComponent, T4a)
 
 async function lauf(browser, breite, { anker = "" } = {}) {
   const page = await browser.newPage({ viewport: { width: breite, height: breite < 768 ? 800 : 900 }, deviceScaleFactor: 2, locale: "de-AT", timezoneId: "Europe/Vienna" });
