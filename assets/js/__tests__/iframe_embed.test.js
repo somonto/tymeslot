@@ -586,3 +586,25 @@ describe('step messages (Somonto)', () => {
     expect(stepCalls()).toHaveLength(0)
   })
 })
+
+// Somonto fork: "Next step" into view, scrolled by the embedding page.
+describe('reveal messages (Somonto)', () => {
+  const revealCalls = () =>
+    window.parent.postMessage.mock.calls.filter(([data]) => data && data.type === 'tymeslot-reveal')
+
+  test('forwards the button position to the parent origin', () => {
+    runScript({ isEmbedded: true, referrer: 'https://somonto.com/beratung' })
+    window.dispatchEvent(new CustomEvent('somonto:weiter-sichtbar', { detail: { top: 1180.4, bottom: 1230.6 } }))
+
+    expect(revealCalls()).toContainEqual([{ type: 'tymeslot-reveal', top: 1180, bottom: 1231 }, 'https://somonto.com'])
+  })
+
+  test('forwards nothing malformed', () => {
+    runScript({ isEmbedded: true, referrer: 'https://somonto.com/' })
+    for (const detail of [null, { top: 'x', bottom: 5 }, { top: -5, bottom: 10 }, { top: 50, bottom: 10 }]) {
+      window.dispatchEvent(new CustomEvent('somonto:weiter-sichtbar', { detail }))
+    }
+
+    expect(revealCalls()).toHaveLength(0)
+  })
+})

@@ -140,6 +140,10 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.ScheduleComponent do
                       src={Demo.avatar_url(@organizer_profile)}
                       alt={Demo.avatar_alt_text(@organizer_profile)}
                       class="schedule-organizer__avatar"
+                      width="46"
+                      height="46"
+                      decoding="async"
+                      fetchpriority="low"
                     />
                     <p :if={@greeting} class="schedule-organizer__greeting">{@greeting}</p>
                   </div>

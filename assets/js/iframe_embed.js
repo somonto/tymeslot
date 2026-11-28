@@ -198,6 +198,23 @@
     }
   }
 
+  // --- Somonto fork: "Next step" into view ---
+  // After a time is picked, somonto_weiter_scroll.js names where the button
+  // sits in this document (`somonto:weiter-sichtbar`); only the embedding page
+  // can scroll it into view, so it gets `{ type: "tymeslot-reveal", top, bottom }`.
+  window.addEventListener("somonto:weiter-sichtbar", function (event) {
+    const detail = event && event.detail;
+    if (!detail) return;
+    const top = Math.round(Number(detail.top));
+    const bottom = Math.round(Number(detail.bottom));
+    if (!Number.isFinite(top) || !Number.isFinite(bottom) || top < 0 || bottom < top) return;
+    try {
+      window.parent.postMessage({ type: "tymeslot-reveal", top: top, bottom: bottom }, targetOrigin);
+    } catch (_) {
+      // Parent unreachable — nothing to scroll.
+    }
+  });
+
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) {
       postHeight();

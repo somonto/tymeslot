@@ -63,7 +63,7 @@ jobs:
       - run: npm ci --prefix assets
       - name: JS tests
         working-directory: assets
-        run: npx vitest run js/__tests__/attendee_prefill.test.js js/__tests__/iframe_embed.test.js
+        run: npx vitest run js/__tests__/attendee_prefill.test.js js/__tests__/iframe_embed.test.js js/__tests__/somonto_weiter_scroll.test.js
       # The full upstream suite; failures must be on somonto/bekannte-abweichungen.txt
       # (tests of the old Quill flow). A new failure turns the run red.
       - name: Full suite against the known differences

@@ -37,6 +37,7 @@
 
     <%!-- Theme-specific CSS --%>
     {render_theme_css(assigns[:theme_id])}
+    {render_somonto_preloads(assigns[:theme_id])}
     {render_font_preloads(assigns)}
 
     <%!-- Additional CSS from external layers (e.g., SaaS branding) --%>

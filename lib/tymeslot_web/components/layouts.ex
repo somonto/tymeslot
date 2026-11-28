@@ -140,6 +140,24 @@ defmodule TymeslotWeb.Layouts do
     """
   end
 
+  # Somonto fork: on the Quill page the served theme file is a small stand-in
+  # that `@import`s the original stylesheet and the Somonto style layer
+  # (betrieb/tymeslot-stil/bauen.sh), so the browser would ask for those two
+  # only once the stand-in has arrived. Preloading them from the head fetches
+  # all three at once: one round trip less before the first paint on a phone.
+  # The paths are the unhashed ones the `@import`s name.
+  @somonto_quill_preloads ["/assets/scheduling-theme-quill.css", "/assets/somonto-stil.css"]
+
+  @spec render_somonto_preloads(String.t() | nil) :: Phoenix.LiveView.Rendered.t()
+  defp render_somonto_preloads(theme_id) do
+    {_id, key} = resolve_theme(theme_id)
+    assigns = %{hrefs: if(key == :quill, do: @somonto_quill_preloads, else: [])}
+
+    ~H"""
+    <link :for={href <- @hrefs} rel="preload" href={href} as="style" />
+    """
+  end
+
   # The page's web fonts, preloaded from the head so the download starts with
   # the stylesheet's: the font the customisation chose (`Tokens.media[:font]`),
   # else the one the theme's stylesheet sets its text in.

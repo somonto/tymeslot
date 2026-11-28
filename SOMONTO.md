@@ -24,6 +24,11 @@ Tymeslot-Version.
 - Vorausfüllen per Anker zusätzlich `company` und `phone` (Antworten auf die Firmen- und Telefonfrage); `+` in `name`
   und `company` gilt als Leerzeichen. `assets/js/attendee_prefill.js`, `lib/tymeslot/scheduling/theme_flow.ex`,
   `lib/tymeslot_web/themes/shared/live_helpers/step_entry.ex`
+- Nach der Wahl einer Uhrzeit gleitet die Seite langsam (800 ms, ease-in-out, eigene rAF-Animation) zu „Weiter“, nur wenn der
+  Knopf nicht im Bild ist; „Bewegung reduzieren“ springt. Eingebettet meldet die Seite `{ type: "tymeslot-reveal", top, bottom }`
+  an die einbettende Seite, die scrollt. `assets/js/somonto_weiter_scroll.js`, `assets/js/iframe_embed.js`
+- Erstes Laden (Quill): Preload der beiden per `@import` geladenen Stile (`scheduling-theme-quill.css`, `somonto-stil.css`) im
+  Kopf, Foto mit `fetchpriority="low"`. `lib/tymeslot_web/components/layouts.ex`, `…/quill/…/schedule_component.ex`
 - Fußzeile jeder Buchungsseite mit Link auf diesen Quelltext (AGPL-3.0 § 13). `…/shared/components/legal_links.ex`
 - Tests: `test/tymeslot_web/live/themes/somonto_quill_details_test.exs`, JS-Tests in `assets/js/__tests__/`.
   Tests von Tymeslot, die den alten Quill-Ablauf (Fragen je Seite, Nachrichtenfeld, Schritt „Dauer“, Fuß ohne

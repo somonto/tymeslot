@@ -387,6 +387,24 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
     end
   end
 
+  describe "the first load" do
+    test "preloads both stylesheets the stand-in imports, the photo last and small",
+         %{conn: conn} do
+      %{profile: profile} = one_type("somonto-first-load")
+      document = conn |> get(~p"/#{profile.username}") |> html_response(200) |> Floki.parse_document!()
+
+      assert document
+             |> Floki.find(~s(head link[rel="preload"][as="style"]))
+             |> Enum.flat_map(&Floki.attribute(&1, "href")) ==
+               ["/assets/scheduling-theme-quill.css", "/assets/somonto-stil.css"]
+
+      [avatar] = Floki.find(document, "img.schedule-organizer__avatar")
+      assert Floki.attribute(avatar, "fetchpriority") == ["low"]
+      assert Floki.attribute(avatar, "decoding") == ["async"]
+      assert Floki.attribute(avatar, "width") == ["46"]
+    end
+  end
+
   describe "the footer" do
     test "links the source code (AGPL), as a plain link named Source code", %{conn: conn} do
       %{profile: profile} = one_type("somonto-agpl")

@@ -12,9 +12,13 @@ import { PaymentRedirectOpenTab } from "../hooks/payment_redirect_open_tab"
 import { WeekGridScroll } from "../hooks/week_grid_scroll"
 import { ClampedText } from "../hooks/clamped_text"
 import { installRevealIntoView } from "../reveal_into_view"
+import { installWeiterScroll } from "../somonto_weiter_scroll"
 
 // `JS.dispatch("tymeslot:reveal", ...)` from a booking page's templates.
 installRevealIntoView()
+
+// Somonto fork: after a time is picked, glide to "Next step" when it is out of sight.
+installWeiterScroll()
 
 // Define public-specific hooks
 // (RecaptchaV3 is already registered in CoreHooks and inherited via initializeBundle)
