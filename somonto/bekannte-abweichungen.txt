@@ -28,6 +28,7 @@ TymeslotWeb.BookingPagePublicTest :: a page shows its own texts and meeting type
 TymeslotWeb.BookingPagePublicTest :: a page's start page keeps its address on every patch
 TymeslotWeb.BookingPagePublicTest :: a type the address does not offer, named by duration is not taken from a crafted select_duration on a page
 TymeslotWeb.Dashboard.Availability.BufferBookingJourneyTest :: the buffers set on the availability page decide which times a visitor can book
+TymeslotWeb.GettextPseudoTest :: real locales are unaffected German renders the real translation without markers
 TymeslotWeb.Live.MultilingualBookingTest :: multilingual booking flow completeness completes full booking flow in every supported locale
 TymeslotWeb.Live.MultilingualBookingTest :: multilingual booking flow completeness language persists throughout booking flow steps
 TymeslotWeb.Live.Scheduling.ApprovalBookingJourneyTest :: a request at a length not the type's own keeps it through approval
@@ -260,9 +261,13 @@ TymeslotWeb.SavedLocationsJourneyTest :: journey 2: a meeting type offering in p
 TymeslotWeb.SavedLocationsJourneyTest :: journey 4: a reschedule moves the meeting to another venue the picker opens on the meeting's venue, and choosing another moves the meeting
 TymeslotWeb.SavedLocationsJourneyTest :: journey 5: deleting a location a meeting is booked at the booked meeting keeps its address, and the next booker is told it will be arranged
 TymeslotWeb.Scheduling.BookingUnverifiableTest :: is refused with a try-again message and no error logged
+TymeslotWeb.Themes.ConfirmationApprovalTest :: Quill confirmation screen confirmed booking: unchanged copy and no pending styling
+TymeslotWeb.Themes.ConfirmationApprovalTest :: Quill confirmation screen held request: no confirmed-only copy, and held-specific copy instead
 TymeslotWeb.Themes.MarkupContractTest :: Quill: a type offering several lengths marks each length
 TymeslotWeb.Themes.MarkupContractTest :: Quill: every moment marks the facts it collects
 TymeslotWeb.Themes.NextDayEndComponentTest :: Quill's booking step names the end when the meeting runs past midnight
+TymeslotWeb.Themes.NextDayEndComponentTest :: Quill's confirmation names the visitor's zone as a time on the meeting's day
+TymeslotWeb.Themes.NextDayEndComponentTest :: Quill's confirmation step names the end when the meeting runs past midnight
 TymeslotWeb.Themes.NextDayEndTest :: Quill names the end of a meeting that runs past midnight
 TymeslotWeb.Themes.NextDayEndTest :: Quill says nothing for a meeting that ends the day it starts
 TymeslotWeb.Themes.Quill.MarkupContractTest :: choosing a meeting type moves on, and back on the overview it shows chosen

@@ -16,11 +16,6 @@ msgstr ""
 msgid "%{name}, your meeting %{organizer} has been rescheduled."
 msgstr "%{name}, Ihr Termin %{organizer} wurde verschoben."
 
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "%{name}, your meeting %{organizer} is all set."
-msgstr "%{name}, Ihr Termin %{organizer} ist bestätigt."
-
 #: lib/tymeslot_web/themes/folio/scheduling/components/confirmation_component.ex
 #: lib/tymeslot_web/themes/rhythm/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
@@ -73,11 +68,6 @@ msgstr "Hier klicken, um einen Termin zu buchen"
 #, elixir-autogen, elixir-format
 msgid "Complete your payment in the new tab"
 msgstr "Schließen Sie Ihre Zahlung im neuen Tab ab"
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "Confirmation sent to"
-msgstr "Bestätigung gesendet an"
 
 #: lib/tymeslot_web/themes/folio/scheduling/components/you_moment.ex
 #: lib/tymeslot_web/themes/quill/scheduling/components/custom_questions_component.ex
@@ -1002,11 +992,6 @@ msgstr "Bezahlt"
 msgid "Price:"
 msgstr "Preis:"
 
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "Paid %{amount}"
-msgstr "%{amount} bezahlt"
-
 #: lib/tymeslot_web/themes/paper/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
 msgid "Booking confirmed"
@@ -1091,20 +1076,8 @@ msgstr "Kontakt"
 msgid "Summary"
 msgstr "Übersicht"
 
-msgid "With"
-msgstr "Mit"
-
-msgid "When"
-msgstr "Wann"
-
-msgid "The confirmation goes to %{email}."
-msgstr "Die Bestätigung geht an %{email}."
-
 msgid "Book the call"
 msgstr "Gespräch buchen"
-
-msgid "Source code (AGPL)"
-msgstr "Quelltext (AGPL)"
 
 #: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
 #, elixir-autogen, elixir-format
@@ -1115,7 +1088,6 @@ msgstr "E-Mail-Adresse"
 #, elixir-autogen, elixir-format
 msgid "In the browser, on a phone or computer. You don't need a camera."
 msgstr "Im Browser, am Handy oder Computer. Eine Kamera brauchen Sie nicht."
-
 
 #: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format

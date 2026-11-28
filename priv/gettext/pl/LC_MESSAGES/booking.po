@@ -13,11 +13,6 @@ msgstr ""
 msgid "%{name}, your meeting %{organizer} has been rescheduled."
 msgstr "%{name}, termin spotkania %{organizer} został zmieniony."
 
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "%{name}, your meeting %{organizer} is all set."
-msgstr "%{name}, spotkanie %{organizer} zostało umówione."
-
 #: lib/tymeslot_web/themes/folio/scheduling/components/confirmation_component.ex
 #: lib/tymeslot_web/themes/rhythm/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
@@ -70,11 +65,6 @@ msgstr "Kliknij, aby zarezerwować spotkanie"
 #, elixir-autogen, elixir-format
 msgid "Complete your payment in the new tab"
 msgstr "Dokończ płatność w nowej karcie"
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "Confirmation sent to"
-msgstr "Potwierdzenie wysłano na adres"
 
 #: lib/tymeslot_web/themes/folio/scheduling/components/you_moment.ex
 #: lib/tymeslot_web/themes/quill/scheduling/components/custom_questions_component.ex
@@ -1005,11 +995,6 @@ msgstr "Opłacono"
 msgid "Price:"
 msgstr "Cena:"
 
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "Paid %{amount}"
-msgstr "Zapłacono %{amount}"
-
 #: lib/tymeslot_web/themes/paper/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
 msgid "Booking confirmed"
@@ -1095,30 +1080,10 @@ msgstr "Zarezerwuj rozmowę"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: lib/tymeslot_web/themes/shared/components/legal_links.ex
-#, elixir-autogen, elixir-format
-msgid "Source code (AGPL)"
-msgstr "Kod źródłowy (AGPL)"
-
 #: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
 #, elixir-autogen, elixir-format
 msgid "Summary"
 msgstr "Podsumowanie"
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
-#, elixir-autogen, elixir-format
-msgid "The confirmation goes to %{email}."
-msgstr "Potwierdzenie zostanie wysłane na %{email}."
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
-#, elixir-autogen, elixir-format
-msgid "When"
-msgstr "Kiedy"
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
-#, elixir-autogen, elixir-format
-msgid "With"
-msgstr "Z kim"
 
 #: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
 #, elixir-autogen, elixir-format
@@ -1134,7 +1099,6 @@ msgstr "Adres e-mail"
 #, elixir-autogen, elixir-format
 msgid "In the browser, on a phone or computer. You don't need a camera."
 msgstr "W przeglądarce, na telefonie lub komputerze. Kamera nie jest potrzebna."
-
 
 #: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format

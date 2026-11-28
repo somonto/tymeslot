@@ -16,11 +16,6 @@ msgstr ""
 msgid "%{name}, your meeting %{organizer} has been rescheduled."
 msgstr "%{name}, vaše schůzka %{organizer} byla přesunuta."
 
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "%{name}, your meeting %{organizer} is all set."
-msgstr "%{name}, vaše schůzka %{organizer} je připravena."
-
 #: lib/tymeslot_web/themes/folio/scheduling/components/confirmation_component.ex
 #: lib/tymeslot_web/themes/rhythm/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
@@ -73,11 +68,6 @@ msgstr "Kliknutím naplánujete schůzku"
 #, elixir-autogen, elixir-format
 msgid "Complete your payment in the new tab"
 msgstr "Dokončete platbu na nové kartě"
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "Confirmation sent to"
-msgstr "Potvrzení odesláno na adresu"
 
 #: lib/tymeslot_web/themes/folio/scheduling/components/you_moment.ex
 #: lib/tymeslot_web/themes/quill/scheduling/components/custom_questions_component.ex
@@ -1008,11 +998,6 @@ msgstr "Zaplaceno"
 msgid "Price:"
 msgstr "Cena:"
 
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "Paid %{amount}"
-msgstr "Zaplaceno %{amount}"
-
 #: lib/tymeslot_web/themes/paper/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
 msgid "Booking confirmed"
@@ -1098,30 +1083,10 @@ msgstr "Rezervovat hovor"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: lib/tymeslot_web/themes/shared/components/legal_links.ex
-#, elixir-autogen, elixir-format
-msgid "Source code (AGPL)"
-msgstr "Zdrojový kód (AGPL)"
-
 #: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
 #, elixir-autogen, elixir-format
 msgid "Summary"
 msgstr "Shrnutí"
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
-#, elixir-autogen, elixir-format
-msgid "The confirmation goes to %{email}."
-msgstr "Potvrzení odejde na %{email}."
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
-#, elixir-autogen, elixir-format
-msgid "When"
-msgstr "Kdy"
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
-#, elixir-autogen, elixir-format
-msgid "With"
-msgstr "S kým"
 
 #: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
 #, elixir-autogen, elixir-format
@@ -1137,7 +1102,6 @@ msgstr "E-mailová adresa"
 #, elixir-autogen, elixir-format
 msgid "In the browser, on a phone or computer. You don't need a camera."
 msgstr "V prohlížeči, na telefonu nebo počítači. Kameru nepotřebujete."
-
 
 #: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format

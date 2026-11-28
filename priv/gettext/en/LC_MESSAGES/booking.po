@@ -16,11 +16,6 @@ msgstr ""
 msgid "%{name}, your meeting %{organizer} has been rescheduled."
 msgstr ""
 
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "%{name}, your meeting %{organizer} is all set."
-msgstr ""
-
 #: lib/tymeslot_web/themes/folio/scheduling/components/confirmation_component.ex
 #: lib/tymeslot_web/themes/rhythm/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
@@ -72,11 +67,6 @@ msgstr ""
 #: lib/tymeslot_web/themes/shared/components/awaiting_payment.ex
 #, elixir-autogen, elixir-format
 msgid "Complete your payment in the new tab"
-msgstr ""
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "Confirmation sent to"
 msgstr ""
 
 #: lib/tymeslot_web/themes/folio/scheduling/components/you_moment.ex
@@ -1002,11 +992,6 @@ msgstr ""
 msgid "Price:"
 msgstr ""
 
-#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
-#, elixir-autogen, elixir-format
-msgid "Paid %{amount}"
-msgstr ""
-
 #: lib/tymeslot_web/themes/paper/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
 msgid "Booking confirmed"
@@ -1091,29 +1076,9 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: lib/tymeslot_web/themes/shared/components/legal_links.ex
-#, elixir-autogen, elixir-format
-msgid "Source code (AGPL)"
-msgstr ""
-
 #: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
 #, elixir-autogen, elixir-format
 msgid "Summary"
-msgstr ""
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
-#, elixir-autogen, elixir-format
-msgid "The confirmation goes to %{email}."
-msgstr ""
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
-#, elixir-autogen, elixir-format
-msgid "When"
-msgstr ""
-
-#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
-#, elixir-autogen, elixir-format
-msgid "With"
 msgstr ""
 
 #: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
@@ -1130,7 +1095,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "In the browser, on a phone or computer. You don't need a camera."
 msgstr ""
-
 
 #: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
