@@ -60,6 +60,8 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
   @page_steps %{1 => "angaben", 2 => "kontakt", 3 => "uebersicht"}
 
   @impl Phoenix.LiveComponent
+  def update(%{details_next: true}, socket), do: {:ok, next_page(socket, nil)}
+
   def update(assigns, socket) do
     {:ok, socket} = StepEvents.update(assigns, socket)
 
@@ -76,10 +78,14 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
   def handle_event(event, params, socket) when event in @question_events,
     do: Events.handle_event(event, params, socket)
 
-  def handle_event("details_next", _params, socket), do: {:noreply, next_page(socket, nil)}
+  # Somonto: answers and form changes reach this component through the
+  # LiveView (`send(self(), ...)`). A click that arrives together with the
+  # last field's blur would be checked against the values before it, and the
+  # first Next would do nothing. Queued behind them, it sees what was typed.
+  def handle_event("details_next", _params, socket), do: queue_next(socket)
 
   # Enter in a question's own form: the same as Next on its page.
-  def handle_event("next_step", _params, socket), do: {:noreply, next_page(socket, nil)}
+  def handle_event("next_step", _params, socket), do: queue_next(socket)
 
   def handle_event("details_back", _params, socket), do: previous_page(socket)
   def handle_event("back_step", _params, socket), do: previous_page(socket)
@@ -389,6 +395,11 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
       email: dgettext("booking", "Email"),
       email_placeholder: ""
     })
+  end
+
+  defp queue_next(socket) do
+    send_update(self(), __MODULE__, id: socket.assigns.id, details_next: true)
+    {:noreply, socket}
   end
 
   defp next_page(socket, submitted_params) do
