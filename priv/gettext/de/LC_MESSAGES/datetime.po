@@ -266,6 +266,6 @@ msgid "%{city} time (%{offset})"
 msgstr "Zeit in %{city} (%{offset})"
 
 # Somonto fork: day and time without the zone abbreviation (the zone is named beside it).
-# The date never breaks: no-break spaces (U+00A0) between day, month and year.
+# Day and month never part: a no-break space (U+00A0) between them.
 msgid "%{weekday}, %{day} %{month} %{year} at %{time}"
-msgstr "%{weekday}, %{day}. %{month} %{year} um %{time}"
+msgstr "%{weekday}, %{day}. %{month} %{year} um %{time}"

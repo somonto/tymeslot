@@ -193,6 +193,7 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
       assert step_attr(view) == {"kontakt", "3"}
       assert hidden?(view, ".booking-field--name")
       refute hidden?(view, ".booking-field--email")
+
       assert has_element?(
                view,
                "[data-question='cf-phone'] [data-testid='booking-question-required']"
@@ -298,7 +299,7 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
   end
 
   describe "the date" do
-    test "never breaks between day, month and year (German)" do
+    test "never breaks between day and month (German)" do
       Gettext.put_locale(TymeslotWeb.Gettext, "de")
       on_exit(fn -> Gettext.put_locale(TymeslotWeb.Gettext, "en") end)
 
@@ -306,7 +307,7 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
                "2026-11-28",
                "09:00",
                "Europe/Vienna"
-             ) == "Samstag, 28.\u00a0November\u00a02026 um 09:00"
+             ) == "Samstag, 28.\u00a0November 2026 um 09:00"
     end
   end
 
