@@ -179,9 +179,9 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.ConfirmationComponent d
           )
           |> String.split(marker, parts: 2)
 
-        assigns = assign(assigns, before: before, after: Enum.join(rest), address: assigns[:email])
+        assigns = assign(assigns, lead: before, tail: Enum.join(rest), address: assigns[:email])
 
-        ~H|{@before}<span class="confirmation-email" data-testid="confirmation-email">{@address}</span>{@after}|
+        ~H|{@lead}<span class="confirmation-email" data-testid="confirmation-email">{@address}</span>{@tail}|
     end
   end
 end
