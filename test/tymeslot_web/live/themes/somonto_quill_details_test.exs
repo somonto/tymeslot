@@ -254,6 +254,7 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
                "We have sent you the meeting invitation by email to max@muster.at."
              )
 
+      assert has_element?(view, "[data-testid='confirmation-email']", "max@muster.at")
       refute has_element?(view, "[data-testid='meeting-summary']")
       refute has_element?(view, ".custom-answers")
       assert has_element?(view, "[data-testid='schedule-another']")

@@ -167,11 +167,21 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.ConfirmationComponent d
           organizer: ConfirmationText.organizer_fragment(assigns[:organizer_profile], :quill)
         )
 
-      # Somonto fork: where the invitation went, instead of the name twice.
+      # Somonto fork: where the invitation went, instead of the name twice. The
+      # address sits in its own inline block, so a narrow screen moves it to the
+      # next line whole instead of breaking it at a hyphen.
       :confirmed ->
-        dgettext("booking", "We have sent you the meeting invitation by email to %{email}.",
-          email: assigns[:email]
-        )
+        marker = "\u{E000}"
+
+        [before | rest] =
+          dgettext("booking", "We have sent you the meeting invitation by email to %{email}.",
+            email: marker
+          )
+          |> String.split(marker, parts: 2)
+
+        assigns = assign(assigns, before: before, after: Enum.join(rest), address: assigns[:email])
+
+        ~H|{@before}<span class="confirmation-email" data-testid="confirmation-email">{@address}</span>{@after}|
     end
   end
 end

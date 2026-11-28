@@ -866,3 +866,11 @@ html.quill-theme .calendar-download-button { white-space: nowrap; justify-conten
   html.quill-theme .custom-answers__row { grid-template-columns: minmax(0, 1fr) !important; gap: 0 !important; }
   html.quill-theme .confirmation-heading-row { flex-direction: column; align-items: flex-start !important; }
 }
+
+/* T11: die Adresse in der Bestätigung bricht nie am Bindestrich, sie rückt als Ganzes in die nächste Zeile */
+.confirmation-email {
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  hyphens: none;
+}
