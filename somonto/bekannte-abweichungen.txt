@@ -280,3 +280,4 @@ TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a meeting type with no interval of
 TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a meeting type with no interval of its own keeps the shared heading and status
 TymeslotWeb.Themes.ScheduleHeaderWrapTest :: Quill renders the heading and the time zone trigger as separate items of the header row
 TymeslotWeb.ZeroLengthFeedEventJourneyTest :: the slot running across the entry is offered and can be booked
+TymeslotWeb.Live.Scheduling.CalendarPubSubTest :: calendar event PubSub ignores calendar events for other users

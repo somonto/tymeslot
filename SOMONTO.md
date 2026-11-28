@@ -31,7 +31,7 @@ Tymeslot-Version.
   Kopf, Foto mit `fetchpriority="low"`. `lib/tymeslot_web/components/layouts.ex`, `…/quill/…/schedule_component.ex`
 - Fußzeile ohne Quelltext-Link (Niklas 28.11.2026: „ganz weglassen“); `…/shared/components/legal_links.ex` wie v1.41.0.
 - Tests: `test/tymeslot_web/live/themes/somonto_quill_details_test.exs`, JS-Tests in `assets/js/__tests__/`.
-  Tests von Tymeslot, die den alten Quill-Ablauf (Fragen je Seite, Nachrichtenfeld, Schritt „Dauer“, Fuß) prüfen, stehen in `somonto/bekannte-abweichungen.txt` (282 am 28.11.2026). „Somonto prüfen“ lässt
+  Tests von Tymeslot, die den alten Quill-Ablauf (Fragen je Seite, Nachrichtenfeld, Schritt „Dauer“, Fuß) prüfen, stehen in `somonto/bekannte-abweichungen.txt` (283 am 28.11.2026, CalendarPubSubTest wackelt). „Somonto prüfen“ lässt
   die volle Suite laufen und wird rot, sobald ein Test scheitert, der dort nicht steht (`somonto/suite_abgleich.py`);
   wieder grüne Tests meldet der Lauf als `GREEN`, die Zeile fliegt dann raus. Beim monatlichen Nachziehen: neue
   `NEW`-Zeilen ansehen, echte Brüche beheben, nur Prüfungen des alten Ablaufs in die Liste.
