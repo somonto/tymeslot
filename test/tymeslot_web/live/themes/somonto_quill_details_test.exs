@@ -406,17 +406,12 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
   end
 
   describe "the footer" do
-    test "links the source code (AGPL), as a plain link named Source code", %{conn: conn} do
-      %{profile: profile} = one_type("somonto-agpl")
+    test "carries no source code link", %{conn: conn} do
+      %{profile: profile} = one_type("somonto-ohne-quelltext")
       {:ok, view, _html} = live(conn, ~p"/#{profile.username}")
 
-      assert has_element?(
-               view,
-               "[data-testid='source-code-link'][href='https://github.com/somonto/tymeslot']"
-             )
-
-      assert has_element?(view, "[data-testid='source-code-link']", "Source code")
-      refute render(view) =~ "Source code (AGPL)"
+      refute has_element?(view, "[data-testid='source-code-link']")
+      refute render(view) =~ "Source code"
     end
   end
 end

@@ -827,7 +827,6 @@ html.quill-theme .legal-links {
   font-size: 0.75rem !important;
 }
 html.quill-theme .legal-links__link,
-html.quill-theme .legal-links__link--source { color: var(--somonto-blass) !important; text-decoration: none !important; }
 html.quill-theme .legal-links__link:hover { text-decoration: underline !important; text-underline-offset: 2px; }
 html.quill-theme .legal-links__link:focus:not(:focus-visible) { outline: none !important; }
 html.quill-theme .legal-links__link:focus-visible { outline: 1px solid var(--somonto-akzent) !important; outline-offset: 2px; border-radius: 2px !important; }

@@ -1108,7 +1108,3 @@ msgstr "У браузері, на телефоні чи комп'ютері. К�
 msgid "We have sent you the meeting invitation by email to %{email}."
 msgstr "Ми надіслали вам запрошення електронною поштою на адресу %{email}."
 
-#: lib/tymeslot_web/themes/shared/components/legal_links.ex
-#, elixir-autogen, elixir-format
-msgid "Source code"
-msgstr "Вихідний код"

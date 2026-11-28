@@ -1101,7 +1101,3 @@ msgstr "Nel browser, sul telefono o sul computer. Non serve una videocamera."
 msgid "We have sent you the meeting invitation by email to %{email}."
 msgstr "Le abbiamo inviato l'invito via e-mail a %{email}."
 
-#: lib/tymeslot_web/themes/shared/components/legal_links.ex
-#, elixir-autogen, elixir-format
-msgid "Source code"
-msgstr "Codice sorgente"

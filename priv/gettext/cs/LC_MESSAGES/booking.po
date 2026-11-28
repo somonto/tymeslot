@@ -1108,7 +1108,3 @@ msgstr "V prohlížeči, na telefonu nebo počítači. Kameru nepotřebujete."
 msgid "We have sent you the meeting invitation by email to %{email}."
 msgstr "Pozvánku jsme vám poslali e-mailem na adresu %{email}."
 
-#: lib/tymeslot_web/themes/shared/components/legal_links.ex
-#, elixir-autogen, elixir-format
-msgid "Source code"
-msgstr "Zdrojový kód"
