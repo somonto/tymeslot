@@ -20,6 +20,8 @@ defmodule TymeslotWeb.Themes.Shared.Components.CustomAnswers do
 
   attr :snapshot, :list, default: nil, doc: "the booking's `custom_fields_snapshot`"
   attr :answers, :map, default: nil, doc: "answers keyed by question id"
+  # Somonto fork: the summary page titles the same list "Your details".
+  attr :heading, :string, default: nil, doc: "the section's heading, \"Your answers\" when nil"
 
   @spec custom_answers(map()) :: Phoenix.LiveView.Rendered.t()
   def custom_answers(assigns) do
@@ -27,9 +29,14 @@ defmodule TymeslotWeb.Themes.Shared.Components.CustomAnswers do
 
     ~H"""
     <section :if={@rows != []} class="custom-answers">
-      <h3 class="custom-answers__heading">{dgettext("booking", "Your answers")}</h3>
+      <h3 class="custom-answers__heading">{@heading || dgettext("booking", "Your answers")}</h3>
       <dl class="custom-answers__list">
-        <div :for={{question, rendered} <- @rows} class="custom-answers__row">
+        <div
+          :for={{question, rendered} <- @rows}
+          class="custom-answers__row"
+          data-question={question["id"]}
+          data-type={question["type"]}
+        >
           <dt class="custom-answers__label">{question["label"]}</dt>
           <dd class="custom-answers__value">{rendered}</dd>
         </div>

@@ -1120,3 +1120,24 @@ msgstr "Con"
 #, elixir-autogen, elixir-format
 msgid "Your details"
 msgstr "I suoi dati"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Email address"
+msgstr "Indirizzo e-mail"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/meeting_summary.ex
+#, elixir-autogen, elixir-format
+msgid "In the browser, on a phone or computer. You don't need a camera."
+msgstr "Nel browser, sul telefono o sul computer. Non serve una videocamera."
+
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
+#, elixir-autogen, elixir-format
+msgid "We have sent you the meeting invitation by email to %{email}."
+msgstr "Le abbiamo inviato l'invito via e-mail a %{email}."
+
+#: lib/tymeslot_web/themes/shared/components/legal_links.ex
+#, elixir-autogen, elixir-format
+msgid "Source code"
+msgstr "Codice sorgente"

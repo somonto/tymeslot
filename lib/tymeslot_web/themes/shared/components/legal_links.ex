@@ -64,7 +64,7 @@ defmodule TymeslotWeb.Themes.Shared.Components.LegalLinks do
         class="legal-links__link legal-links__link--source"
         data-testid="source-code-link"
       >
-        {dgettext("booking", "Source code (AGPL)")}
+        {dgettext("booking", "Source code")}
       </a>
     </footer>
     """

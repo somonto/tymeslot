@@ -35,7 +35,7 @@ defmodule TymeslotWeb.Themes.Shared.CustomQuestions.Inputs.TextInput do
   attr :value, :any, required: true
   attr :myself, :any, required: true
   attr :autofocus, :boolean, default: true
-  attr :rest, :global, include: ~w(autocomplete)
+  attr :rest, :global, include: ~w(autocomplete autocapitalize autocorrect spellcheck)
 
   @spec text_like(map()) :: Phoenix.LiveView.Rendered.t()
   def text_like(assigns) do

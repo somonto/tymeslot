@@ -35,7 +35,9 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
   alias TymeslotWeb.Live.Scheduling.BookingConfig
   alias TymeslotWeb.Live.Scheduling.OrganizerHelpers
   alias TymeslotWeb.Themes.Shared.BookingLabels
+  alias TymeslotWeb.Themes.Quill.Scheduling.Components.MeetingSummary
   alias TymeslotWeb.Themes.Shared.BookingLocation
+  alias TymeslotWeb.Themes.Shared.BookingText
   alias TymeslotWeb.Themes.Shared.Components.ApprovalNotice
   alias TymeslotWeb.Themes.Shared.Components.BookingForm
   alias TymeslotWeb.Themes.Shared.Components.GuestField
@@ -113,7 +115,8 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
         first_questions: Enum.reject(questions, &phone_question?(&1.definition)),
         contact_questions: Enum.filter(questions, &phone_question?(&1.definition)),
         form_errors: form_errors(assigns),
-        email_value: form_value(assigns.form, "email")
+        summary_snapshot: summary_snapshot(questions),
+        summary_answers: summary_answers(assigns.form, questions)
       )
 
     ~H"""
@@ -230,48 +233,18 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
                       class="booking-page booking-page--summary"
                       data-testid="booking-summary"
                     >
-                      <dl class="booking-summary">
-                        <div class="booking-summary__row">
-                          <dt>{dgettext("booking", "With")}</dt>
-                          <dd data-testid="booking-summary-with">{@organizer_name}</dd>
-                        </div>
-                        <div class="booking-summary__row">
-                          <dt>{dgettext("booking", "When")}</dt>
-                          <dd data-testid="booking-summary-when">
-                            <span class="booking-summary__time">
-                              {LocalizationHelpers.format_booking_date_time(
-                                @selected_date,
-                                @selected_time,
-                                @user_timezone
-                              )}
-                            </span>
-                            <span :if={@next_day_end} class="booking-summary__end">
-                              {@next_day_end}
-                            </span>
-                            <span class="booking-summary__zone" data-testid="booking-summary-zone">
-                              {LocalizationHelpers.format_zone_label(
-                                @selected_date,
-                                @selected_time,
-                                @user_timezone
-                              )}
-                            </span>
-                          </dd>
-                        </div>
-                      </dl>
-                      <p
-                        :if={@email_value != ""}
-                        class="booking-summary__email"
-                        data-testid="booking-summary-email"
-                      >
-                        {dgettext("booking", "The confirmation goes to %{email}.",
-                          email: @email_value
-                        )}
-                      </p>
-
-                      <LocationField.stated_location
-                        :if={BookingLocation.stated_location?(assigns)}
-                        option={BookingLocation.selected(assigns)}
-                        venue_choices={BookingLocation.venue_choices(assigns)}
+                      <MeetingSummary.card
+                        title={@meeting_type && @meeting_type.name}
+                        date={@selected_date}
+                        time={@selected_time}
+                        duration={BookingText.duration_label(assigns)}
+                        timezone={@user_timezone}
+                        next_day_end={@next_day_end}
+                        location={BookingLocation.chosen_display(assigns)}
+                        video={match?(%{kind: :video}, BookingLocation.selected(assigns))}
+                        arranged={BookingLocation.arranged_after_booking?(assigns)}
+                        snapshot={@summary_snapshot}
+                        answers={@summary_answers}
                       />
 
                       <MeetingPrice.hint
@@ -535,6 +508,28 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
   defp question_error(_assigns, _id), do: nil
 
   # A phone number goes with the email on the contact page.
+  # The summary's "Your details": name and email address first, then the
+  # meeting type's questions, each as the guest typed it.
+  @summary_name "somonto-name"
+  @summary_email "somonto-email"
+
+  defp summary_snapshot(questions) do
+    [
+      %{"id" => @summary_name, "type" => "short_text", "label" => dgettext("booking", "Name")},
+      %{"id" => @summary_email, "type" => "email", "label" => dgettext("booking", "Email address")}
+      | Enum.map(questions, & &1.definition)
+    ]
+  end
+
+  defp summary_answers(form, questions) do
+    Map.new(questions, &{&1.definition["id"], trim(&1.value)})
+    |> Map.put(@summary_name, form_value(form, "name"))
+    |> Map.put(@summary_email, form_value(form, "email"))
+  end
+
+  defp trim(value) when is_binary(value), do: String.trim(value)
+  defp trim(value), do: value
+
   defp phone_question?(%{"type" => "phone"}), do: true
 
   defp phone_question?(%{"label" => label}) when is_binary(label),

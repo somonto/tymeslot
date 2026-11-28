@@ -1,5 +1,10 @@
 defmodule TymeslotWeb.Themes.Shared.CustomQuestions.Inputs.ShortText do
-  @moduledoc "Single-line free-text answer."
+  @moduledoc """
+  Single-line free-text answer.
+
+  Somonto fork: no automatic capitals or corrections, so a company name
+  arrives as typed ("Somonto e.U.", not "Somonto E.u.").
+  """
   use Phoenix.Component
 
   alias TymeslotWeb.Themes.Shared.CustomQuestions.Inputs.TextInput
@@ -20,6 +25,9 @@ defmodule TymeslotWeb.Themes.Shared.CustomQuestions.Inputs.ShortText do
       autofocus={@autofocus}
       phx-debounce="blur"
       autocomplete="off"
+      autocapitalize="off"
+      autocorrect="off"
+      spellcheck="false"
     />
     """
   end

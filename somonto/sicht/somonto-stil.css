@@ -567,8 +567,11 @@ html.quill-theme .lang-switcher__button {
 html.quill-theme .language-switcher button:hover,
 html.quill-theme .lang-switcher__button:hover { border-color: var(--somonto-linie-stark) !important; }
 
-/* Bestätigung nach der Buchung: kein Abzeichen mit Haken und Punkt (wie „Dauer“), Zeilen in Tinte, Symbole ruhig. */
-html.quill-theme .confirmation-heading-row > .shrink-0 { display: none !important; }
+/* Bestätigung nach der Buchung: grüner Haken (T11, Niklas 28.11.2026), Zeilen in Tinte, Symbole ruhig. */
+html.quill-theme .confirmation-heading-row { align-items: center; gap: 12px !important; }
+html.quill-theme .confirmation-badge { width: 40px !important; height: 40px !important; background: #1f9d55 !important; color: #fff !important; box-shadow: none !important; }
+html.quill-theme .confirmation-badge.confirmation-badge--pending { background: var(--somonto-blass) !important; }
+html.quill-theme .confirmation-badge-icon { width: 22px !important; height: 22px !important; }
 html.quill-theme .confirmation-title { font-size: 1.25rem !important; }
 html.quill-theme .confirmation-subtitle { color: var(--somonto-gedaempft) !important; font-size: 0.95rem !important; }
 html.quill-theme .confirmation-border-top { border-color: var(--somonto-linie) !important; }
@@ -812,5 +815,41 @@ html.quill-theme .schedule-timezone-area { display: block !important; visibility
 html.quill-theme .schedule-timezone-area .timezone-trigger,
 html.quill-theme .schedule-timezone-area .tz-picker__trigger { min-height: 44px; }
 
-/* AGPL-Hinweis (Quelltext-Link) in der Fußzeile wie die übrigen Rechtslinks. */
-html.quill-theme .legal-links__link--source { color: var(--somonto-blass); }
+/* T11 (Niklas 28.11.2026): Fußzeile als schlichter kleiner grauer Textlink „Quelltext“ (AGPL § 13), wie „Powered by …“ bei Calendly:
+   ohne Rahmen, Fläche und Pillenform; Fokusring nur bei Tastatur, dünn in der Markenfarbe. Quill zeichnet die Pille (legal-links.css). */
+html.quill-theme .legal-links {
+  margin: 8px auto 16px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  font-size: 0.75rem !important;
+}
+html.quill-theme .legal-links__link,
+html.quill-theme .legal-links__link--source { color: var(--somonto-blass) !important; text-decoration: none !important; }
+html.quill-theme .legal-links__link:hover { text-decoration: underline !important; text-underline-offset: 2px; }
+html.quill-theme .legal-links__link:focus:not(:focus-visible) { outline: none !important; }
+html.quill-theme .legal-links__link:focus-visible { outline: 1px solid var(--somonto-akzent) !important; outline-offset: 2px; border-radius: 2px !important; }
+
+/* T11 Übersicht vor dem Buchen = Karte der früheren Bestätigung (Termintyp, Raster, Ort mit Hinweis) und „Ihre Angaben“ als Beschriftung: Wert.
+   Quill färbt die Karte für dunkles Glas (Klasse text-white); auf der weißen Karte in Tinte bzw. gedämpft. */
+html.quill-theme .meeting-details-card {
+  margin: 0 !important;
+  padding: 16px !important;
+  background: var(--somonto-flaeche) !important;
+  border: 1px solid var(--somonto-linie) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+html.quill-theme .meeting-details-title { margin: 0 0 12px !important; color: var(--somonto-tinte) !important; font-size: 1.125rem !important; font-weight: 600 !important; }
+html.quill-theme .booking-detail-label { color: var(--somonto-blass) !important; font-size: 0.875rem !important; }
+html.quill-theme .booking-detail-value { color: var(--somonto-tinte) !important; font-weight: 600 !important; }
+html.quill-theme .meeting-details-card .text-white { color: var(--somonto-gedaempft) !important; }
+html.quill-theme .meeting-details-card .location-field__note { margin: 8px 0 0 !important; color: var(--somonto-gedaempft) !important; font-size: 0.875rem !important; line-height: 1.5; }
+html.quill-theme .booking-page--summary .custom-answers { margin-top: 16px !important; padding-top: 0 !important; border-top: 0 !important; }
+html.quill-theme .custom-answers__heading { color: var(--somonto-blass) !important; }
+html.quill-theme .custom-answers__label { color: var(--somonto-blass) !important; }
+html.quill-theme .custom-answers__value { color: var(--somonto-tinte) !important; min-width: 0; }
+html.quill-theme .custom-answers__row[data-type="email"] .custom-answers__value { overflow-wrap: anywhere; }
+html.quill-theme .custom-answers__row[data-type="phone"] .custom-answers__value { white-space: nowrap; }

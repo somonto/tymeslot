@@ -106,6 +106,17 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
     |> Floki.attribute("hidden") != []
   end
 
+  defp details(view) do
+    view
+    |> render()
+    |> Floki.parse_document!()
+    |> Floki.find(".custom-answers__row")
+    |> Enum.map(fn row ->
+      {row |> Floki.find("dt") |> Floki.text() |> String.trim(),
+       row |> Floki.find("dd") |> Floki.text() |> String.trim()}
+    end)
+  end
+
   defp step_labels(view) do
     view
     |> render()
@@ -218,14 +229,34 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
       assert page(view) == "3"
       assert step_attr(view) == {"uebersicht", "4"}
 
-      summary = view |> element("[data-testid='booking-summary']") |> render()
-      assert summary =~ "max@muster.at"
-      assert has_element?(view, "[data-testid='booking-summary-zone']")
+      # The summary is the meeting card: type, date, time, duration, zone,
+      # then "Your details" as label and value, in this order.
+      assert has_element?(view, "[data-testid='meeting-summary']")
+      assert has_element?(view, "[data-testid='chosen-meeting-type']", "Erstgespräch")
+      assert details(view) == [
+               {"Name", "Max Muster"},
+               {"Email address", "max@muster.at"},
+               {"Name des Unternehmens", "Tischlerei Muster GmbH"},
+               {"Telefonnummer", "+43 660 1234567"}
+             ]
+
+      refute render(view) =~ "The confirmation goes to"
       assert has_element?(view, "[data-testid='submit-booking']")
 
       BookingDriver.submit(view, %{})
       await(view, "[data-testid='confirmation-heading']")
       assert step_attr(view) == {"bestaetigung", "5"}
+
+      # The confirmation is short: where the invitation went, no card again.
+      assert has_element?(
+               view,
+               "[data-testid='confirmation-heading']",
+               "We have sent you the meeting invitation by email to max@muster.at."
+             )
+
+      refute has_element?(view, "[data-testid='meeting-summary']")
+      refute has_element?(view, ".custom-answers")
+      assert has_element?(view, "[data-testid='schedule-another']")
 
       meeting =
         Repo.get_by!(MeetingSchema, organizer_user_id: user.id, attendee_email: "max@muster.at")
@@ -285,6 +316,50 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
       assert page(view) == "3"
     end
 
+    test "keeps a company name exactly as given", %{conn: conn} do
+      %{profile: profile} = one_type("somonto-prefill-case")
+
+      {:ok, view, _html} =
+        conn
+        |> put_connect_params(%{
+          "attendee_prefill" => %{
+            "name" => "Ada Muster",
+            "email" => "ada@muster.at",
+            "company" => "Somonto e.U.",
+            "phone" => "+43 1 2345678"
+          }
+        })
+        |> live(~p"/#{profile.username}")
+
+      to_details(view)
+      assert input_value(view, "#cq-input-cf-company") == "Somonto e.U."
+
+      # Typed in, with spaces at the ends: only those go.
+      BookingDriver.answer(view, "cf-company", "  ACME GmbH & Co. KG ")
+      next(view)
+      next(view)
+      assert page(view) == "3"
+      assert {"Name des Unternehmens", "ACME GmbH & Co. KG"} in details(view)
+
+      back(view)
+      back(view)
+      BookingDriver.answer(view, "cf-company", "Somonto e.U.")
+      next(view)
+      next(view)
+      assert {"Name des Unternehmens", "Somonto e.U."} in details(view)
+    end
+
+    test "asks for the company without automatic capitals or corrections", %{conn: conn} do
+      %{profile: profile} = one_type("somonto-company-attrs")
+      {:ok, view, _html} = live(conn, ~p"/#{profile.username}")
+      to_details(view)
+
+      assert has_element?(
+               view,
+               "#cq-input-cf-company[autocapitalize='off'][autocorrect='off'][spellcheck='false']"
+             )
+    end
+
     test "drops a phone number that is none", %{conn: conn} do
       %{profile: profile} = one_type("somonto-prefill-bad")
 
@@ -312,7 +387,7 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
   end
 
   describe "the footer" do
-    test "links the source code (AGPL)", %{conn: conn} do
+    test "links the source code (AGPL), as a plain link named Source code", %{conn: conn} do
       %{profile: profile} = one_type("somonto-agpl")
       {:ok, view, _html} = live(conn, ~p"/#{profile.username}")
 
@@ -320,6 +395,9 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
                view,
                "[data-testid='source-code-link'][href='https://github.com/somonto/tymeslot']"
              )
+
+      assert has_element?(view, "[data-testid='source-code-link']", "Source code")
+      refute render(view) =~ "Source code (AGPL)"
     end
   end
 end

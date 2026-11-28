@@ -1127,3 +1127,24 @@ msgstr "З ким"
 #, elixir-autogen, elixir-format
 msgid "Your details"
 msgstr "Ваші дані"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/booking_component.ex
+#, elixir-autogen, elixir-format
+msgid "Email address"
+msgstr "Адреса електронної пошти"
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/meeting_summary.ex
+#, elixir-autogen, elixir-format
+msgid "In the browser, on a phone or computer. You don't need a camera."
+msgstr "У браузері, на телефоні чи комп'ютері. Камера не потрібна."
+
+
+#: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
+#, elixir-autogen, elixir-format
+msgid "We have sent you the meeting invitation by email to %{email}."
+msgstr "Ми надіслали вам запрошення електронною поштою на адресу %{email}."
+
+#: lib/tymeslot_web/themes/shared/components/legal_links.ex
+#, elixir-autogen, elixir-format
+msgid "Source code"
+msgstr "Вихідний код"

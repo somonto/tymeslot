@@ -11,7 +11,7 @@ const dateien = {
   "/assets/somonto-stil.css": ["somonto-stil.css", "text/css"],
   "/assets/somonto-golos-text-variable.woff2": ["somonto-golos-text-variable.woff2", "font/woff2"],
 };
-const ANKER = "#name=Anna%20Muster&email=anna%40tischlerei-muster.at&company=Tischlerei%20Muster%20GmbH&phone=%2B43%20664%201234567"; // wie das CRM (encodeURIComponent, T4a)
+const ANKER = "#name=Anna%20Muster&email=anna%40tischlerei-muster.at&company=ACME%20GmbH%20%26%20Co.%20KG&phone=%2B43%20664%201234567"; // wie das CRM (encodeURIComponent, T4a)
 
 async function lauf(browser, breite, { anker = "" } = {}) {
   const page = await browser.newPage({ viewport: { width: breite, height: breite < 768 ? 800 : 900 }, deviceScaleFactor: 2, locale: "de-AT", timezoneId: "Europe/Vienna" });
@@ -26,6 +26,7 @@ async function lauf(browser, breite, { anker = "" } = {}) {
     return { text: e.innerText.trim().slice(0, 60), zeilen: Math.round(e.getBoundingClientRect().height / lh) };
   }).filter((z) => z.text && z.zeilen > 1));
   const mehrzeilig = [];
+  let angaben = [], quill = [];
   page.on("pageerror", (e) => console.error("pageerror", e.message));
   try {
   await page.goto(`${BASIS}?theme=1&locale=de${anker}`, { waitUntil: "networkidle" });
@@ -58,7 +59,7 @@ async function lauf(browser, breite, { anker = "" } = {}) {
         if ((await feld.inputValue()) !== "") continue;
         const typ = (await feld.getAttribute("type")) || "text";
         const n = (await feld.getAttribute("name")) || "";
-        const wert = typ === "email" ? "anna@tischlerei-muster.at" : typ === "tel" ? "+43 664 1234567" : n === "booking[name]" ? "Anna Muster" : "Tischlerei Muster GmbH";
+        const wert = typ === "email" ? "anna@tischlerei-muster.at" : typ === "tel" ? "+43 664 1234567" : n === "booking[name]" ? "Anna Muster" : "Somonto e.U.";
         await feld.fill(wert);
       }
       await page.waitForTimeout(300);
@@ -68,6 +69,12 @@ async function lauf(browser, breite, { anker = "" } = {}) {
   await page.waitForSelector("[data-details-page='3']", { timeout: 15000 });
   await bild("5-uebersicht");
   mehrzeilig.push(...(await messen()));
+  angaben = await page.evaluate(() => [...document.querySelectorAll(".custom-answers__row")].map((r) => [r.querySelector("dt")?.innerText.trim(), r.querySelector("dd")?.innerText.trim()]));
+  quill = await page.evaluate(() => [...document.querySelectorAll("link[rel=stylesheet]")].map((l) => l.getAttribute("href")).filter((h) => h.includes("scheduling-theme-quill")));
+  await page.locator("[data-testid='submit-booking']").filter({ visible: true }).first().click();
+  await page.locator("[data-testid='confirmation-heading']").first().waitFor({ timeout: 30000 });
+  await bild("6-bestaetigung");
+  mehrzeilig.push(...(await messen()));
   } catch (e) {
     await page.screenshot({ path: name("fehler"), fullPage: true }).catch(() => {});
     console.error("TEXT", breite, (await page.innerText("body").catch(() => "")).slice(0, 1500));
@@ -75,7 +82,7 @@ async function lauf(browser, breite, { anker = "" } = {}) {
     throw e;
   }
   await page.close();
-  return { breite, anker: Boolean(anker), mehrzeilig };
+  return { breite, anker: Boolean(anker), angaben, quill, mehrzeilig };
 }
 
 const browser = await chromium.launch();

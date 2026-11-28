@@ -19,4 +19,8 @@ mt = Repo.insert!(%MeetingTypeSchema{calendar_integration_id: kalender.id, targe
 {:ok, _} = Tymeslot.MeetingTypes.update_meeting_type(mt, %{"custom_fields" => [
   %{"id" => "cf-company", "type" => "short_text", "label" => "Name des Unternehmens", "required" => true, "position" => 0},
   %{"id" => "cf-phone", "type" => "phone", "label" => "Telefonnummer", "required" => true, "position" => 1}]})
+# Ort wie live: Videogespräch (Video-Integration ohne eigene Adresse, kMeet).
+{:ok, video} = Tymeslot.Integrations.Video.create_integration(user.id, :kmeet, %{name: "Probe"})
+{:ok, _} = Tymeslot.MeetingTypes.update_meeting_type(Repo.get!(MeetingTypeSchema, mt.id), %{"locations" => [
+  %{"kind" => "video", "label" => "Videogespräch", "video_integration_ids" => [video.id]}]})
 IO.puts("SEED_OK #{profile.username} #{mt.slug}")
