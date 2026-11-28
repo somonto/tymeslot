@@ -1120,7 +1120,7 @@ msgstr "Im Browser, am Handy oder Computer. Eine Kamera brauchen Sie nicht."
 #: lib/tymeslot_web/themes/quill/scheduling/components/confirmation_component.ex
 #, elixir-autogen, elixir-format
 msgid "We have sent you the meeting invitation by email to %{email}."
-msgstr "Wir haben Ihnen die Gesprächseinladung per E-Mail an %{email} geschickt."
+msgstr "Wir haben Ihnen die Gesprächseinladung per E‑Mail an %{email} geschickt."
 
 #: lib/tymeslot_web/themes/shared/components/legal_links.ex
 #, elixir-autogen, elixir-format

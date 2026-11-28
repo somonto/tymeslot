@@ -853,3 +853,16 @@ html.quill-theme .custom-answers__label { color: var(--somonto-blass) !important
 html.quill-theme .custom-answers__value { color: var(--somonto-tinte) !important; min-width: 0; }
 html.quill-theme .custom-answers__row[data-type="email"] .custom-answers__value { overflow-wrap: anywhere; }
 html.quill-theme .custom-answers__row[data-type="phone"] .custom-answers__value { white-space: nowrap; }
+
+/* T11 Umbruch (Sichtprüfung 28.11.2026): Datum nie umbrechen, am Handy über beide Spalten; „Ihre Angaben“ am Handy Beschriftung über dem Wert
+   (Beschriftung und Wert bleiben zusammen); Bestätigung am Handy Haken über der Überschrift; Kalenderknopf einzeilig. */
+html.quill-theme .booking-details-grid > div:first-child .booking-detail-value { white-space: nowrap; }
+html.quill-theme .confirmation-subtitle,
+html.quill-theme .meeting-details-card .location-field__note,
+html.quill-theme .confirmation-help-text { text-wrap: pretty; }
+html.quill-theme .calendar-download-button { white-space: nowrap; justify-content: center; padding-inline: 16px !important; }
+@media (max-width: 480px) {
+  html.quill-theme .booking-details-grid > div:first-child { grid-column: 1 / -1; }
+  html.quill-theme .custom-answers__row { grid-template-columns: minmax(0, 1fr) !important; gap: 0 !important; }
+  html.quill-theme .confirmation-heading-row { flex-direction: column; align-items: flex-start !important; }
+}
