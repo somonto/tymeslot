@@ -794,6 +794,10 @@ html.quill-theme .booking-summary__zone { display: block; }
 html.quill-theme .booking-summary__end,
 html.quill-theme .booking-summary__zone { color: var(--somonto-gedaempft); font-size: 0.875rem; font-weight: 500; }
 html.quill-theme .booking-summary__email { margin: 16px 0 0; color: var(--somonto-gedaempft); font-size: 0.95rem; line-height: 1.5; }
+/* T10 (Sichtprüfung 27.11.2026, Befund c): Tymeslot nennt in der Übersicht den Ort eines Termintyps ohne Video („Persönlich“, Adresse
+   folgt) in heller Schrift für die dunkle Glaskarte; auf der weißen Karte unsichtbar, blieb davon nur rund 80 px Leerfläche vor den Knöpfen.
+   Ausgeblendet: sichtbar war der Block nie, der Ablauf bleibt gleich. Rückweg: Zeile löschen. */
+html.quill-theme .booking-page--summary .location-stated { display: none !important; }
 /* Knöpfe der Angaben am Handy wie im Schritt „Datum & Uhrzeit“: „Zurück“ so breit wie nötig, der Hauptknopf nimmt den Rest, einzeilig. */
 @media (max-width: 559px) {
   html.quill-theme .booking-card-body { padding: 24px 16px 16px; }

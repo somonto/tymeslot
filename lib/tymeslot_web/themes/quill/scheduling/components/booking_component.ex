@@ -374,6 +374,14 @@ defmodule TymeslotWeb.Themes.Quill.Scheduling.Components.BookingComponent do
     >
       <label class="booking-question__label" for={"cq-input-#{@question.definition["id"]}"}>
         {@question.definition["label"]}
+        <%!-- Somonto fork: the asterisk Name and Email carry, on a required
+             question too. The input states the requirement itself. --%>
+        <span
+          :if={@question.definition["required"] == true}
+          class="text-red-500 ml-0.5"
+          aria-hidden="true"
+          data-testid="booking-question-required"
+        >*</span>
       </label>
       <p :if={@question.definition["help_text"]} class="booking-question__help">
         {@question.definition["help_text"]}

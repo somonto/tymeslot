@@ -35,6 +35,13 @@ async function lauf(browser, breite, { anker = "" } = {}) {
   await tag.or(zeiten).first().waitFor({ timeout: 30000 });
   await bild("1-kalender");
   mehrzeilig.push(...(await messen()));
+  // Handy: Ganzseitenbild lässt den Platz der klebenden Leiste „Nächster Schritt“ leer; das Bildschirmbild ganz unten zeigt das Ende echt.
+  if (breite < 560) {
+    await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: name("1b-kalender-ende") });
+    await page.evaluate(() => scrollTo(0, 0));
+  }
   // Handy: die Wochenleiste wählt den ersten freien Tag selbst, die Zeiten stehen schon da.
   if (!(await zeiten.count())) await tag.nth(1).click();
   const zeit = zeiten.first();
@@ -54,6 +61,7 @@ async function lauf(browser, breite, { anker = "" } = {}) {
         const wert = typ === "email" ? "anna@tischlerei-muster.at" : typ === "tel" ? "+43 664 1234567" : n === "booking[name]" ? "Anna Muster" : "Tischlerei Muster GmbH";
         await feld.fill(wert);
       }
+      await page.waitForTimeout(300);
     }
     await page.locator("[data-testid='details-next']").filter({ visible: true }).first().click();
   }

@@ -175,6 +175,11 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
       assert hidden?(view, ".booking-field--email")
       assert hidden?(view, ".booking-page--contact")
       refute has_element?(view, "#booking-form textarea[name='booking[message]']")
+      # Every required field shows the asterisk, the company question too.
+      assert has_element?(
+               view,
+               "[data-question='cf-company'] [data-testid='booking-question-required']"
+             )
 
       # Next with nothing typed stays, with the errors shown.
       next(view)
@@ -188,6 +193,10 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
       assert step_attr(view) == {"kontakt", "3"}
       assert hidden?(view, ".booking-field--name")
       refute hidden?(view, ".booking-field--email")
+      assert has_element?(
+               view,
+               "[data-question='cf-phone'] [data-testid='booking-question-required']"
+             )
 
       # Back keeps what was typed.
       back(view)
@@ -285,6 +294,19 @@ defmodule TymeslotWeb.Live.Themes.SomontoQuillDetailsTest do
 
       to_details(view)
       assert input_value(view, "#cq-input-cf-phone") in [nil, ""]
+    end
+  end
+
+  describe "the date" do
+    test "never breaks between day, month and year (German)" do
+      Gettext.put_locale(TymeslotWeb.Gettext, "de")
+      on_exit(fn -> Gettext.put_locale(TymeslotWeb.Gettext, "en") end)
+
+      assert TymeslotWeb.Themes.Shared.LocalizationHelpers.format_booking_date_time(
+               "2026-11-28",
+               "09:00",
+               "Europe/Vienna"
+             ) == "Samstag, 28.\u00a0November\u00a02026 um 09:00"
     end
   end
 
