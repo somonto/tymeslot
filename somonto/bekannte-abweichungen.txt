@@ -60,7 +60,6 @@ TymeslotWeb.Live.Scheduling.BookingSubmitCompositionTest :: slot becomes unavail
 TymeslotWeb.Live.Scheduling.BookingUtmFlowTest :: UTM and tracking params from the landing URL persist on the created meeting
 TymeslotWeb.Live.Scheduling.BookingUtmFlowTest :: an ad click identifier on the landing URL is stored as its network, never itself
 TymeslotWeb.Live.Scheduling.BookingUtmFlowTest :: no UTM or tracking params are persisted when booking analytics is disabled
-TymeslotWeb.Live.Scheduling.CalendarPubSubTest :: calendar event PubSub ignores calendar events for other users
 TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: an answer sent once the questions are off screen are asked again, blank, after Schedule another
 TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: an answer sent once the questions are off screen is dropped, and the booking keeps the answer given on the questions step
 TymeslotWeb.Live.Scheduling.CustomFieldsBookingFlowTest :: Quill: booking flow with custom fields a required question left empty is refused in the guest's language
@@ -193,14 +192,9 @@ TymeslotWeb.Live.Themes.IgnoredStepEventTest :: Quill: a theme event no hook cla
 TymeslotWeb.Live.Themes.IgnoredStepEventTest :: Quill: a whole booking logs no ignored step event
 TymeslotWeb.Live.Themes.IgnoredStepEventTest :: Quill: an unknown event sent to a step component is logged once
 TymeslotWeb.Live.Themes.JourneyUrlTest :: the classic journey keeps the route it arrived on, through the confirmation
-TymeslotWeb.Live.Themes.LegalLinksDefaultsTest :: a payment page's dead render has no footer; the connected one has the organiser's links
-TymeslotWeb.Live.Themes.LegalLinksFooterTest :: folio folio shows no footer when nothing is set
-TymeslotWeb.Live.Themes.LegalLinksFooterTest :: paper paper shows no footer when nothing is set
 TymeslotWeb.Live.Themes.LegalLinksFooterTest :: quill quill booking step shows the privacy notice
 TymeslotWeb.Live.Themes.LegalLinksFooterTest :: quill quill schedule shows the footer
-TymeslotWeb.Live.Themes.LegalLinksFooterTest :: quill quill shows no footer when nothing is set
 TymeslotWeb.Live.Themes.LegalLinksFooterTest :: quill quill thank-you shows the footer
-TymeslotWeb.Live.Themes.LegalLinksFooterTest :: rhythm rhythm shows no footer when nothing is set
 TymeslotWeb.Live.Themes.MeetingPriceTest :: quill an embedded paid booking's confirmation says what was paid
 TymeslotWeb.Live.Themes.MeetingPriceTest :: quill the paid line is worded around the amount in the guest's language
 TymeslotWeb.Live.Themes.MeetingPriceTest :: quill the schedule and details steps of a paid type show its price
@@ -285,9 +279,4 @@ TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a grid finer than the meeting sele
 TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a meeting type with no interval of its own keeps the flat grid
 TymeslotWeb.Themes.Quill.ScheduleSlotsTest :: a meeting type with no interval of its own keeps the shared heading and status
 TymeslotWeb.Themes.ScheduleHeaderWrapTest :: Quill renders the heading and the time zone trigger as separate items of the header row
-TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: labels the links in German
-TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: renders both links in order with new-tab attributes
-TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: renders nothing for nil links
-TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: renders nothing when both are nil
-TymeslotWeb.Themes.Shared.Components.LegalLinksTest :: renders only the link that is set
 TymeslotWeb.ZeroLengthFeedEventJourneyTest :: the slot running across the entry is offered and can be booked
